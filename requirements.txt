@@ -1,3 +1,4 @@
+opcua
 opencv-python
 scikit-image
 numpy

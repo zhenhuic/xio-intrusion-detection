@@ -116,8 +116,8 @@ if __name__ == '__main__':
     node = client.get_node(node_info)
     print('opc connected')
 
-    stream_1 = 'rtsp://user:xiolift123@10.19.31.154:554/ch2'
-    # stream_1 = 'E:/datasets/XIO/still_1.avi'
+    # stream_1 = 'rtsp://user:xiolift123@10.19.31.154:554/ch2'
+    stream_1 = 'E:/datasets/XIO/still_1.avi'
     stream_2 = 'rtsp://user:xiolift123@10.19.31.136:554/ch2'
     # stream_3 = 'rtsp://user:xiolift123@10.19.31.137:554/ch2'
     # Get video capture
@@ -237,6 +237,7 @@ if __name__ == '__main__':
         else:
             recent_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
             isStopFlag = node.get_value()
+            # isStopFlag = True
             if not isStopFlag:
                 print(recent_time, '有人闯入，主动停机！！')
                 try:
