@@ -6,7 +6,7 @@ from PIL import Image
 import torchvision.transforms.functional as TF
 
 from models import Darknet
-from utils.utils import non_max_suppression
+from utils.utils import non_max_suppression, load_classes
 from video_stream import VideoStream
 
 
@@ -75,16 +75,41 @@ def inference(model, input_tensor, device, num_classes, conf_thres, nms_thres):
     input_tensor = input_tensor.to(device)
     output = model(input_tensor)
     preds = non_max_suppression(output, num_classes, conf_thres, nms_thres)
-    # predictions = predictions.cpu()
     return preds
 
 
-def preds_filter(preds):
-    print(preds)
-    print(type(preds))
+def postprocess(preds, stream_names, frame_shape, img_size, classes):
+    # The amount of padding that was added
+    pad_x = max(frame_shape[0] - frame_shape[1], 0) * \
+            (img_size / max(frame_shape))
+    pad_y = max(frame_shape[1] - frame_shape[0], 0) * \
+            (img_size / max(frame_shape))
+    # Image height and width after padding is removed
+    unpad_h = img_size - pad_y
+    unpad_w = img_size - pad_x
+
+    preds_dict = {}
+    person_bboxes = []
+    for i, pred in enumerate(preds):
+        if pred is None:
+            preds_dict[stream_names[i]] = None
+        else:
+            for *xyxy, conf, cls_conf, cls_pred in pred:
+                if classes[int(cls_pred)] == 'person':  # 只检测人
+                    # Rescale coordinates to original dimensions
+                    box_h = ((xyxy[3] - xyxy[1]) / unpad_h) * frame_shape[0]
+                    box_w = ((xyxy[2] - xyxy[0]) / unpad_w) * frame_shape[1]
+                    y1 = ((xyxy[1] - pad_y // 2) / unpad_h) * frame_shape[0]
+                    x1 = ((xyxy[0] - pad_x // 2) / unpad_w) * frame_shape[1]
+
+                    person_bbox = (x1, y1, x1 + box_w, y1 + box_h)
+                    person_bboxes.append(person_bbox)
+            preds_dict[stream_names[i]] = person_bboxes
+
+    return preds_dict
 
 
-@ torch.no_grad()
+@torch.no_grad()
 def main(args):
     device = torch.device(args.device)
     model = get_model(args.config_path, args.img_size, args.weights_path, device)
@@ -97,9 +122,9 @@ def main(args):
     video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
                                                   list(video_stream_paths_dict.keys()),
                                                   switch_mask=(1, 1, 1))
-    while True:
+    exc_flag = True
+    while exc_flag:
         frames_dict = capture_one_frame(video_streams_dict)
-
         input_tensor = []
         for name in frames_dict.keys():
             tensor = transform(frames_dict[name], args.img_size)
@@ -107,14 +132,16 @@ def main(args):
         input_tensor = stack_tensors(input_tensor)
 
         preds = inference(model, input_tensor, device, 80, args.conf_thres, args.nms_thres)
-        preds_filter(preds)
+        classes = load_classes(args.class_path)  # Extracts class labels from file
+        preds_dict = postprocess(preds, list(video_stream_paths_dict.keys()),
+                                 (1080, 1920), args.img_size, classes)
+
+
 
 
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--video_path', type=str, default='rtsp://user:xiolift123@10.19.31.154:554/ch2',
-                        help='path to video')
     parser.add_argument('--open_opc', type=bool, default=False, help='whether to connect to opc server')
 
     # model config
