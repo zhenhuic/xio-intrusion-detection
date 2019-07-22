@@ -306,58 +306,15 @@ def pad_and_resize(img, dsize):
     return normed_img
 
 
-def visualize_detections(frame, detections, classes, colors, img_size=416):
-    """
-    在原图中画出检测结果（只画person）
-    并返回画好的图和检测到person的bounding boxes
-    :param frame:
-    :param detections:
-    :param classes:
-    :param colors:
-    :param img_size:
-    :return:
-    """
-    # The amount of padding that was added
-    pad_x = max(frame.shape[0] - frame.shape[1], 0) * \
-            (img_size / max(frame.shape))
-    pad_y = max(frame.shape[1] - frame.shape[0], 0) * \
-            (img_size / max(frame.shape))
-    # Image height and width after padding is removed
-    unpad_h = img_size - pad_y
-    unpad_w = img_size - pad_x
-
-    detections = detections[0]
-    # Draw bounding boxes and labels of detections
-    person_bboxes = []
-    if detections is not None:
-        unique_labels = detections[:, -1].cpu().unique()
-        n_cls_preds = len(unique_labels)
-        bbox_colors = random.sample(colors, n_cls_preds)
-        for *xyxy, conf, cls_conf, cls_pred in detections:
-            if classes[int(cls_pred)] != 'person':  # 只检测人
-                continue
-            # print('\t+ Label: %s, Conf: %.5f' %
-            #       (classes[int(cls_pred)], cls_conf.item()))
-
-            # Rescale coordinates to original dimensions
-            box_h = ((xyxy[3] - xyxy[1]) / unpad_h) * frame.shape[0]
-            box_w = ((xyxy[2] - xyxy[0]) / unpad_w) * frame.shape[1]
-            y1 = ((xyxy[1] - pad_y // 2) / unpad_h) * frame.shape[0]
-            x1 = ((xyxy[0] - pad_x // 2) / unpad_w) * frame.shape[1]
-
-            label = '%s %.2f' % (classes[int(cls_pred)], cls_conf)
-            plot_one_box((x1, y1, x1 + box_w, y1 + box_h), frame, label=label, color=colors[int(cls_pred)])
-            person_bbox = (x1, y1, x1 + box_w, y1 + box_h)
-            person_bboxes.append(person_bbox)
-    return frame, person_bboxes
+def calc_fps(start_time, accum_time, curr_fps, show_fps):
+    curr_time = time.time()
+    exec_time = curr_time - start_time
+    accum_time += exec_time
+    curr_fps += 1
+    if accum_time > 1:
+        accum_time = accum_time - 1
+        show_fps = "FPS: " + str(curr_fps)
+        curr_fps = 0
+    return curr_time, accum_time, curr_fps, show_fps
 
 
-def image_preprocess(img, device, img_size=416):
-    img = pad_and_resize(img, img_size)
-    # Channels-first
-    input_img = np.transpose(img, (2, 0, 1))
-    input_img = np.expand_dims(input_img, axis=0)
-    # As pytorch tensor
-    input_tensor = torch.from_numpy(input_img).float()
-    input_tensor = input_tensor.to(device)
-    return input_tensor
