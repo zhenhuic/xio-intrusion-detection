@@ -1,10 +1,14 @@
-import cv2
+import time
 import torch
+import cv2
 
 from models import Darknet
-from utils.utils import non_max_suppression, load_classes
+from utils.utils import non_max_suppression, load_classes, calc_fps
 from video_stream import initialize_video_streams, capture_one_frame
 from utils.transform import transform, stack_tensors, preds_postprocess
+from intrusion_handling import OpcClient, judge_intrusion, handle_judgement
+from config.config import opc_url, nodes_dict, video_stream_paths_dict
+from visualize import draw
 
 
 def get_model(config_path, img_size, weights_path, device):
@@ -28,16 +32,20 @@ def main(args):
     device = torch.device(args.device)
     model = get_model(args.config_path, args.img_size, args.weights_path, device)
 
-    video_stream_paths_dict = {
-        'houban': 'E:/Datasets/XIO/still_1.avi',
-        'zhewanji': 'E:/Datasets/XIO/still_2.avi',
-    }
+    if args.open_opc:
+        opc_client = OpcClient(opc_url, nodes_dict)
 
     video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
                                                   list(video_stream_paths_dict.keys()),
                                                   switch_mask=(1, 1, 1))
-    exc_flag = False
-    while not exc_flag:
+
+    # for calculating fps
+    since = time.time()
+    accum_time, curr_fps = 0, 0
+    show_fps = 'FPS: ??'
+
+    exception_flag = False
+    while not exception_flag:
         frames_dict = capture_one_frame(video_streams_dict)
         input_tensor = []
         for name in frames_dict.keys():
@@ -49,20 +57,32 @@ def main(args):
         classes = load_classes(args.class_path)  # Extracts class labels from file
         preds_dict = preds_postprocess(preds, list(video_stream_paths_dict.keys()),
                                        (1080, 1920), args.img_size, classes)
+        judgements_dict = judge_intrusion(preds_dict)
+        if args.open_opc:
+            handle_judgement(judgements_dict, opc_client)
 
+        since, accum_time, curr_fps, show_fps = calc_fps(since, accum_time, curr_fps, show_fps)
+
+        vis_name = 'houban'
+        img = draw(vis_name, frames_dict, preds_dict, judgements_dict, show_fps)
+        cv2.namedWindow(vis_name, cv2.WINDOW_NORMAL)
+        cv2.imshow(vis_name, img)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    cv2.destroyAllWindows()
 
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--open_opc', type=bool, default=False, help='whether to connect to opc server')
+    parser.add_argument('--open-opc', type=bool, default=False, help='whether to connect to opc server')
 
     # model config
-    parser.add_argument('--img_size', type=int, default=416, help='size of each image dimension')
-    parser.add_argument('--config_path', type=str, default='config/yolov3.cfg', help='path to model config file')
-    parser.add_argument('--weights_path', type=str, default='weights/yolov3.weights', help='path to weights file')
-    parser.add_argument('--class_path', type=str, default='config/coco.names', help='path to class label file')
-    parser.add_argument('--conf_thres', type=float, default=0.8, help='object confidence threshold')
-    parser.add_argument('--nms_thres', type=float, default=0.4, help='iou threshold for non-maximum suppression')
+    parser.add_argument('--img-size', type=int, default=416, help='size of each image dimension')
+    parser.add_argument('--config-path', type=str, default='config/yolov3.cfg', help='path to model config file')
+    parser.add_argument('--weights-path', type=str, default='weights/yolov3.weights', help='path to weights file')
+    parser.add_argument('--class-path', type=str, default='config/coco.names', help='path to class label file')
+    parser.add_argument('--conf-thres', type=float, default=0.8, help='object confidence threshold')
+    parser.add_argument('--nms-thres', type=float, default=0.4, help='iou threshold for non-maximum suppression')
     parser.add_argument('--device', type=str, default='cuda:0', help='whether to use cuda if available')
 
     args = parser.parse_args()

@@ -1,6 +1,9 @@
 from opcua import Client
 from opcua import ua
 
+from config.config import restricted_areas_dict, \
+    tolerated_areas_dict, excluded_objects_dict
+
 
 class OpcClient:
     def __init__(self, opc_url, nodes_dict):
@@ -46,7 +49,7 @@ def handle_judgement(judgements_dict, opc_client):
 def judge_intrusion(preds_dict):
     judgements_dict = {}
     for name in preds_dict.keys():
-        if name == '1':
+        if name == 'houban':
             result = strategy_1(preds_dict[name])
             judgements_dict[name] = result
         elif name == '2':
@@ -63,9 +66,9 @@ def judge_intrusion(preds_dict):
 def strategy_1(bboxes):
     if bboxes is None:
         return False
-    restricted_areas = [(250, 310, 1500, 900), ]  # (left, top, right, bottom)
-    tolerated_areas = [(250, 310, 600, 450), ]  # 从禁区排除掉的区域
-    excluded_objects = [(690, 200, 880, 500), ]  # 排除掉可能被错识别为人的目标物体
+    restricted_areas = restricted_areas_dict['houban']
+    tolerated_areas = tolerated_areas_dict['houban']
+    excluded_objects = excluded_objects_dict['houban']
 
     for restr_rect in restricted_areas:
         for bbox in bboxes:
