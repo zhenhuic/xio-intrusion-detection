@@ -19,7 +19,7 @@ def transform(img_array, input_size):
     img = TF.pad(img, (0, int((img.size[0] - img.size[1]) / 2)))
 
     tensor = TF.to_tensor(img)
-    tensor = TF.normalize(tensor, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    # tensor = TF.normalize(tensor, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     return tensor
 
 
