@@ -30,10 +30,8 @@ def stack_tensors(tensors):
 
 def preds_postprocess(preds, stream_names, frame_shape, img_size, classes):
     # The amount of padding that was added
-    pad_x = max(frame_shape[0] - frame_shape[1], 0) * \
-            (img_size / max(frame_shape))
-    pad_y = max(frame_shape[1] - frame_shape[0], 0) * \
-            (img_size / max(frame_shape))
+    pad_x = max(frame_shape[0] - frame_shape[1], 0) * (img_size / max(frame_shape))
+    pad_y = max(frame_shape[1] - frame_shape[0], 0) * (img_size / max(frame_shape))
     # Image height and width after padding is removed
     unpad_h = img_size - pad_y
     unpad_w = img_size - pad_x
