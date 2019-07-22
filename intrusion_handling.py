@@ -36,6 +36,13 @@ class OpcClient:
             print('有人闯入，机器静止')
 
 
+def handle_judgement(judgements_dict, opc_client):
+    for name in judgements_dict.keys():
+        if judgements_dict[name]:
+            opc_client.stop_it_if_working(name)
+    print('处理完成')
+
+
 def judge_intrusion(preds_dict):
     judgements_dict = {}
     for name in preds_dict.keys():
@@ -49,26 +56,80 @@ def judge_intrusion(preds_dict):
             result = strategy_3(preds_dict[name])
             judgements_dict[name] = result
         else:
-            RuntimeError('流水线名称不匹配')
+            raise RuntimeError('流水线名称不匹配')
     return judgements_dict
 
 
 def strategy_1(bboxes):
-    return True
+    if bboxes is None:
+        return False
+    restricted_areas = [(250, 310, 1500, 900), ]  # (left, top, right, bottom)
+    tolerated_areas = [(250, 310, 600, 450), ]  # 从禁区排除掉的区域
+    excluded_objects = [(690, 200, 880, 500), ]  # 排除掉可能被错识别为人的目标物体
+
+    for restr_rect in restricted_areas:
+        for bbox in bboxes:
+            inter_area, inter_rect = bbox_inter_area(bbox, restr_rect)
+            if inter_area > 0 and not is_inside(tolerated_areas, inter_rect) and \
+                    not is_them(excluded_objects, bbox):
+                return True
+    return False
 
 
 def strategy_2(bboxes):
+    if bboxes is None:
+        return False
+
     return True
 
 
 def strategy_3(bboxes):
+    if bboxes is None:
+        return False
+
     return True
 
 
-def handle_judgement(judgements_dict, opc_client):
-    for name in judgements_dict.keys():
-        if judgements_dict[name]:
-            opc_client.stop_it_if_working(name)
-    print('处理完成')
+def bbox_inter_area(box1, box2):
+    # Get the coordinates of bounding boxes
+    b1_x1, b1_y1, b1_x2, b1_y2 = box1[0], box1[1], box1[2], box1[3]
+    b2_x1, b2_y1, b2_x2, b2_y2 = box2[0], box2[1], box2[2], box2[3]
+
+    # get the corrdinates of the intersection rectangle
+    inter_rect_x1 = max(b1_x1, b2_x1)
+    inter_rect_y1 = max(b1_y1, b2_y1)
+    inter_rect_x2 = min(b1_x2, b2_x2)
+    inter_rect_y2 = min(b1_y2, b2_y2)
+    inter_rect = (inter_rect_x1, inter_rect_y1, inter_rect_x2, inter_rect_y2)
+
+    # Intersection area
+    inter_area = max(inter_rect_x2 - inter_rect_x1 + 1, 0) * \
+                 max(inter_rect_y2 - inter_rect_y1 + 1, 0)
+
+    return inter_area, inter_rect
 
 
+def is_inside(big_boxes, box):
+    x1, y1, x2, y2 = box
+    for big_box in big_boxes:
+        bx1, by1, bx2, by2 = big_box
+        if bx1 <= x1 and by1 <= y1 and bx2 >= x2 and by2 >= y2:
+            return True
+    return False
+
+
+def is_them(excluded_objects, box, thres=0.8):
+    max_iou = 0
+    for exc_obj in excluded_objects:
+        inter_area, inter_rect = bbox_inter_area(exc_obj, box)
+
+        # Get the coordinates of bounding boxes
+        exc_obj_x1, exc_obj_y1, exc_obj_x2, exc_obj_y2 = exc_obj[0], exc_obj[1], exc_obj[2], exc_obj[3]
+
+        iou = inter_area / ((exc_obj_x2 - exc_obj_x1) * (exc_obj_y2 - exc_obj_y1))
+        max_iou = max(iou, max_iou)
+
+    if max_iou > thres:
+        return True
+    else:
+        return False
