@@ -52,8 +52,7 @@ def initialize_video_streams(video_stream_paths, stream_names, switch_mask):
     if video_streams_dict:
         print(str(list(video_streams_dict.keys())) + '视频流已初始化')
     else:
-        print('无待检测视频流！')
-        sys.exit()  # program process exit
+        raise RuntimeError('无待检测视频流！')
     return video_streams_dict
 
 
