@@ -1,5 +1,6 @@
 import cv2
 import time
+import sys
 
 
 class VideoStream:
@@ -37,3 +38,31 @@ class VideoStream:
 
     def is_opened(self):
         return self.__capture.isOpened()
+
+
+def initialize_video_streams(video_stream_paths, stream_names, switch_mask):
+    video_stream_paths = [x for i, x in enumerate(video_stream_paths) if switch_mask[i]]
+    stream_names = [x for i, x in enumerate(stream_names) if switch_mask[i]]
+
+    video_streams_dict = {}
+    for path, name in zip(video_stream_paths, stream_names):
+        stream = VideoStream(path, name)
+        video_streams_dict[name] = stream
+
+    if video_streams_dict:
+        print(str(list(video_streams_dict.keys())) + '视频流已初始化')
+    else:
+        print('无待检测视频流！')
+        sys.exit()  # program process exit
+    return video_streams_dict
+
+
+def capture_one_frame(video_streams_dict):
+    frames_dict = {}
+
+    for name in video_streams_dict.keys():
+        stream = video_streams_dict[name]
+        frame = stream.robust_read()
+        frames_dict[name] = frame
+
+    return frames_dict
