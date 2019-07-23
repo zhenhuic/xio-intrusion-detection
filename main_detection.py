@@ -7,7 +7,7 @@ from utils.utils import non_max_suppression, load_classes, calc_fps
 from video_stream import initialize_video_streams, capture_one_frame
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import OpcClient, judge_intrusion, handle_judgement
-from config.config import opc_url, nodes_dict, video_stream_paths_dict
+from config.config import opc_url, nodes_dict, video_stream_paths_dict, switch_mask, vis_name
 from visualize import draw
 
 
@@ -37,7 +37,7 @@ def main(args):
 
     video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
                                                   list(video_stream_paths_dict.keys()),
-                                                  switch_mask=(1, 1, 1))
+                                                  switch_mask=switch_mask)
 
     # for calculating fps
     since = time.time()
@@ -62,14 +62,15 @@ def main(args):
             handle_judgement(judgements_dict, opc_client)
 
         since, accum_time, curr_fps, show_fps = calc_fps(since, accum_time, curr_fps, show_fps)
+        print(show_fps)
 
-        vis_name = 'houban'
         img = draw(vis_name, frames_dict, preds_dict, judgements_dict, show_fps)
         cv2.namedWindow(vis_name, cv2.WINDOW_NORMAL)
         cv2.imshow(vis_name, img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()
+
 
 def parse_args():
     import argparse
