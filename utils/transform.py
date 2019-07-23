@@ -37,11 +37,13 @@ def preds_postprocess(preds, stream_names, frame_shape, img_size, classes):
     unpad_w = img_size - pad_x
 
     preds_dict = {}
-    person_bboxes = []
+
     for i, pred in enumerate(preds):
         if pred is None:
             preds_dict[stream_names[i]] = None
         else:
+            person_bboxes = []
+            pred = pred.cpu()
             for *xyxy, conf, cls_conf, cls_pred in pred:
                 if classes[int(cls_pred)] == 'person':  # 只检测人
                     # Rescale coordinates to original dimensions
@@ -52,6 +54,9 @@ def preds_postprocess(preds, stream_names, frame_shape, img_size, classes):
 
                     person_bbox = (x1, y1, x1 + box_w, y1 + box_h)
                     person_bboxes.append(person_bbox)
-            preds_dict[stream_names[i]] = person_bboxes
+            if len(person_bboxes) != 0:
+                preds_dict[stream_names[i]] = person_bboxes
+            else:
+                preds_dict[stream_names[i]] = None
 
     return preds_dict
