@@ -7,18 +7,19 @@ from utils.utils import plot_one_box
 
 
 def draw_static_contents(img_array, name):
-    # draw restricted area rectangles
-    restricted_rects = restricted_areas_dict[name]
     line_thickness = round(0.001 * max(img_array.shape[0:2])) + 1
-    for rect in restricted_rects:
-        img_array = cv2.rectangle(img_array, (rect[0], rect[1]), (rect[2], rect[3]),
-                                  (0, 0, 255), thickness=line_thickness)
 
     # draw tolerated area rectangles
     tolerated_rects = tolerated_areas_dict[name]
     for rect in tolerated_rects:
         img_array = cv2.rectangle(img_array, (rect[0], rect[1]), (rect[2], rect[3]),
                                   (0, 255, 0), thickness=(line_thickness - 1), lineType=cv2.LINE_4)
+
+    # draw restricted area rectangles
+    restricted_rects = restricted_areas_dict[name]
+    for rect in restricted_rects:
+        img_array = cv2.rectangle(img_array, (rect[0], rect[1]), (rect[2], rect[3]),
+                                  (0, 0, 255), thickness=line_thickness)
 
     # draw introduction words
     # img_array = draw_Chinese_words(img_array, '视觉安全检测', (900, 50), ())

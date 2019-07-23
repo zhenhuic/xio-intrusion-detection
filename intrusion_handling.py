@@ -58,6 +58,12 @@ def judge_intrusion(preds_dict):
         elif name == '3':
             result = strategy_3(preds_dict[name])
             judgements_dict[name] = result
+        elif name == '4':
+            result = strategy_2(preds_dict[name])
+            judgements_dict[name] = result
+        elif name == '5':
+            result = strategy_2(preds_dict[name])
+            judgements_dict[name] = result
         else:
             raise RuntimeError('流水线名称不匹配')
     return judgements_dict
@@ -89,8 +95,17 @@ def strategy_2(bboxes):
 def strategy_3(bboxes):
     if bboxes is None:
         return False
+    restricted_areas = restricted_areas_dict['3']
+    tolerated_areas = tolerated_areas_dict['3']
+    excluded_objects = excluded_objects_dict['3']
 
-    return True
+    for restr_rect in restricted_areas:
+        for bbox in bboxes:
+            inter_area, inter_rect = bbox_inter_area(bbox, restr_rect)
+            if inter_area > 0 and not is_inside(tolerated_areas, inter_rect) and \
+                    not is_them(excluded_objects, bbox):
+                return True
+    return False
 
 
 def bbox_inter_area(box1, box2):
