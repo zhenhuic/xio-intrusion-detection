@@ -1,6 +1,4 @@
 
 .idea/
-records/halt_imgs/*.jpg
-records/uncertain_imgs/*.jpg
 *.pyc
 *.weights
