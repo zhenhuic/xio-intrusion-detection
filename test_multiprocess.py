@@ -15,7 +15,8 @@ def read_frame(queue):
 
 def process(queue):
     while True:
-        frame = queue.get(True)
+        for _ in range(15):
+            frame = queue.get(True)
         time.sleep(0.1)
         cv2.imshow('show', frame)
         print("show")
