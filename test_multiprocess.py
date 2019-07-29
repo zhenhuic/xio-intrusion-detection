@@ -5,18 +5,19 @@ from video_stream import VideoStream
 
 
 def read_frame(queue):
-    video_path = 'E:/Datasets/XIO/safe_detection/still_1.avi'
+    video_path = 'E:/Datasets/XIO/still_1.avi'
     vs = VideoStream(video_path, 'test')
     while True:
         frame = vs.robust_read()
         queue.put(frame)
-        print("read a frame")
 
 
 def process(queue):
     while True:
+        since = time.time()
         for _ in range(15):
             frame = queue.get(True)
+        print(time.time() - since)
         time.sleep(0.1)
         cv2.imshow('show', frame)
         print("show")
