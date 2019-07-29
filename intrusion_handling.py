@@ -46,6 +46,12 @@ def handle_judgement(judgements_dict, opc_client):
     print('处理完成')
 
 
+def subprocess_handle_judgement(judgements_dict, opc_client):
+    from multiprocessing import Process
+    p = Process(target=handle_judgement, args=(judgements_dict, opc_client))
+    p.start()
+
+
 def judge_intrusion(preds_dict):
     judgements_dict = {}
     for name in preds_dict.keys():
