@@ -48,34 +48,34 @@ def handle_judgement(judgements_dict, opc_client):
 
 def subprocess_handle_judgement(judgements_dict, opc_client):
     from multiprocessing import Process
-    p = Process(target=handle_judgement, args=(judgements_dict, opc_client))
-    p.start()
+    for name in judgements_dict.keys():
+        if judgements_dict[name]:
+            p = Process(target=stop_machine, args=(opc_client, name))
+            p.start()
+
+
+def stop_machine(opc_client, name):
+    opc_client.stop_it_if_working(name)
 
 
 def judge_intrusion(preds_dict):
     judgements_dict = {}
     for name in preds_dict.keys():
         if name == 'houban':
-            result = strategy_1(preds_dict[name])
+            result = strategy_houban(preds_dict[name])
             judgements_dict[name] = result
-        elif name == '2':
-            result = strategy_2(preds_dict[name])
+        elif name == 'xiazhewan':
+            result = strategy_xiazhewan(preds_dict[name])
             judgements_dict[name] = result
-        elif name == '3':
-            result = strategy_3(preds_dict[name])
-            judgements_dict[name] = result
-        elif name == '4':
-            result = strategy_2(preds_dict[name])
-            judgements_dict[name] = result
-        elif name == '5':
-            result = strategy_2(preds_dict[name])
+        elif name == 'shangpenfen':
+            result = strategy_shangpenfen(preds_dict[name])
             judgements_dict[name] = result
         else:
             raise RuntimeError('流水线名称不匹配')
     return judgements_dict
 
 
-def strategy_1(bboxes):
+def strategy_houban(bboxes):
     if bboxes is None:
         return False
     restricted_areas = restricted_areas_dict['houban']
@@ -91,19 +91,19 @@ def strategy_1(bboxes):
     return False
 
 
-def strategy_2(bboxes):
+def strategy_xiazhewan(bboxes):
     if bboxes is None:
         return False
 
     return True
 
 
-def strategy_3(bboxes):
+def strategy_shangpenfen(bboxes):
     if bboxes is None:
         return False
-    restricted_areas = restricted_areas_dict['3']
-    tolerated_areas = tolerated_areas_dict['3']
-    excluded_objects = excluded_objects_dict['3']
+    restricted_areas = restricted_areas_dict['shangpenfen']
+    tolerated_areas = tolerated_areas_dict['shangpenfen']
+    excluded_objects = excluded_objects_dict['shangpenfen']
 
     for restr_rect in restricted_areas:
         for bbox in bboxes:
