@@ -6,7 +6,7 @@ from models import Darknet
 from utils.utils import non_max_suppression, load_classes, calc_fps
 from video_stream import initialize_video_streams, capture_one_frame
 from utils.transform import transform, stack_tensors, preds_postprocess
-from intrusion_handling import OpcClient, judge_intrusion, subprocess_handle_judgement
+from intrusion_handling_v1 import OpcClient, judge_intrusion, subprocess_handle_judgement
 from config.config import opc_url, nodes_dict, video_stream_paths_dict, switch_mask, \
     vis_name, frame_shape
 from visualize import draw
