@@ -9,11 +9,14 @@ video_stream_paths_dict = {
         # '5': 'rtsp://user:xiolift123@10.19.31.138',
     }
 
+# 视频帧的形状
+frame_shape = (480, 640)
+
 # 各视频流是否检测的开关，1 表示检测， 0 表示不检测
 switch_mask = (1, 1, 1, 0, 0)
 
 # 需要显示的视频流名称
-vis_name = 'xiazhewan'
+vis_name = 'houban'
 
 # 安全禁区
 restricted_areas_dict = {
