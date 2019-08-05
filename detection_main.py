@@ -7,7 +7,8 @@ from utils.utils import non_max_suppression, load_classes, calc_fps
 from video_stream import initialize_video_streams, capture_one_frame
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import OpcClient, judge_intrusion, subprocess_handle_judgement
-from config.config import opc_url, nodes_dict, video_stream_paths_dict, switch_mask, vis_name
+from config.config import opc_url, nodes_dict, video_stream_paths_dict, switch_mask, \
+    vis_name, frame_shape
 from visualize import draw
 
 
@@ -56,7 +57,7 @@ def main(args):
         preds = inference(model, input_tensor, device, 80, args.conf_thres, args.nms_thres)
         classes = load_classes(args.class_path)  # Extracts class labels from file
         preds_dict = preds_postprocess(preds, list(video_stream_paths_dict.keys()),
-                                       (1080, 1920), args.img_size, classes)
+                                       frame_shape, args.img_size, classes)
 
         judgements_dict = judge_intrusion(preds_dict)
         if args.open_opc:
