@@ -48,23 +48,26 @@ class Visualize:
         img_array = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
         return img_array
 
-    def draw(self, name, frames_dict, preds_dict, judgements_dict, fps):
-        frame = frames_dict[name]
-        pred = preds_dict[name]
-        judgement = judgements_dict[name]
+    def draw(self, frames_dict, preds_dict, judgements_dict, fps):
+        vis_imgs_dict = {}
+        for name in frames_dict.keys():
+            frame = frames_dict[name]
+            pred = preds_dict[name]
+            judgement = judgements_dict[name]
 
-        img = self.draw_static_contents(frame, name)
-        img = self.draw_fps(img, fps)
+            img = self.draw_static_contents(frame, name)
+            img = self.draw_fps(img, fps)
 
-        label = 'person'
-        if pred is not None:
-            for x1, y1, x2, y2 in pred:
-                plot_one_box((x1, y1, x2, y2), img, label=label, color=(225, 225, 0))
+            label = 'person'
+            if pred is not None:
+                for x1, y1, x2, y2 in pred:
+                    plot_one_box((x1, y1, x2, y2), img, label=label, color=(225, 225, 0))
 
-        if judgement:
-            img = cv2.putText(img, text='Kick your head!!!', org=(70, 45), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                              fontScale=2, color=(0, 0, 255), thickness=4)
-        else:
-            img = cv2.putText(img, text='Safe working', org=(70, 45), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                              fontScale=2, color=(0, 255, 0), thickness=4)
-        return img
+            if judgement:
+                img = cv2.putText(img, text='Kick your head!!!', org=(70, 45), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                                  fontScale=2, color=(0, 0, 255), thickness=4)
+            else:
+                img = cv2.putText(img, text='Safe working', org=(70, 45), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                                  fontScale=2, color=(0, 255, 0), thickness=4)
+            vis_imgs_dict[name] = img
+        return vis_imgs_dict

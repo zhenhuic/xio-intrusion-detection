@@ -1,7 +1,10 @@
 import os
+import time
+import random
+import threading
+
 import cv2
 import numpy as np
-
 from config.config import excluded_objects_dict, inter_threshold
 
 
@@ -43,12 +46,13 @@ def is_them(excluded_objects, box, thres=0.8):
 
 class IntrusionHandling:
 
-    def __init__(self, masks_path_dict, opc_client=None):
+    def __init__(self, masks_path_dict, opc_client, records_root='images/records/'):
+        self.masks_dict = self.__get_mask(masks_path_dict)
         self.opc_client = opc_client
-        self.masks_dict = self.get_mask(masks_path_dict)
+        self.records_root = records_root
 
     @staticmethod
-    def get_mask(masks_path_dict):
+    def __get_mask(masks_path_dict):
         masks_dict = {}
         for name in masks_path_dict.keys():
             if not os.path.exists(masks_path_dict[name]):
@@ -62,13 +66,13 @@ class IntrusionHandling:
     def judge_intrusion(self, preds_dict):
         judgements_dict = {}
         for name in preds_dict.keys():
-            result = self.judge_strategy(preds_dict[name], self.masks_dict[name],
+            result = self.__judge_strategy(preds_dict[name], self.masks_dict[name],
                                          excluded_objects_dict[name], inter_threshold)
             judgements_dict[name] = result
         return judgements_dict
 
     @staticmethod
-    def judge_strategy(bboxes, mask, excluded_objects, thresh):
+    def __judge_strategy(bboxes, mask, excluded_objects, thresh):
         if bboxes is None:
             return False
         for box in bboxes:
@@ -80,16 +84,23 @@ class IntrusionHandling:
                 return True
         return False
 
-    def handle_judgement(self, judgements_dict):
+    def handle_judgement(self, judgements_dict, vis_imgs_dict):
         for name in judgements_dict.keys():
             if judgements_dict[name]:
-                self.opc_client.stop_it_if_working(name)
+                if self.opc_client is not None:
+                    th1 = threading.Thread(target=lambda x: self.opc_client.stop_it_if_working(x),
+                                           args=(name,))
+                    th1.start()
+                th2 = threading.Thread(target=self.__save_record, args=(name, vis_imgs_dict[name]))
+                th2.start()
         print('处理完成')
 
-    def subprocess_handle_judgement(self, judgements_dict):
-        from multiprocessing import Process
-        for name in judgements_dict.keys():
-            if judgements_dict[name]:
-                p = Process(target=lambda x: self.opc_client.stop_it_if_working(x),
-                            args=(name, ))
-                p.start()
+    def __save_record(self, name, img_array, event='intrusion'):
+        strftime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
+        img_name = event + '_' + strftime + '.jpg'
+        img_dir = self.records_root + name + '/'
+        if os.path.exists(img_dir + img_name):
+            img_name = event + '_' + strftime + '_' + str(random.randint(0, 100)) + '.jpg'
+
+        cv2.imwrite(img_dir + img_name, img_array)
+

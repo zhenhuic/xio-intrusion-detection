@@ -52,6 +52,7 @@ def main(args):
 
     exception_flag = False
     while not exception_flag:
+        # prepare frame tensors before inference
         frames_dict = capture_one_frame(video_streams_dict)
         input_tensor = []
         for name in frames_dict.keys():
@@ -59,19 +60,26 @@ def main(args):
             input_tensor.append(tensor)
         input_tensor = stack_tensors(input_tensor)
 
+        # model inference and postprocess
         preds = inference(model, input_tensor, device, 80, args.conf_thres, args.nms_thres)
         classes = load_classes(args.class_path)  # Extracts class labels from file
         preds_dict = preds_postprocess(preds, list(video_stream_paths_dict.keys()),
                                        frame_shape, args.img_size, classes)
 
+        # judge whether someone breaks into
         judgements_dict = handling.judge_intrusion(preds_dict)
-        if args.open_opc:
-            handling.subprocess_handle_judgement(judgements_dict)
 
+        # calculate inference fps
         since, accum_time, curr_fps, show_fps = calc_fps(since, accum_time, curr_fps, show_fps)
         print(show_fps)
 
-        img = visualize.draw(vis_name, frames_dict, preds_dict, judgements_dict, show_fps)
+        # visualize detection results
+        vis_imgs_dict = visualize.draw(frames_dict, preds_dict, judgements_dict, show_fps)
+
+        # handle judgement results
+        handling.handle_judgement(judgements_dict, vis_imgs_dict)
+
+        img = vis_imgs_dict[vis_name]
         cv2.namedWindow(vis_name, cv2.WINDOW_NORMAL)
         cv2.imshow(vis_name, img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
