@@ -1,5 +1,6 @@
 import os
 import cv2
+import numpy as np
 
 from config.config import excluded_objects_dict, inter_threshold
 
@@ -17,8 +18,8 @@ def bbox_inter_area(box1, box2):
     inter_rect = (inter_rect_x1, inter_rect_y1, inter_rect_x2, inter_rect_y2)
 
     # Intersection area
-    inter_area = max(inter_rect_x2 - inter_rect_x1 + 1, 0) * \
-                 max(inter_rect_y2 - inter_rect_y1 + 1, 0)
+    inter_area = max(inter_rect_x2 - inter_rect_x1 + 1, 0) * max(
+        inter_rect_y2 - inter_rect_y1 + 1, 0)
 
     return inter_area, inter_rect
 
@@ -42,7 +43,7 @@ def is_them(excluded_objects, box, thres=0.8):
 
 class IntrusionHandling:
 
-    def __init__(self, opc_client, masks_path_dict):
+    def __init__(self, masks_path_dict, opc_client=None):
         self.opc_client = opc_client
         self.masks_dict = self.get_mask(masks_path_dict)
 
@@ -87,23 +88,8 @@ class IntrusionHandling:
 
     def subprocess_handle_judgement(self, judgements_dict):
         from multiprocessing import Process
-        func = lambda name: self.opc_client.stop_it_if_working(name)
         for name in judgements_dict.keys():
             if judgements_dict[name]:
-                p = Process(target=func, args=(name, ))
+                p = Process(target=lambda x: self.opc_client.stop_it_if_working(x),
+                            args=(name, ))
                 p.start()
-
-
-if __name__ == '__main__':
-    import numpy as np
-
-    mask = cv2.imread('images/masks/xiazhewan.jpg')
-    mask = mask[:, :, 2]
-    print(mask.shape)
-
-    mask = mask[0:400, 300:400]
-
-    cv2.namedWindow('mask', cv2.WINDOW_NORMAL)
-    cv2.imshow('mask', mask)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()

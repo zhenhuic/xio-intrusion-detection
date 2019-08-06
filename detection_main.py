@@ -3,13 +3,14 @@ import torch
 import cv2
 
 from models import Darknet
-from utils.utils import non_max_suppression, load_classes, calc_fps
+from visualize import Visualize
+from opc_client import OpcClient
 from video_stream import initialize_video_streams, capture_one_frame
+from utils.utils import non_max_suppression, load_classes, calc_fps
 from utils.transform import transform, stack_tensors, preds_postprocess
-from intrusion_handling_v1 import OpcClient, judge_intrusion, subprocess_handle_judgement
+from intrusion_handling import IntrusionHandling
 from config.config import opc_url, nodes_dict, video_stream_paths_dict, switch_mask, \
-    vis_name, frame_shape
-from visualize import draw
+    vis_name, frame_shape, masks_paths_dict
 
 
 def get_model(config_path, img_size, weights_path, device):
@@ -35,10 +36,14 @@ def main(args):
 
     if args.open_opc:
         opc_client = OpcClient(opc_url, nodes_dict)
+    else:
+        opc_client = None
 
     video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
                                                   list(video_stream_paths_dict.keys()),
                                                   switch_mask=switch_mask)
+    visualize = Visualize(masks_paths_dict)
+    handling = IntrusionHandling(masks_paths_dict, opc_client)
 
     # for calculating inference fps
     since = time.time()
@@ -59,14 +64,14 @@ def main(args):
         preds_dict = preds_postprocess(preds, list(video_stream_paths_dict.keys()),
                                        frame_shape, args.img_size, classes)
 
-        judgements_dict = judge_intrusion(preds_dict)
+        judgements_dict = handling.judge_intrusion(preds_dict)
         if args.open_opc:
-            subprocess_handle_judgement(judgements_dict, opc_client)
+            handling.subprocess_handle_judgement(judgements_dict)
 
         since, accum_time, curr_fps, show_fps = calc_fps(since, accum_time, curr_fps, show_fps)
         print(show_fps)
 
-        img = draw(vis_name, frames_dict, preds_dict, judgements_dict, show_fps)
+        img = visualize.draw(vis_name, frames_dict, preds_dict, judgements_dict, show_fps)
         cv2.namedWindow(vis_name, cv2.WINDOW_NORMAL)
         cv2.imshow(vis_name, img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
