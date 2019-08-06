@@ -37,7 +37,7 @@ def create_mask(orig_img, lines):
     left, top, right, bottom = lines
     for x in range(width):
         for y in range(height):
-            if x_(y, left[0], left[1]) <= x <= 500 and \
+            if x_(y, left[0], left[1]) <= x <= x_(y, right[0], right[1]) and \
                     y_(x, top[0], top[1]) <= y <= y_(x, bottom[0], bottom[1]):
                 mask[y, x, 2] = 255
     return mask
