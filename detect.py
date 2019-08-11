@@ -7,13 +7,11 @@ from PyQt5.QtGui import QImage
 from models import Darknet
 from visualize import Visualize
 from opc_client import OpcClient
+from config.config import *
 from video_stream import initialize_video_streams, capture_one_frame
 from utils.utils import non_max_suppression, load_classes, calc_fps
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import IntrusionHandling
-from config.config import opc_url, nodes_dict, video_stream_paths_dict, switch_mask, \
-    vis_name, frame_shape, masks_paths_dict, img_size, config_path, weights_path,\
-    class_path, conf_thres, nms_thres, device_name, open_opc
 
 
 def get_model(config_path, img_size, weights_path, device):
@@ -39,6 +37,11 @@ def array_to_QImage(img, size):
     qimage = QImage(rgbImage.data, w, h, bytes_per_line, QImage.Format_RGB888)
     qimage = qimage.scaled(size[0], size[1])
     return qimage
+
+
+def change_vis_stream(index):
+    global vis_name
+    vis_name = list(video_stream_paths_dict.keys())[index]
 
 
 @torch.no_grad()
@@ -94,10 +97,11 @@ def detect_main(qthread):
         img = vis_imgs_dict[vis_name]
         qimage = array_to_QImage(img, (780, 430))
         qthread.video_change_pixmap.emit(qimage)
-    #     img = vis_imgs_dict[vis_name]
-    #     cv2.namedWindow(vis_name, cv2.WINDOW_NORMAL)
-    #     cv2.imshow(vis_name, img)
-    #     if cv2.waitKey(1) & 0xFF == ord('q'):
-    #         break
-    # cv2.destroyAllWindows()
 
+        if judgements_dict[vis_name]:
+            qimage = array_to_QImage(img, (358, 243))
+            qthread.record_change_pixmap.emit(qimage)
+        for name in judgements_dict.keys():
+            if judgements_dict[name]:
+                timestr = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+                qthread.text_append.emit(timestr + name + ' 异常闯入')
