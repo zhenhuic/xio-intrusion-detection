@@ -78,8 +78,8 @@ class IntrusionHandling:
         for box in bboxes:
             x1, y1, x2, y2 = box
             box_area = (x2 - x1) * (y2 - y1)
-            inter = np.sum(mask[y1:y2, x1:x2] == 255)
-            ratio = inter / box_area
+            num_inter = np.count_nonzero(mask[y1:y2, x1:x2])
+            ratio = num_inter / box_area
             if ratio >= thresh and not is_them(excluded_objects, box):
                 return True
         return False
@@ -91,9 +91,9 @@ class IntrusionHandling:
                     th1 = threading.Thread(target=lambda x: self.opc_client.stop_it_if_working(x),
                                            args=(name,))
                     th1.start()
+                print(name, '异常闯入')
                 th2 = threading.Thread(target=self.__save_record, args=(name, vis_imgs_dict[name]))
                 th2.start()
-        print('处理完成')
 
     def __save_record(self, name, img_array, event='intrusion'):
         strftime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
