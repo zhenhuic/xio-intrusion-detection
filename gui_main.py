@@ -14,7 +14,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.textBrowser.append(time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime()) + '启动检测...')
+        self.textBrowser.append(time.strftime('%Y-%m-%d %H:%M:%S ',
+                                              time.localtime()) + '启动检测...')
         self.statusbar.showMessage('准备就绪')
 
         th = Thread(self)
@@ -27,7 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.stream_1.triggered.connect(self.switch_vis_stream_1)
         self.stream_2.triggered.connect(self.switch_vis_stream_2)
-        self.stream_3.triggered.connect(self.switch_vis_stream_2)
+        self.stream_3.triggered.connect(self.switch_vis_stream_3)
         self.stop.triggered.connect(self.process_exit)
 
     @pyqtSlot(QImage)
