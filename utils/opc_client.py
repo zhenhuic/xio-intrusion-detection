@@ -1,3 +1,4 @@
+import logging
 from opcua import Client
 from opcua import ua
 
@@ -31,6 +32,8 @@ class OpcClient:
         node, value = self.node_value(name)
         if not value:  # Value 为 False 表示机器正在运作，否则表示机器静止
             self.stop_it(node)
-            print(name + ' 有人闯入，主动停机！！')
+            logging.warning(name + ' 工位' + ' 安全系统主动停机')
+            print(name + ' 异常闯入，安全系统主动停机！！')
         else:
-            print('有人闯入，机器静止')
+            print('异常闯入，机器静止')
+            logging.warning(name + ' 工位' + ' 机器静止')

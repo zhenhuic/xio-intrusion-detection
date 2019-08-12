@@ -1,7 +1,7 @@
 import time
 import cv2
 from multiprocessing import Process, Queue
-from video_stream import VideoStream
+from utils.video_stream import VideoStream
 
 
 def read_frame(queue):

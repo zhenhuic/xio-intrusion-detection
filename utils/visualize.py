@@ -30,8 +30,8 @@ class Visualize:
 
     @staticmethod
     def draw_fps(img_array, show_fps):
-        img_array = cv2.putText(img_array, text=show_fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                                fontScale=0.5, color=(255, 200, 0), thickness=2)
+        img_array = cv2.putText(img_array, text=show_fps, org=(2, 10), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                                fontScale=0.2, color=(255, 200, 0), thickness=1)
         return img_array
 
     @staticmethod
@@ -64,10 +64,10 @@ class Visualize:
                     plot_one_box((x1, y1, x2, y2), img, label=label, color=(225, 225, 0))
 
             if judgement:
-                img = cv2.putText(img, text='Kick your head!!!', org=(70, 45), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                                  fontScale=2, color=(0, 0, 255), thickness=4)
+                img = cv2.putText(img, text='Kick your head!!!', org=(30, 25), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                                  fontScale=1.2, color=(0, 0, 255), thickness=2)
             else:
-                img = cv2.putText(img, text='Safe working', org=(70, 45), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                                  fontScale=2, color=(0, 255, 0), thickness=4)
+                img = cv2.putText(img, text='Safe working', org=(30, 25), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                                  fontScale=1.2, color=(0, 255, 0), thickness=2)
             vis_imgs_dict[name] = img
         return vis_imgs_dict
