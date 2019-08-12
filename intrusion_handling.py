@@ -2,6 +2,7 @@ import os
 import time
 import random
 import threading
+import logging
 
 import cv2
 import numpy as np
@@ -87,11 +88,11 @@ class IntrusionHandling:
     def handle_judgement(self, judgements_dict, vis_imgs_dict):
         for name in judgements_dict.keys():
             if judgements_dict[name]:
+                logging.warning(name + ' 工位' + ' 异常闯入')
                 if self.opc_client is not None:
                     th1 = threading.Thread(target=lambda x: self.opc_client.stop_it_if_working(x),
                                            args=(name,))
                     th1.start()
-                print(name, '异常闯入')
                 th2 = threading.Thread(target=self.__save_record, args=(name, vis_imgs_dict[name]))
                 th2.start()
 
@@ -103,4 +104,5 @@ class IntrusionHandling:
             img_name = event + '_' + strftime + '_' + str(random.randint(0, 100)) + '.jpg'
 
         cv2.imwrite(img_dir + img_name, img_array)
+        logging.info(name + ' 工位' + ' 异常图片已保存')
 

@@ -1,12 +1,12 @@
 import sys
-import os
 import time
+import logging
 
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtGui import QImage, QPixmap
 
-from main_window import Ui_MainWindow
+from utils.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
 
 
@@ -22,8 +22,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         th.record_change_pixmap.connect(self.set_record)
         th.text_append.connect(self.append_text)
         th.start()
-        print(self.videoLabel.size())
-        print(self.recordLabel.size())
+        # print(self.videoLabel.size())
+        # print(self.recordLabel.size())
 
         self.stream_1.triggered.connect(self.switch_vis_stream_1)
         self.stream_2.triggered.connect(self.switch_vis_stream_2)
@@ -66,10 +66,16 @@ class Thread(QThread):
     text_append = pyqtSignal(str)
 
     def run(self):
+        logging.info('开始检测')
         detect_main(self)
 
 
 def main():
+    strftime = time.strftime('%Y-%m-%d_%H_%M_%S', time.localtime())
+    logging.basicConfig(filename='logs/' + strftime + '.log', level=logging.INFO,
+                        format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
+    logging.info('启动检测程序')
+
     app = QApplication(sys.argv)
     win = MainWindow()
     win.show()

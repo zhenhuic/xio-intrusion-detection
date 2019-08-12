@@ -1,17 +1,21 @@
 import time
+import logging
 
 import cv2
 import torch
 from PyQt5.QtGui import QImage
 
 from models import Darknet
-from visualize import Visualize
-from opc_client import OpcClient
+from utils.visualize import Visualize
+from utils.opc_client import OpcClient
 from config.config import *
-from video_stream import initialize_video_streams, capture_one_frame
+from utils.video_stream import initialize_video_streams, capture_one_frame
 from utils.utils import non_max_suppression, load_classes, calc_fps
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import IntrusionHandling
+# Ignore warnings
+import warnings
+warnings.filterwarnings("ignore")
 
 
 def get_model(config_path, img_size, weights_path, device):
@@ -48,15 +52,20 @@ def change_vis_stream(index):
 def detect_main(qthread):
     device = torch.device(device_name)
     model = get_model(config_path, img_size, weights_path, device)
+    logging.info('Model initialized')
 
     if open_opc:
         opc_client = OpcClient(opc_url, nodes_dict)
+        logging.info('OPC Client created')
     else:
         opc_client = None
+        logging.warning('OPC Client does not create')
 
     video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
                                                   list(video_stream_paths_dict.keys()),
                                                   switch_mask=switch_mask)
+    logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
+
     visualize = Visualize(masks_paths_dict)
     handling = IntrusionHandling(masks_paths_dict, opc_client)
 
@@ -65,6 +74,7 @@ def detect_main(qthread):
     accum_time, curr_fps = 0, 0
     show_fps = 'FPS: ??'
 
+    logging.info('Enter detection main loop process')
     exception_flag = False
     while not exception_flag:
         # prepare frame tensors before inference
