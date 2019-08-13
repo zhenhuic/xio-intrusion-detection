@@ -16,12 +16,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.textBrowser.append(time.strftime('%Y-%m-%d %H:%M:%S ',
                                               time.localtime()) + '启动检测...')
-        self.statusbar.showMessage('准备就绪')
+        self.statusbar.showMessage('系统初始化...')
 
         th = Thread(self)
         th.video_change_pixmap.connect(self.set_frame)
         th.record_change_pixmap.connect(self.set_record)
         th.text_append.connect(self.append_text)
+        th.status_update.connect(self.update_status_message)
         th.start()
         # print(self.videoLabel.size())
         # print(self.recordLabel.size())
@@ -56,6 +57,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def switch_vis_stream_3(self, trigger):
         change_vis_stream(2)
 
+    @pyqtSlot(str)
+    def update_status_message(self, text):
+        self.statusbar.showMessage(text)
+
     @pyqtSlot(bool)
     def process_exit(self, trigger):
         sys.exit()
@@ -65,6 +70,7 @@ class Thread(QThread):
     video_change_pixmap = pyqtSignal(QImage)
     record_change_pixmap = pyqtSignal(QImage)
     text_append = pyqtSignal(str)
+    status_update = pyqtSignal(str)
 
     def run(self):
         logging.info('开始检测')

@@ -56,11 +56,16 @@ def detect_main(qthread):
 
     if open_opc:
         opc_client = OpcClient(opc_url, nodes_dict)
+        strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+        qthread.text_append.emit(strftime + ' OPC 服务器已连接')
         logging.info('OPC Client created')
     else:
         opc_client = None
+        strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+        qthread.text_append.emit(strftime + ' OPC 服务器未连接')
         logging.warning('OPC Client does not create')
 
+    qthread.status_update.emit('读取视频流')
     video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
                                                   list(video_stream_paths_dict.keys()),
                                                   switch_mask=switch_mask)
@@ -69,6 +74,7 @@ def detect_main(qthread):
     visualize = Visualize(masks_paths_dict)
     handling = IntrusionHandling(masks_paths_dict, opc_client)
 
+    qthread.status_update.emit('准备就绪')
     # for calculating inference fps
     since = time.time()
     accum_time, curr_fps = 0, 0
