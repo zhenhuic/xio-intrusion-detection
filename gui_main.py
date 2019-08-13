@@ -34,7 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot(QImage)
     def set_frame(self, image):
         self.videoLabel.setPixmap(QPixmap.fromImage(image))
-        self.statusbar.showMessage('正在检测' + ' ' * 120 + '生产线：houban,  xiazhwan')
+        self.statusbar.showMessage('正在检测' + ' ' * 120 + '生产线：houban, xiazhewan, shangpenfen')
 
     @pyqtSlot(QImage)
     def set_record(self, image):

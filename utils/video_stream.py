@@ -29,7 +29,7 @@ class VideoStream:
         if reconn_flag:
             time_consume = time.time() - since
             print('视频流"{}"不稳定,重新连接 {:.2f}'.format(self.stream_name, time_consume))
-        frame = cv2.resize(frame, (640, 480))
+        # frame = cv2.resize(frame, (640, 480))
         return frame
 
     def release(self):
