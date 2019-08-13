@@ -1,5 +1,8 @@
 
 .idea/
-.vscode/
 *.pyc
 *.weights
+images/records/houban.7z
+images/records/houban/
+images/records/shangpenfen/
+images/records/xiazhewan/

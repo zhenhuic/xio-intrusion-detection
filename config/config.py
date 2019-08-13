@@ -5,8 +5,6 @@ video_stream_paths_dict = {
     'houban': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
     'xiazhewan': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
     'shangpenfen': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
-    # '4': 'rtsp://user:xiolift123@10.19.31.137',
-    # '5': 'rtsp://user:xiolift123@10.19.31.138',
 }
 
 # 视频帧的形状
@@ -27,11 +25,26 @@ masks_paths_dict = {
 }
 
 # 判断人的边界框进入禁区的阈值
-inter_threshold = 0.2
+inter_threshold = 0.3
+
+# 设定待检测目标物体最大边界框面积，
+# 排除模型误检中较大的物体
+max_object_bbox_area_dict = {
+    'houban': 20000,
+    'xiazhewan': 20000,
+    'shangpenfen': 20000,
+}
+# 设定待检测目标物体最小边界框面积，
+# 排除模型误检中较小的物体
+min_object_bbox_area_dict = {
+    'houban': 500,
+    'xiazhewan': 500,
+    'shangpenfen': 500,
+}
 
 # 排除掉可能被错识别为人的目标物体区域
 excluded_objects_dict = {
-    'houban': [(690, 200, 880, 500), ],
+    'houban': [],
     'xiazhewan': [],
     'shangpenfen': [],
 }

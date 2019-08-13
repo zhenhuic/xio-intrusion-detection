@@ -6,7 +6,9 @@ import logging
 
 import cv2
 import numpy as np
-from config.config import excluded_objects_dict, inter_threshold
+
+from config.config import excluded_objects_dict, inter_threshold, \
+    max_object_bbox_area_dict, min_object_bbox_area_dict
 
 
 def bbox_inter_area(box1, box2):
@@ -68,17 +70,24 @@ class IntrusionHandling:
         judgements_dict = {}
         for name in preds_dict.keys():
             result = self.__judge_strategy(preds_dict[name], self.masks_dict[name],
-                                         excluded_objects_dict[name], inter_threshold)
+                                           max_object_bbox_area_dict[name],
+                                           min_object_bbox_area_dict[name],
+                                           excluded_objects_dict[name], inter_threshold)
             judgements_dict[name] = result
         return judgements_dict
 
     @staticmethod
-    def __judge_strategy(bboxes, mask, excluded_objects, thresh):
+    def __judge_strategy(bboxes, mask, max_bbox_area, min_bbox_area, excluded_objects, thresh):
         if bboxes is None:
             return False
         for box in bboxes:
             x1, y1, x2, y2 = box
             box_area = (x2 - x1) * (y2 - y1)
+
+            # 过滤掉过大和过小的识别框
+            if box_area < min_bbox_area or box_area > max_bbox_area:
+                continue
+
             num_inter = np.count_nonzero(mask[y1:y2, x1:x2])
             ratio = num_inter / box_area
             if ratio >= thresh and not is_them(excluded_objects, box):
