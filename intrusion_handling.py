@@ -3,6 +3,7 @@ import time
 import random
 import threading
 import logging
+from multiprocessing import Process
 
 import cv2
 import numpy as np
@@ -99,9 +100,9 @@ class IntrusionHandling:
             if judgements_dict[name]:
                 logging.warning(name + ' 工位' + ' 异常闯入')
                 if self.opc_client is not None:
-                    th1 = threading.Thread(target=lambda x: self.opc_client.stop_it_if_working(x),
-                                           args=(name,))
-                    th1.start()
+                    p = Process(target=lambda x: self.opc_client.stop_it_if_working(x),
+                                args=(name,))
+                    p.start()
                 th2 = threading.Thread(target=self.__save_record, args=(name, vis_imgs_dict[name]))
                 th2.start()
 
