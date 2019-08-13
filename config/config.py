@@ -30,9 +30,9 @@ inter_threshold = 0.3
 # 设定待检测目标物体最大边界框面积，
 # 排除模型误检中较大的物体
 max_object_bbox_area_dict = {
-    'houban': 20000,
-    'xiazhewan': 20000,
-    'shangpenfen': 20000,
+    'houban': 25000,
+    'xiazhewan': 25000,
+    'shangpenfen': 25000,
 }
 # 设定待检测目标物体最小边界框面积，
 # 排除模型误检中较小的物体
