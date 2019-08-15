@@ -3,7 +3,6 @@ import time
 import random
 import threading
 import logging
-from multiprocessing import Process
 
 import cv2
 import numpy as np
@@ -54,6 +53,7 @@ class IntrusionHandling:
         self.masks_dict = self.__get_mask(masks_path_dict)
         self.opc_client = opc_client
         self.records_root = records_root
+        self.lock = threading.Lock()
 
     @staticmethod
     def __get_mask(masks_path_dict):
@@ -100,18 +100,24 @@ class IntrusionHandling:
             if judgements_dict[name]:
                 logging.warning(name + ' 工位' + ' 异常闯入')
                 if self.opc_client is not None:
-                    p = Process(target=lambda x: self.opc_client.stop_it_if_working(x),
-                                args=(name,))
-                    p.start()
+                    th1 = threading.Thread(target=self.__thread_safe_stop_working, args=(name,))
+                    th1.start()
                 th2 = threading.Thread(target=self.__save_record, args=(name, vis_imgs_dict[name]))
                 th2.start()
+
+    def __thread_safe_stop_working(self, name):
+        self.lock.acquire()
+        try:
+            self.opc_client.stop_it_if_working(name)
+        finally:
+            self.lock.release()
 
     def __save_record(self, name, img_array, event='intrusion'):
         strftime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
         img_name = event + '_' + strftime + '.jpg'
         img_dir = self.records_root + name + '/'
-        if os.path.exists(img_dir + img_name):
-            img_name = event + '_' + strftime + '_' + str(random.randint(0, 100)) + '.jpg'
+        # if os.path.exists(img_dir + img_name):
+        #     img_name = event + '_' + strftime + '_' + str(random.randint(0, 100)) + '.jpg'
 
         cv2.imwrite(img_dir + img_name, img_array)
         logging.info(name + ' 工位' + ' 异常图片已保存')
