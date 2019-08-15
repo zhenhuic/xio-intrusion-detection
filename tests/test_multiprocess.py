@@ -6,7 +6,7 @@ from utils.video_stream import VideoStream
 
 def read_frame(queue):
     video_path = 'E:/Datasets/XIO/still_1.avi'
-    vs = VideoStream(video_path, 'test')
+    vs = VideoStream(video_path, 'tests')
     while True:
         frame = vs.robust_read()
         queue.put(frame)

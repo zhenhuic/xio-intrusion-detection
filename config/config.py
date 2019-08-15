@@ -1,10 +1,10 @@
 # 视频流 URL
 video_stream_paths_dict = {
-    # 'houban': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-    # 'xiazhewan': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-    'houban': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-    'xiazhewan': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
-    'shangpenfen': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+    'houban': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+    'xiazhewan': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+    # 'houban': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
+    # 'xiazhewan': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
+    # 'shangpenfen': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
 }
 
 # 视频帧的形状
@@ -50,7 +50,7 @@ excluded_objects_dict = {
 }
 
 # 是否连接OPC服务器，执行紧急停机
-open_opc = True
+open_opc = False
 
 # OPC 服务器 URL
 opc_url = 'opc.tcp://10.19.3.35:49320'

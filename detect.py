@@ -9,10 +9,10 @@ from models import Darknet
 from utils.visualize import Visualize
 from utils.opc_client import OpcClient
 from config.config import *
-from utils.video_stream import initialize_video_streams, capture_one_frame
 from utils.utils import non_max_suppression, load_classes, calc_fps
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import IntrusionHandling
+from test_video_stream import VideoLoader
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -66,9 +66,11 @@ def detect_main(qthread):
         logging.warning('OPC Client does not create')
 
     qthread.status_update.emit('读取视频流')
-    video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
-                                                  list(video_stream_paths_dict.keys()),
-                                                  switch_mask=switch_mask)
+    # video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
+    #                                               list(video_stream_paths_dict.keys()),
+    #                                               switch_mask=switch_mask)
+    video_loader = VideoLoader(video_stream_paths_dict)
+
     logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
 
     visualize = Visualize(masks_paths_dict)
@@ -84,7 +86,8 @@ def detect_main(qthread):
     exception_flag = False
     while not exception_flag:
         # prepare frame tensors before inference
-        frames_dict = capture_one_frame(video_streams_dict)
+        # frames_dict = capture_one_frame(video_streams_dict)
+        frames_dict = video_loader.getitem()
         input_tensor = []
         for name in frames_dict.keys():
             tensor = transform(frames_dict[name], img_size)
