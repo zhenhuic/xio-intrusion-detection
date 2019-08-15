@@ -121,3 +121,7 @@ def detect_main(qthread):
             if judgements_dict[name]:
                 timestr = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
                 qthread.text_append.emit(timestr + name + ' 异常闯入')
+
+
+if __name__ == '__main__':
+    detect_main(None)

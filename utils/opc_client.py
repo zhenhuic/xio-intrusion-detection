@@ -1,4 +1,6 @@
 import logging
+import threading
+
 from opcua import Client
 from opcua import ua
 
@@ -29,6 +31,7 @@ class OpcClient:
                            ua.DataValue(variant=ua.Variant(True)))
 
     def stop_it_if_working(self, name):
+
         node, value = self.node_value(name)
         if not value:  # Value 为 False 表示机器正在运作，否则表示机器静止
             self.stop_it(node)
