@@ -70,9 +70,10 @@ def capture_one_frame(video_streams_dict):
 
 
 class VideoLoader:
-    def __init__(self, video_streams_path_dict, queue_maxsize=20):
+    def __init__(self, video_streams_path_dict, queue_maxsize=50):
+        self.queue_maxsize = queue_maxsize
         self.video_streams_dict = self.__video_captures(video_streams_path_dict)
-        self.Q = LifoQueue(queue_maxsize)
+        self.queues_dict = self.queues()
         self.start()
 
     @staticmethod
@@ -86,24 +87,37 @@ class VideoLoader:
         return video_streams_dict
 
     def start(self):
-        th = Thread(target=self.update, args=())
-        th.daemon = True
-        th.start()
+        th1 = Thread(target=self.update, args=('houban',))
+        th1.daemon = True
+        th2 = Thread(target=self.update, args=('xiazhewan',))
+        th2.daemon = True
+        th3 = Thread(target=self.update, args=('shangpenfen',))
+        th3.daemon = True
+        th1.start()
+        th2.start()
+        th3.start()
 
-    def update(self):
+    def queues(self):
+        queues_dict = {}
+        for name in self.video_streams_dict.keys():
+            q = LifoQueue(maxsize=self.queue_maxsize)
+            queues_dict[name] = q
+        return queues_dict
+
+    def update(self, name):
         while True:
-            if not self.Q.full():
-                frames_dict = {}
-                for name in self.video_streams_dict.keys():
-                    capture = self.video_streams_dict[name]
-                    frame = capture.robust_read()
-                    frames_dict[name] = frame
+            if not self.queues_dict[name].full():
+                capture = self.video_streams_dict[name]
+                frame = capture.robust_read()
 
-                self.Q .put(frames_dict)
+                self.queues_dict[name] .put(frame)
             else:
-                with self.Q.mutex:
-                    self.Q.queue.clear()
+                with self.queues_dict[name].mutex:
+                    self.queues_dict[name].queue.clear()
 
     def getitem(self):
         # return next frame in the queue
-        return self.Q.get()
+        frames_dict = {}
+        for name in self.queues_dict.keys():
+            frames_dict[name] = self.queues_dict[name].get()
+        return frames_dict
