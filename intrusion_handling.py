@@ -86,13 +86,11 @@ class IntrusionHandling:
             box_area = (x2 - x1) * (y2 - y1)
 
             # 过滤掉过大和过小的识别框
-            if box_area < min_bbox_area or box_area > max_bbox_area:
-                continue
-
-            num_inter = np.count_nonzero(mask[y1:y2, x1:x2])
-            ratio = num_inter / box_area
-            if ratio >= thresh and not is_them(excluded_objects, box):
-                return True
+            if min_bbox_area <= box_area <= max_bbox_area:
+                num_inter = np.count_nonzero(mask[y1:y2, x1:x2])
+                ratio = num_inter / box_area
+                if ratio >= thresh and not is_them(excluded_objects, box):
+                    return True
         return False
 
     def handle_judgement(self, judgements_dict, vis_imgs_dict):

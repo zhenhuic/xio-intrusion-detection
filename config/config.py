@@ -1,10 +1,10 @@
 # 视频流 URL
 video_stream_paths_dict = {
-    'houban': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-    'xiazhewan': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-    # 'houban': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-    # 'xiazhewan': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
-    # 'shangpenfen': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+    # 'houban': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+    # 'xiazhewan': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+    'houban': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
+    'xiazhewan': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
+    'shangpenfen': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
 }
 
 # 视频帧的形状
@@ -31,7 +31,7 @@ inter_threshold = 0.3
 # 排除模型误检中较大的物体
 max_object_bbox_area_dict = {
     'houban': 25000,
-    'xiazhewan': 25000,
+    'xiazhewan': 15000,
     'shangpenfen': 25000,
 }
 # 设定待检测目标物体最小边界框面积，

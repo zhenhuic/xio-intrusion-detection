@@ -5,6 +5,8 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 from utils.utils import plot_one_box
+from config.config import max_object_bbox_area_dict,\
+    min_object_bbox_area_dict
 
 
 class Visualize:
@@ -61,7 +63,10 @@ class Visualize:
             label = 'person'
             if pred is not None:
                 for x1, y1, x2, y2 in pred:
-                    plot_one_box((x1, y1, x2, y2), img, label=label, color=(225, 225, 0))
+                    box_area = (x2 - x1) * (y2 - y1)
+                    # 过滤掉过大和过小的识别框
+                    if min_object_bbox_area_dict[name] <= box_area <= max_object_bbox_area_dict[name]:
+                        plot_one_box((x1, y1, x2, y2), img, label=label, color=(225, 225, 0))
 
             if judgement:
                 img = cv2.putText(img, text='Kick your head!!!', org=(30, 25), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
