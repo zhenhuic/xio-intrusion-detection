@@ -1,117 +1,14 @@
-from opcua import Client
-from opcua import ua
+import os
+import time
+import random
+import threading
+import logging
 
-from config.config import restricted_areas_dict, \
-    tolerated_areas_dict, excluded_objects_dict
+import cv2
+import numpy as np
 
-
-class OpcClient:
-    def __init__(self, opc_url, nodes_dict):
-        self.opc_url = opc_url
-        self.nodes_dict = nodes_dict
-        self.client = None
-        self.connect()
-
-    def connect(self):
-        self.client = Client(self.opc_url)
-        print("OPC server 连接成功")
-
-    def disconnect(self):
-        self.client.disconnect()
-
-    def node_value(self, name):
-        node_id = self.nodes_dict[name]
-        node = self.client.get_node(node_id)
-        value = node.get_value()
-        return node, value
-
-    @staticmethod
-    def stop_it(node):
-        node.set_attribute(ua.AttributeIds.Value,
-                           ua.DataValue(variant=ua.Variant(True)))
-
-    def stop_it_if_working(self, name):
-        node, value = self.node_value(name)
-        if not value:  # Value 为 False 表示机器正在运作，否则表示机器静止
-            self.stop_it(node)
-            print(name + ' 有人闯入，主动停机！！')
-        else:
-            print('有人闯入，机器静止')
-
-
-def handle_judgement(judgements_dict, opc_client):
-    for name in judgements_dict.keys():
-        if judgements_dict[name]:
-            opc_client.stop_it_if_working(name)
-    print('处理完成')
-
-
-def subprocess_handle_judgement(judgements_dict, opc_client):
-    from multiprocessing import Process
-    for name in judgements_dict.keys():
-        if judgements_dict[name]:
-            p = Process(target=stop_machine, args=(opc_client, name))
-            p.start()
-
-
-def stop_machine(opc_client, name):
-    opc_client.stop_it_if_working(name)
-
-
-def judge_intrusion(preds_dict):
-    judgements_dict = {}
-    for name in preds_dict.keys():
-        if name == 'houban':
-            result = strategy_houban(preds_dict[name])
-            judgements_dict[name] = result
-        elif name == 'xiazhewan':
-            result = strategy_xiazhewan(preds_dict[name])
-            judgements_dict[name] = result
-        elif name == 'shangpenfen':
-            result = strategy_shangpenfen(preds_dict[name])
-            judgements_dict[name] = result
-        else:
-            raise RuntimeError('流水线名称不匹配')
-    return judgements_dict
-
-
-def strategy_houban(bboxes):
-    if bboxes is None:
-        return False
-    restricted_areas = restricted_areas_dict['houban']
-    tolerated_areas = tolerated_areas_dict['houban']
-    excluded_objects = excluded_objects_dict['houban']
-
-    for restr_rect in restricted_areas:
-        for bbox in bboxes:
-            inter_area, inter_rect = bbox_inter_area(bbox, restr_rect)
-            if inter_area > 0 and not is_inside(tolerated_areas, inter_rect) and \
-                    not is_them(excluded_objects, bbox):
-                return True
-    return False
-
-
-def strategy_xiazhewan(bboxes):
-    if bboxes is None:
-        return False
-
-    return True
-
-
-def strategy_shangpenfen(bboxes):
-    if bboxes is None:
-        return False
-    restricted_areas = restricted_areas_dict['shangpenfen']
-    tolerated_areas = tolerated_areas_dict['shangpenfen']
-    excluded_objects = excluded_objects_dict['shangpenfen']
-
-    for restr_rect in restricted_areas:
-        for bbox in bboxes:
-            inter_area, inter_rect = bbox_inter_area(bbox, restr_rect)
-            if inter_area > 0 and not is_inside(tolerated_areas, inter_rect) and \
-                    not is_them(excluded_objects, bbox):
-                return True
-    return False
+from config.config import excluded_objects_dict, inter_threshold, \
+    max_object_bbox_area_dict, min_object_bbox_area_dict
 
 
 def bbox_inter_area(box1, box2):
@@ -119,7 +16,7 @@ def bbox_inter_area(box1, box2):
     b1_x1, b1_y1, b1_x2, b1_y2 = box1[0], box1[1], box1[2], box1[3]
     b2_x1, b2_y1, b2_x2, b2_y2 = box2[0], box2[1], box2[2], box2[3]
 
-    # get the corrdinates of the intersection rectangle
+    # get the coordinates of the intersection rectangle
     inter_rect_x1 = max(b1_x1, b2_x1)
     inter_rect_y1 = max(b1_y1, b2_y1)
     inter_rect_x2 = min(b1_x2, b2_x2)
@@ -127,19 +24,10 @@ def bbox_inter_area(box1, box2):
     inter_rect = (inter_rect_x1, inter_rect_y1, inter_rect_x2, inter_rect_y2)
 
     # Intersection area
-    inter_area = max(inter_rect_x2 - inter_rect_x1 + 1, 0) * \
-                 max(inter_rect_y2 - inter_rect_y1 + 1, 0)
+    inter_area = max(inter_rect_x2 - inter_rect_x1 + 1, 0) * max(
+        inter_rect_y2 - inter_rect_y1 + 1, 0)
 
     return inter_area, inter_rect
-
-
-def is_inside(big_boxes, box):
-    x1, y1, x2, y2 = box
-    for big_box in big_boxes:
-        bx1, by1, bx2, by2 = big_box
-        if bx1 <= x1 and by1 <= y1 and bx2 >= x2 and by2 >= y2:
-            return True
-    return False
 
 
 def is_them(excluded_objects, box, thres=0.8):
@@ -157,3 +45,78 @@ def is_them(excluded_objects, box, thres=0.8):
         return True
     else:
         return False
+
+
+class IntrusionHandling:
+
+    def __init__(self, masks_path_dict, opc_client, records_root='images/records/'):
+        self.masks_dict = self.__get_mask(masks_path_dict)
+        self.opc_client = opc_client
+        self.records_root = records_root
+        self.lock = threading.Lock()
+
+    @staticmethod
+    def __get_mask(masks_path_dict):
+        masks_dict = {}
+        for name in masks_path_dict.keys():
+            if not os.path.exists(masks_path_dict[name]):
+                raise RuntimeError(str(name) + "mask路径不存在")
+            mask = cv2.imread(masks_path_dict[name])
+            mask = mask[:, :, 2]  # only want red channel array
+            masks_dict[name] = mask
+
+        return masks_dict
+
+    def judge_intrusion(self, preds_dict):
+        judgements_dict = {}
+        for name in preds_dict.keys():
+            result = self.__judge_strategy(preds_dict[name], self.masks_dict[name],
+                                           max_object_bbox_area_dict[name],
+                                           min_object_bbox_area_dict[name],
+                                           excluded_objects_dict[name], inter_threshold)
+            judgements_dict[name] = result
+        return judgements_dict
+
+    @staticmethod
+    def __judge_strategy(bboxes, mask, max_bbox_area, min_bbox_area, excluded_objects, thresh):
+        if bboxes is None:
+            return False
+        for box in bboxes:
+            x1, y1, x2, y2 = box
+            box_area = (x2 - x1) * (y2 - y1)
+
+            # 过滤掉过大和过小的识别框
+            if min_bbox_area <= box_area <= max_bbox_area:
+                num_inter = np.count_nonzero(mask[y1:y2, x1:x2])
+                ratio = num_inter / box_area
+                if ratio >= thresh and not is_them(excluded_objects, box):
+                    return True
+        return False
+
+    def handle_judgement(self, judgements_dict, vis_imgs_dict):
+        for name in judgements_dict.keys():
+            if judgements_dict[name]:
+                logging.warning(name + ' 工位' + ' 异常闯入')
+                if self.opc_client is not None:
+                    th1 = threading.Thread(target=self.__thread_safe_stop_working, args=(name,))
+                    th1.start()
+                th2 = threading.Thread(target=self.__save_record, args=(name, vis_imgs_dict[name]))
+                th2.start()
+
+    def __thread_safe_stop_working(self, name):
+        self.lock.acquire()
+        try:
+            self.opc_client.stop_it_if_working(name)
+        finally:
+            self.lock.release()
+
+    def __save_record(self, name, img_array, event='intrusion'):
+        strftime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
+        img_name = event + '_' + strftime + '.jpg'
+        img_dir = self.records_root + name + '/'
+        # if os.path.exists(img_dir + img_name):
+        #     img_name = event + '_' + strftime + '_' + str(random.randint(0, 100)) + '.jpg'
+
+        cv2.imwrite(img_dir + img_name, img_array)
+        logging.info(name + ' 工位' + ' 异常图片已保存')
+

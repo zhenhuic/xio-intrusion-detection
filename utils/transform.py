@@ -52,7 +52,7 @@ def preds_postprocess(preds, stream_names, frame_shape, img_size, classes):
                     y1 = ((xyxy[1] - pad_y // 2) / unpad_h) * frame_shape[0]
                     x1 = ((xyxy[0] - pad_x // 2) / unpad_w) * frame_shape[1]
 
-                    person_bbox = (x1, y1, x1 + box_w, y1 + box_h)
+                    person_bbox = (int(x1), int(y1), int(x1 + box_w), int(y1 + box_h))  # convert tensor to int
                     person_bboxes.append(person_bbox)
             if len(person_bboxes) != 0:
                 preds_dict[stream_names[i]] = person_bboxes
