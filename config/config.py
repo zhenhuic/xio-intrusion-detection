@@ -11,7 +11,7 @@ video_stream_paths_dict = {
 frame_shape = (480, 640)
 
 # 各视频流是否检测的开关，1 表示检测， 0 表示不检测
-switch_mask = (1, 1, 1, 0, 0)
+switch_mask = (1, 1, 1)
 
 # 需要显示的视频流名称
 vis_name = 'houban'
@@ -30,7 +30,7 @@ inter_threshold = 0.3
 # 设定待检测目标物体最大边界框面积，
 # 排除模型误检中较大的物体
 max_object_bbox_area_dict = {
-    'houban': 25000,
+    'houban': 15000,
     'xiazhewan': 15000,
     'shangpenfen': 25000,
 }
