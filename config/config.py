@@ -1,27 +1,38 @@
 # 视频流 URL
+# video_stream_paths_dict = {
+#     'sawanini_1': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
+#     'sawanini_2': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
+#     'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
+#     'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+#     'baobantongyong': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
+# }
+
+# Local test
 video_stream_paths_dict = {
-    # 'houban': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-    # 'xiazhewan': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-    'houban': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-    'xiazhewan': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
-    'shangpenfen': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+    'sawanini_1': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+    'sawanini_2': 'E:/Datasets/XIO/intrusion_detection/outputhou.avi',
+    'zhuanjixia': 'E:/Datasets/XIO/intrusion_detection/still_1.avi',
+    'penfenshang': 'E:/Datasets/XIO/intrusion_detection/still_2.avi',
+    'baobantongyong': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
 }
 
 # 视频帧的形状
 frame_shape = (480, 640)
 
 # 各视频流是否检测的开关，1 表示检测， 0 表示不检测
-switch_mask = (1, 1, 1)
+switch_mask = (1, 1, 1, 1, 1)
 
 # 需要显示的视频流名称
-vis_name = 'houban'
+vis_name = 'sawanini_1'
 
 
 # 禁区掩码图像路径
 masks_paths_dict = {
-    'houban': 'images/masks/houban.jpg',
-    'xiazhewan': 'images/masks/xiazhewan.jpg',
-    'shangpenfen': 'images/masks/shangpenfen.jpg',
+    'sawanini_1': 'images/masks/houban.jpg',
+    'sawanini_2': 'images/masks/houban.jpg',  # TODO
+    'zhuanjixia': 'images/masks/xiazhewan.jpg',
+    'penfenshang': 'images/masks/shangpenfen.jpg',
+    'baobantongyong': 'images/masks/houban.jpg',  # TODO
 }
 
 # 判断人的边界框进入禁区的阈值
@@ -30,23 +41,29 @@ inter_threshold = 0.3
 # 设定待检测目标物体最大边界框面积，
 # 排除模型误检中较大的物体
 max_object_bbox_area_dict = {
-    'houban': 15000,
-    'xiazhewan': 15000,
-    'shangpenfen': 25000,
+    'sawanini_1': 15000,
+    'sawanini_2': 20000,  # TODO
+    'zhuanjixia': 15000,
+    'penfenshang': 25000,
+    'baobantongyong': 20000,  # TODO
 }
 # 设定待检测目标物体最小边界框面积，
 # 排除模型误检中较小的物体
 min_object_bbox_area_dict = {
-    'houban': 500,
-    'xiazhewan': 500,
-    'shangpenfen': 500,
+    'sawanini_1': 500,
+    'sawanini_2': 500,
+    'zhuanjixia': 500,
+    'penfenshang': 500,
+    'baobantongyong': 500,
 }
 
 # 排除掉可能被错识别为人的目标物体区域
 excluded_objects_dict = {
-    'houban': [],
-    'xiazhewan': [],
-    'shangpenfen': [],
+    'sawanini_1': [],
+    'sawanini_2': [],
+    'zhuanjixia': [],
+    'penfenshang': [],
+    'baobantongyong': [],
 }
 
 # 是否连接OPC服务器，执行紧急停机
@@ -57,12 +74,14 @@ opc_url = 'opc.tcp://10.19.3.35:49320'
 
 # 机器工位节点
 nodes_dict = {
-    'houban': 'ns=2;s=xinsawaninihoudaoxianti.QCPU.光栅触发暂停标志',
-    'xiazhewan': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.下折弯光幕报警',
-    'shangpenfen': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.上喷粉光幕报警',
+    'sawanini_1': 'ns=2;s=xinsawaninihoudaoxianti.QCPU.光栅触发暂停标志',
+    'sawanini_2': '',  # TODO
+    'zhuanjixia': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.下折弯光幕报警',
+    'penfenshang': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.上喷粉光幕报警',
+    'baobantongyong': '',  # TODO
 }
 
-# detection model configuration, the values are default below
+# -------------- detection model configuration -----------------
 img_size = 416  # size of each image dimension
 config_path = 'config/yolov3.cfg'  # path to model config file
 weights_path = 'weights/yolov3.weights'  # path to weights file

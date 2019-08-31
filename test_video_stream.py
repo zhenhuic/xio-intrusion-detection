@@ -87,15 +87,22 @@ class VideoLoader:
         return video_streams_dict
 
     def start(self):
-        th1 = Thread(target=self.update, args=('houban',))
+        th1 = Thread(target=self.update, args=('sawanini_1',))
         th1.daemon = True
-        th2 = Thread(target=self.update, args=('xiazhewan',))
+        th2 = Thread(target=self.update, args=('sawanini_2',))
         th2.daemon = True
-        th3 = Thread(target=self.update, args=('shangpenfen',))
+        th3 = Thread(target=self.update, args=('zhuanjixia',))
         th3.daemon = True
+        th4 = Thread(target=self.update, args=('penfenshang',))
+        th4.daemon = True
+        th5 = Thread(target=self.update, args=('baobantongyong',))
+        th5.daemon = True
+
         th1.start()
         th2.start()
         th3.start()
+        th4.start()
+        th5.start()
 
     def queues(self):
         queues_dict = {}
