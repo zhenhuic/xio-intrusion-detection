@@ -18,7 +18,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                               time.localtime()) + '启动检测...')
         self.statusbar.showMessage('系统初始化...')
 
-        th = Thread(self)
+        th = DetectionThread(self)
         th.video_change_pixmap.connect(self.set_frame)
         th.record_change_pixmap.connect(self.set_record)
         th.text_append.connect(self.append_text)
@@ -30,12 +30,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stream_1.triggered.connect(self.switch_vis_stream_1)
         self.stream_2.triggered.connect(self.switch_vis_stream_2)
         self.stream_3.triggered.connect(self.switch_vis_stream_3)
+        self.stream_4.triggered.connect(self.switch_vis_stream_4)
+        self.stream_5.triggered.connect(self.switch_vis_stream_5)
         self.stop.triggered.connect(self.process_exit)
 
     @pyqtSlot(QImage)
     def set_frame(self, image):
         self.videoLabel.setPixmap(QPixmap.fromImage(image))
-        self.statusbar.showMessage('正在检测' + ' ' * 120 + '生产线：houban, xiazhewan, shangpenfen')
+        self.statusbar.showMessage('正在检测' + ' ' * 110 +
+                                   '生产线：萨瓦尼尼-1，萨瓦尼尼-2，专机下线，喷粉上线，薄板通用线')
 
     @pyqtSlot(QImage)
     def set_record(self, image):
@@ -57,6 +60,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def switch_vis_stream_3(self, trigger):
         change_vis_stream(2)
 
+    @pyqtSlot(bool)
+    def switch_vis_stream_4(self, trigger):
+        change_vis_stream(3)
+
+    @pyqtSlot(bool)
+    def switch_vis_stream_5(self, trigger):
+        change_vis_stream(4)
+
     @pyqtSlot(str)
     def update_status_message(self, text):
         self.statusbar.showMessage(text)
@@ -66,7 +77,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         sys.exit()
 
 
-class Thread(QThread):
+class DetectionThread(QThread):
     video_change_pixmap = pyqtSignal(QImage)
     record_change_pixmap = pyqtSignal(QImage)
     text_append = pyqtSignal(str)
