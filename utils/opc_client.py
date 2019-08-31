@@ -14,6 +14,7 @@ class OpcClient:
 
     def connect(self):
         self.client = Client(self.opc_url)
+        self.client.connect()
         logging.info("OPC server 已连接")
 
     def disconnect(self):
