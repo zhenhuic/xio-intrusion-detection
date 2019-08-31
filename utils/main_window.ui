@@ -65,7 +65,7 @@ font: 24pt &quot;宋体&quot;;</string>
      <set>Qt::AlignHCenter|Qt::AlignTop</set>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -258,7 +258,7 @@ color: rgb(200, 200, 200);</string>
         <property name="font">
          <font>
           <family>宋体</family>
-          <pointsize>13</pointsize>
+          <pointsize>11</pointsize>
          </font>
         </property>
         <property name="autoFillBackground">
@@ -269,6 +269,13 @@ color: rgb(200, 200, 200);</string>
 background-color: rgb(25, 25, 25);
 border-color: rgb(25, 25, 25);
 color: rgb(200, 200, 200);</string>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -292,11 +299,13 @@ color: rgb(255, 255, 255);</string>
    </property>
    <widget class="QMenu" name="streammenu">
     <property name="title">
-     <string>视频流</string>
+     <string>生产线</string>
     </property>
     <addaction name="stream_1"/>
     <addaction name="stream_2"/>
     <addaction name="stream_3"/>
+    <addaction name="stream_4"/>
+    <addaction name="stream_5"/>
    </widget>
    <widget class="QMenu" name="programmenu">
     <property name="title">
@@ -316,17 +325,17 @@ color: rgb(255, 255, 255);</string>
   </widget>
   <action name="stream_1">
    <property name="text">
-    <string>厚板线</string>
+    <string>萨瓦尼尼 - 1</string>
    </property>
   </action>
   <action name="stream_2">
    <property name="text">
-    <string>下折弯</string>
+    <string>萨瓦尼尼 - 2</string>
    </property>
   </action>
   <action name="stream_3">
    <property name="text">
-    <string>上喷粉</string>
+    <string>专机下线</string>
    </property>
   </action>
   <action name="start">
@@ -337,6 +346,16 @@ color: rgb(255, 255, 255);</string>
   <action name="stop">
    <property name="text">
     <string>终止</string>
+   </property>
+  </action>
+  <action name="stream_4">
+   <property name="text">
+    <string>喷粉上线</string>
+   </property>
+  </action>
+  <action name="stream_5">
+   <property name="text">
+    <string>薄板通用线</string>
    </property>
   </action>
  </widget>
