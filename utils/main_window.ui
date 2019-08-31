@@ -299,7 +299,7 @@ color: rgb(255, 255, 255);</string>
    </property>
    <widget class="QMenu" name="streammenu">
     <property name="title">
-     <string>生产线</string>
+     <string>视频流</string>
     </property>
     <addaction name="stream_1"/>
     <addaction name="stream_2"/>
@@ -325,12 +325,12 @@ color: rgb(255, 255, 255);</string>
   </widget>
   <action name="stream_1">
    <property name="text">
-    <string>萨瓦尼尼 - 1</string>
+    <string>萨瓦尼尼-1</string>
    </property>
   </action>
   <action name="stream_2">
    <property name="text">
-    <string>萨瓦尼尼 - 2</string>
+    <string>萨瓦尼尼-2</string>
    </property>
   </action>
   <action name="stream_3">
