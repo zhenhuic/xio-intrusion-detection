@@ -80,7 +80,7 @@ def main():
     bottom = line_params((23, 479), (400, 479))
     mask = create_mask(orig_img, [left, top, right, bottom])
 
-    # orig_mask = '../images/masks/shangpenfen.jpg'
+    # orig_mask = '../images/masks/penfenshang.jpg'
     # left = line_params((180, 150), (68, 479))
     # top = line_params((180, 150), (445, 210))
     # right = line_params((445, 210), (495, 479))
@@ -93,7 +93,7 @@ def main():
     # right = None
     # bottom = line_params((45, 385), (490, 385))
     # # mask = create_mask(orig_img, [left, top, right, bottom])
-    # orig_mask = '../images/masks/houban.jpg'
+    # orig_mask = '../images/masks/sawanini_2.jpg'
     # left = line_params((220, 100), (169, 188))
     # top = line_params((220, 115), (480, 115))
     # right = None
@@ -111,7 +111,7 @@ def main():
 if __name__ == '__main__':
 
     # img_path = '../images/records/vlcsnap-2019-08-02-16h02m06s098.png'
-    # mask_path = '../images/masks/houban.jpg'
+    # mask_path = '../images/masks/sawanini_2.jpg'
     #
     # img = cv2.imread(img_path)
     # mask = cv2.imread(mask_path)
