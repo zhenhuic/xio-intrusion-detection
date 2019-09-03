@@ -1,10 +1,13 @@
+import collections
+
+
 # 视频流 URL
 video_stream_paths_dict = {
-    'sawanini_1': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-    'sawanini_2': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
+    'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
+    'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
     'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
     'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
-    'baobantongyong': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
+    'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
 }
 
 # Local test
@@ -28,11 +31,11 @@ vis_name = 'sawanini_1'
 
 # 禁区掩码图像路径
 masks_paths_dict = {
-    'sawanini_1': 'images/masks/houban.jpg',
-    'sawanini_2': 'images/masks/houban.jpg',  # TODO
-    'zhuanjixia': 'images/masks/xiazhewan.jpg',
-    'penfenshang': 'images/masks/shangpenfen.jpg',
-    'baobantongyong': 'images/masks/houban.jpg',  # TODO
+    'sawanini_1': 'images/masks/sawanini_1.jpg',
+    'sawanini_2': 'images/masks/sawanini_2.jpg',
+    'zhuanjixia': 'images/masks/zhuanjixia.jpg',
+    'penfenshang': 'images/masks/penfenshang.jpg',
+    'baobantongyong': 'images/masks/baobantongyong.jpg',
 }
 
 # 判断人的边界框进入禁区的阈值
@@ -41,8 +44,8 @@ inter_threshold = 0.3
 # 设定待检测目标物体最大边界框面积，
 # 排除模型误检中较大的物体
 max_object_bbox_area_dict = {
-    'sawanini_1': 15000,
-    'sawanini_2': 20000,  # TODO
+    'sawanini_1': 20000,  # TODO
+    'sawanini_2': 15000,
     'zhuanjixia': 15000,
     'penfenshang': 25000,
     'baobantongyong': 20000,  # TODO
