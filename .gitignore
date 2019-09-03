@@ -3,7 +3,4 @@
 *.pyc
 *.weights
 *.log
-images/records/houban.7z
-images/records/houban/
-images/records/shangpenfen/
-images/records/xiazhewan/
+images/records/
