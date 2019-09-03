@@ -27,7 +27,7 @@ class Visualize:
 
     def draw_static_contents(self, img_array, name):
         mask = self.masks_dict[name]
-        overlap = cv2.addWeighted(img_array, 1, mask, 0.6, 0)
+        overlap = cv2.addWeighted(img_array, 1, mask, 0.4, 0)
         return overlap
 
     @staticmethod

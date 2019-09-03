@@ -64,12 +64,22 @@ def main():
     # right = line_params((500, 330), (495, 479))
     # bottom = line_params((0, 479), (495, 479))
 
-    # orig_img = '../images/records/vlcsnap-2019-08-02-16h02m31s252.png'
-    # left = line_params((90, 210), (20, 380))
-    # top = line_params((90, 210), (160, 210))
-    # right = line_params((185, 150), (70, 479))
-    # bottom = line_params((20, 380), (80, 390))
+    # sawanini_1
+    # orig_img = '../images/records/vlcsnap-2019-09-03-09h50m25s077.png'
+    # left = line_params((40, 390), (50, 480))
+    # top = line_params((40, 390), (400, 190))
+    # right = line_params((400, 190), (565, 310))
+    # bottom = line_params((380, 480), (565, 310))
     # mask = create_mask(orig_img, [left, top, right, bottom])
+
+    # baobantongyong
+    orig_img = '../images/records/vlcsnap-2019-09-03-09h50m51s942.png'
+    left = line_params((75, 186), (23, 479))
+    top = line_params((75, 186), (388, 195))
+    right = line_params((388, 195), (400, 479))
+    bottom = line_params((23, 479), (400, 479))
+    mask = create_mask(orig_img, [left, top, right, bottom])
+
     # orig_mask = '../images/masks/shangpenfen.jpg'
     # left = line_params((180, 150), (68, 479))
     # top = line_params((180, 150), (445, 210))
@@ -82,17 +92,17 @@ def main():
     # top = line_params((100, 175), (170, 180))
     # right = None
     # bottom = line_params((45, 385), (490, 385))
-    # mask = create_mask(orig_img, [left, top, right, bottom])
-    orig_mask = '../images/masks/houban.jpg'
-    left = line_params((220, 100), (169, 188))
-    top = line_params((220, 115), (480, 115))
-    right = None
-    bottom = line_params((100, 175), (170, 183))
-    mask = add_mask(orig_mask, [left, top, right, bottom])
+    # # mask = create_mask(orig_img, [left, top, right, bottom])
+    # orig_mask = '../images/masks/houban.jpg'
+    # left = line_params((220, 100), (169, 188))
+    # top = line_params((220, 115), (480, 115))
+    # right = None
+    # bottom = line_params((100, 175), (170, 183))
+    # mask = add_mask(orig_mask, [left, top, right, bottom])
 
     cv2.imshow('mask', mask)
 
-    cv2.imwrite('../images/masks/houban.jpg', mask, )
+    cv2.imwrite('../images/masks/baobantongyong.jpg', mask)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -100,15 +110,15 @@ def main():
 
 if __name__ == '__main__':
 
-    img_path = '../images/records/vlcsnap-2019-08-02-16h02m06s098.png'
-    mask_path = '../images/masks/houban.jpg'
-
-    img = cv2.imread(img_path)
-    mask = cv2.imread(mask_path)
-
-    overlap = cv2.addWeighted(img, 1, mask, 0.6, 0)
-
-    cv2.imshow('overlap', overlap)
-    cv2.waitKey(0)
-    # main()
+    # img_path = '../images/records/vlcsnap-2019-08-02-16h02m06s098.png'
+    # mask_path = '../images/masks/houban.jpg'
+    #
+    # img = cv2.imread(img_path)
+    # mask = cv2.imread(mask_path)
+    #
+    # overlap = cv2.addWeighted(img, 1, mask, 0.6, 0)
+    #
+    # cv2.imshow('overlap', overlap)
+    # cv2.waitKey(0)
+    main()
 
