@@ -10,7 +10,7 @@ video_stream_paths_dict = {
     'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
 }
 
-# Local test
+# for local test
 # video_stream_paths_dict = {
 #     'sawanini_1': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
 #     'sawanini_2': 'E:/Datasets/XIO/intrusion_detection/outputhou.avi',
@@ -39,15 +39,15 @@ masks_paths_dict = {
 }
 
 # 判断人的边界框进入禁区的阈值
-inter_threshold = 0.3
+inter_threshold = 0.2
 
 # 设定待检测目标物体最大边界框面积，
 # 排除模型误检中较大的物体
 max_object_bbox_area_dict = {
-    'sawanini_1': 20000,  # TODO
-    'sawanini_2': 15000,
-    'zhuanjixia': 15000,
-    'penfenshang': 25000,
+    'sawanini_1': 15000,
+    'sawanini_2': 12000,
+    'zhuanjixia': 12000,
+    'penfenshang': 20000,
     'baobantongyong': 20000,  # TODO
 }
 # 设定待检测目标物体最小边界框面积，
@@ -64,24 +64,24 @@ min_object_bbox_area_dict = {
 excluded_objects_dict = {
     'sawanini_1': [],
     'sawanini_2': [],
-    'zhuanjixia': [],
+    'zhuanjixia': [(175, 130, 200, 155), ],
     'penfenshang': [],
     'baobantongyong': [],
 }
 
 # 是否连接OPC服务器，执行紧急停机
-open_opc = False
+open_opc = True
 
 # OPC 服务器 URL
 opc_url = 'opc.tcp://10.19.3.35:49320'
 
 # 机器工位节点
 nodes_dict = {
-    'sawanini_1': 'ns=2;s=xinsawaninihoudaoxianti.QCPU.光栅触发暂停标志',
-    'sawanini_2': '',  # TODO
+    'sawanini_1': 'ns=2;s=sawaninigaopin.OP30-S71214C.轿壁小车2光幕被报警',
+    'sawanini_2': 'ns=2;s=xinsawaninihoudaoxianti.QCPU.光栅触发暂停标志',
     'zhuanjixia': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.下折弯光幕报警',
-    'penfenshang': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.上喷粉光幕报警',
-    'baobantongyong': '',  # TODO
+    'penfenshang': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.上喷粉站报警',  # TODO 同时给两个点位置 1
+    'baobantongyong': 'ns=2;s=weibentongyongxian.S7300.机器人停止',
 }
 
 # -------------- detection model configuration -----------------
