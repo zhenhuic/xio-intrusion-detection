@@ -88,7 +88,13 @@ class DetectionThread(QThread):
         detect_main(self)
 
 
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
+
+
 def main():
+    sys.excepthook = except_hook  # print the traceback to stdout/stderr
+
     strftime = time.strftime('%Y-%m-%d_%H_%M_%S', time.localtime())
     logging.basicConfig(filename='logs/' + strftime + '.log', level=logging.INFO,
                         format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
