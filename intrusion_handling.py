@@ -119,4 +119,3 @@ class IntrusionHandling:
 
         cv2.imwrite(img_dir + img_name, img_array)
         logging.info(name + ' 工位' + ' 异常图片已保存')
-
