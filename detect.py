@@ -20,7 +20,7 @@ warnings.filterwarnings("ignore")
 
 def get_model(config_path, img_size, weights_path, device):
     model = Darknet(config_path, img_size=img_size)
-    model.load_weights(weights_path)
+    model.load_darknet_weights(weights_path)
 
     model = model.to(device)
     model.eval()  # Set in evaluation mode
@@ -30,7 +30,8 @@ def get_model(config_path, img_size, weights_path, device):
 def inference(model, input_tensor, device, num_classes, conf_thres, nms_thres):
     input_tensor = input_tensor.to(device)
     output = model(input_tensor)
-    preds = non_max_suppression(output, num_classes, conf_thres, nms_thres)
+    preds = non_max_suppression(output, conf_thres, nms_thres)
+    # preds = non_max_suppression(output, num_classes, conf_thres, nms_thres)
     return preds
 
 
