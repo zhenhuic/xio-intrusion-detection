@@ -65,20 +65,20 @@ def main():
     # bottom = line_params((0, 479), (495, 479))
 
     # sawanini_1
-    # orig_img = '../images/records/vlcsnap-2019-09-03-09h50m25s077.png'
-    # left = line_params((40, 390), (50, 480))
-    # top = line_params((40, 390), (400, 190))
-    # right = line_params((400, 190), (565, 310))
-    # bottom = line_params((380, 480), (565, 310))
-    # mask = create_mask(orig_img, [left, top, right, bottom])
+    orig_img = '../images/records/vlcsnap-2019-09-03-09h50m25s077.png'
+    left = line_params((40, 390), (50, 480))
+    top = line_params((40, 390), (377, 204))
+    right = line_params((377, 204), (540, 330))
+    bottom = line_params((380, 480), (540, 330))
+    mask = create_mask(orig_img, [left, top, right, bottom])
 
     # baobantongyong
-    orig_img = '../images/records/vlcsnap-2019-09-03-09h50m51s942.png'
-    left = line_params((75, 186), (23, 479))
-    top = line_params((75, 186), (388, 195))
-    right = line_params((388, 195), (400, 479))
-    bottom = line_params((23, 479), (400, 479))
-    mask = create_mask(orig_img, [left, top, right, bottom])
+    # orig_img = '../images/records/vlcsnap-2019-09-03-09h50m51s942.png'
+    # left = line_params((115, 77), (23, 479))
+    # top = line_params((115, 77), (397, 93))
+    # right = line_params((397, 93), (405, 479))
+    # bottom = line_params((23, 479), (405, 479))
+    # mask = create_mask(orig_img, [left, top, right, bottom])
 
     # orig_mask = '../images/masks/penfenshang.jpg'
     # left = line_params((180, 150), (68, 479))
@@ -102,7 +102,7 @@ def main():
 
     cv2.imshow('mask', mask)
 
-    cv2.imwrite('../images/masks/baobantongyong.jpg', mask)
+    cv2.imwrite('../images/masks/sawanini_1.jpg', mask)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

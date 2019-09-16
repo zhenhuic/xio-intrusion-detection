@@ -105,10 +105,8 @@ class IntrusionHandling:
 
     def __thread_safe_stop_working(self, name):
         self.lock.acquire()
-        try:
-            self.opc_client.stop_it_if_working(name)
-        finally:
-            self.lock.release()
+        stop_it = self.opc_client.stop_it_if_working(name)
+        self.lock.release()
 
     def __save_record(self, name, img_array, event='intrusion'):
         strftime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())

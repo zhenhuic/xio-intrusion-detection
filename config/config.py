@@ -91,4 +91,4 @@ weights_path = 'weights/yolov3.weights'  # path to weights file
 class_path = 'config/coco.names'  # path to class label file
 conf_thres = 0.8  # object confidence threshold
 nms_thres = 0.4  # iou threshold for non-maximum suppression
-device_name = 'cuda'  # use cuda if available
+device_name = 'cuda:0'  # use cuda if available
