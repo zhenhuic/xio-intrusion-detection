@@ -117,7 +117,7 @@ class VideoLoader:
                 capture = self.video_streams_dict[name]
                 frame = capture.robust_read()
 
-                self.queues_dict[name] .put(frame)
+                self.queues_dict[name].put(frame)
             else:
                 with self.queues_dict[name].mutex:
                     self.queues_dict[name].queue.clear()

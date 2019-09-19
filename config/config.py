@@ -2,22 +2,22 @@ import collections
 
 
 # 视频流 URL
-video_stream_paths_dict = {
-    'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
-    'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-    'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
-    'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
-    'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
-}
+# video_stream_paths_dict = {
+#     'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
+#     'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
+#     'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
+#     'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+#     'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
+# }
 
 # for local test
-# video_stream_paths_dict = {
-#     'sawanini_1': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-#     'sawanini_2': 'E:/Datasets/XIO/intrusion_detection/outputhou.avi',
-#     'zhuanjixia': 'E:/Datasets/XIO/intrusion_detection/still_1.avi',
-#     'penfenshang': 'E:/Datasets/XIO/intrusion_detection/still_2.avi',
-#     'baobantongyong': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-# }
+video_stream_paths_dict = {
+    'sawanini_1': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+    'sawanini_2': 'E:/Datasets/XIO/intrusion_detection/outputhou.avi',
+    'zhuanjixia': 'E:/Datasets/XIO/intrusion_detection/still_1.avi',
+    'penfenshang': 'E:/Datasets/XIO/intrusion_detection/still_2.avi',
+    'baobantongyong': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+}
 
 # 视频帧的形状
 frame_shape = (480, 640)
@@ -70,7 +70,7 @@ excluded_objects_dict = {
 }
 
 # 是否连接OPC服务器，执行紧急停机
-open_opc = True
+open_opc = False
 
 # OPC 服务器 URL
 opc_url = 'opc.tcp://10.19.3.35:49320'
