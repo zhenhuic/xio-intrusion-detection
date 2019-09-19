@@ -29,7 +29,7 @@ def get_model(config_path, img_size, weights_path, device):
 
 def inference(model, input_tensor, device, num_classes, conf_thres, nms_thres):
     input_tensor = input_tensor.to(device)
-    print(input_tensor.shape)
+    # print(input_tensor.shape)
     try:
         output = model(input_tensor)
         preds = non_max_suppression(output, conf_thres, nms_thres)
