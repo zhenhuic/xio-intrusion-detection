@@ -29,8 +29,14 @@ def get_model(config_path, img_size, weights_path, device):
 
 def inference(model, input_tensor, device, num_classes, conf_thres, nms_thres):
     input_tensor = input_tensor.to(device)
-    output = model(input_tensor)
-    preds = non_max_suppression(output, conf_thres, nms_thres)
+    print(input_tensor.shape)
+    try:
+        output = model(input_tensor)
+        preds = non_max_suppression(output, conf_thres, nms_thres)
+    except RuntimeError as e:
+        preds = [None for _ in range(input_tensor.shape[0])]
+        print(e)
+        logging.error(e)
     # preds = non_max_suppression(output, num_classes, conf_thres, nms_thres)
     return preds
 
@@ -77,6 +83,8 @@ def detect_main(qthread):
     visualize = Visualize(masks_paths_dict)
     handling = IntrusionHandling(masks_paths_dict, opc_client)
 
+    classes = load_classes(class_path)  # Extracts class labels from file
+
     qthread.status_update.emit('准备就绪')
     # for calculating inference fps
     since = time.time()
@@ -97,7 +105,6 @@ def detect_main(qthread):
 
         # model inference and postprocess
         preds = inference(model, input_tensor, device, 80, conf_thres, nms_thres)
-        classes = load_classes(class_path)  # Extracts class labels from file
         preds_dict = preds_postprocess(preds, list(video_stream_paths_dict.keys()),
                                        frame_shape, img_size, classes)
 
