@@ -1,0 +1,1 @@
+D:\Anaconda3\envs\torch\python.exe E:/Lab417/xio-intrusion-detection/gui_main.py
