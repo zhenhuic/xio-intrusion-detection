@@ -24,6 +24,7 @@ switch_mask = (1, 1, 1, 1, 1)
 
 # 需要显示的视频流名称
 vis_name = 'sawanini_1'
+prevs_vis_name = vis_name
 
 
 # 禁区掩码图像路径
