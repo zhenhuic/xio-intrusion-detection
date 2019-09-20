@@ -55,6 +55,9 @@ def array_to_QImage(img, size):
 
 def change_vis_stream(index):
     global vis_name
+    global prevs_vis_name
+
+    prevs_vis_name = vis_name
     vis_name = list(video_stream_paths_dict.keys())[index]
 
 
@@ -126,7 +129,25 @@ def detect_main(qthread):
 
         img = vis_imgs_dict[vis_name]
         qimage = array_to_QImage(img, (780, 430))
-        qthread.video_change_pixmap.emit(qimage)
+        qthread.video_1_change_pixmap.emit(qimage)
+
+        prevs_img = vis_imgs_dict[prevs_vis_name]
+        vis_imgs_dict[vis_name] = prevs_img
+        vis_imgs_dict.pop(prevs_vis_name)
+
+        for i, img in enumerate(vis_imgs_dict.values()):
+            qimage = array_to_QImage(img, (204, 155))
+            if i == 0:
+                qthread.video_2_change_pixmap.emit(qimage)
+            elif i == 1:
+                qthread.video_3_change_pixmap.emit(qimage)
+            elif i == 2:
+                qthread.video_4_change_pixmap.emit(qimage)
+            elif i == 3:
+                qthread.video_5_change_pixmap.emit(qimage)
+            else:
+                raise RuntimeError("No so many QLabel!")
+
 
         if judgements_dict[vis_name]:
             qimage = array_to_QImage(img, (358, 243))

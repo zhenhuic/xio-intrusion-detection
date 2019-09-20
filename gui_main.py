@@ -6,9 +6,11 @@ from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtGui import QImage, QPixmap
 
+# from utils.main_window import Ui_MainWindow
 from utils.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
 import os
+
 os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
 
 
@@ -21,7 +23,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage('系统初始化...')
 
         th = DetectionThread(self)
-        th.video_change_pixmap.connect(self.set_frame)
+        th.video_1_change_pixmap.connect(self.set_frame_1)
+        th.video_2_change_pixmap.connect(self.set_frame_2)
+        th.video_3_change_pixmap.connect(self.set_frame_3)
+        th.video_4_change_pixmap.connect(self.set_frame_4)
+        th.video_5_change_pixmap.connect(self.set_frame_5)
         th.record_change_pixmap.connect(self.set_record)
         th.text_append.connect(self.append_text)
         th.status_update.connect(self.update_status_message)
@@ -43,10 +49,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_5.clicked.connect(self.switch_vis_stream_5)
 
     @pyqtSlot(QImage)
-    def set_frame(self, image):
-        self.videoLabel.setPixmap(QPixmap.fromImage(image))
+    def set_frame_1(self, image):
+        self.videoLabel_1.setPixmap(QPixmap.fromImage(image))
         self.statusbar.showMessage('正在检测' + ' ' * 110 +
                                    '生产线：萨瓦尼尼-1，萨瓦尼尼-2，专机下线，喷粉上线，薄板通用线')
+
+    @pyqtSlot(QImage)
+    def set_frame_2(self, image):
+        self.videoLabel_2.setPixmap(QPixmap.fromImage(image))
+
+    @pyqtSlot(QImage)
+    def set_frame_3(self, image):
+        self.videoLabel_3.setPixmap(QPixmap.fromImage(image))
+
+    @pyqtSlot(QImage)
+    def set_frame_4(self, image):
+        self.videoLabel_4.setPixmap(QPixmap.fromImage(image))
+
+    @pyqtSlot(QImage)
+    def set_frame_5(self, image):
+        self.videoLabel_5.setPixmap(QPixmap.fromImage(image))
 
     @pyqtSlot(QImage)
     def set_record(self, image):
@@ -86,8 +108,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 class DetectionThread(QThread):
-    video_change_pixmap = pyqtSignal(QImage)
+    video_1_change_pixmap = pyqtSignal(QImage)
+    video_2_change_pixmap = pyqtSignal(QImage)
+    video_3_change_pixmap = pyqtSignal(QImage)
+    video_4_change_pixmap = pyqtSignal(QImage)
+    video_5_change_pixmap = pyqtSignal(QImage)
+
     record_change_pixmap = pyqtSignal(QImage)
+
     text_append = pyqtSignal(str)
     status_update = pyqtSignal(str)
 

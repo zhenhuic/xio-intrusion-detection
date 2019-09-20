@@ -104,7 +104,7 @@ color: rgb(85, 255, 255);</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QLabel" name="videoLabel">
+       <widget class="QLabel" name="videoLabel_1">
         <property name="geometry">
          <rect>
           <x>75</x>
@@ -124,43 +124,6 @@ color: rgb(85, 255, 255);</string>
         </property>
         <property name="text">
          <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="infoLabel">
-        <property name="geometry">
-         <rect>
-          <x>93</x>
-          <y>430</y>
-          <width>670</width>
-          <height>170</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>宋体</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:18pt; font-weight:600; color:#55ffff;&quot;&gt;系统价值&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:7pt; color:#55ffff;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas,Courier New,monospace'; font-size:16pt; color:#55ffff;&quot;&gt;1.在线监控设备运行状态,统计设备运行效率；&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas,Courier New,monospace'; font-size:16pt; color:#55ffff;&quot;&gt;2.实时捕捉人员状态,对人、机、料进行识别保护；&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas,Courier New,monospace'; font-size:16pt; color:#55ffff;&quot;&gt;3.远程对现场人员管理,避免频繁的现场监管检查,节约管理成本；&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas,Courier New,monospace'; font-size:16pt; color:#55ffff;&quot;&gt;4.能够自我检查与修复,当系统失效时及时报警提醒,确保生产安全！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButton_1">
@@ -261,6 +224,142 @@ color: rgb(85, 255, 255);</string>
         </property>
         <property name="text">
          <string>薄板通用</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="videoLabel_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>440</y>
+          <width>204</width>
+          <height>155</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(35, 35, 35);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="videoLabel_3">
+        <property name="geometry">
+         <rect>
+          <x>224</x>
+          <y>440</y>
+          <width>204</width>
+          <height>155</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(35, 35, 35);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="videoLabel_4">
+        <property name="geometry">
+         <rect>
+          <x>438</x>
+          <y>440</y>
+          <width>204</width>
+          <height>155</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(35, 35, 35);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="videoLabel_5">
+        <property name="geometry">
+         <rect>
+          <x>652</x>
+          <y>440</y>
+          <width>204</width>
+          <height>155</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>204</width>
+          <height>155</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(35, 35, 35);</string>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </widget>
