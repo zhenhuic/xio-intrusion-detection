@@ -9,7 +9,7 @@ from PyQt5.QtGui import QImage, QPixmap
 from utils.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
 import os
-os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -35,6 +35,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stream_4.triggered.connect(self.switch_vis_stream_4)
         self.stream_5.triggered.connect(self.switch_vis_stream_5)
         self.stop.triggered.connect(self.process_exit)
+
+        self.pushButton_1.clicked.connect(self.switch_vis_stream_1)
+        self.pushButton_2.clicked.connect(self.switch_vis_stream_2)
+        self.pushButton_3.clicked.connect(self.switch_vis_stream_3)
+        self.pushButton_4.clicked.connect(self.switch_vis_stream_4)
+        self.pushButton_5.clicked.connect(self.switch_vis_stream_5)
 
     @pyqtSlot(QImage)
     def set_frame(self, image):

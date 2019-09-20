@@ -20,7 +20,8 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMaximumSize(QtCore.QSize(1280, 720))
-        MainWindow.setStyleSheet("background-color: rgb(12, 12, 12);")
+        MainWindow.setStyleSheet("background-color: rgb(12, 12, 12);\n"
+"color: rgb(85, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.centralwidget.setObjectName("centralwidget")
@@ -33,8 +34,10 @@ class Ui_MainWindow(object):
         self.titlelabel.setSizePolicy(sizePolicy)
         self.titlelabel.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.titlelabel.setStyleSheet("background-color: rgb(35, 35, 35);\n"
-"color: rgb(220, 220, 220);\n"
-"font: 24pt \"宋体\";")
+"font: 24pt \"宋体\";\n"
+"color: rgb(90, 174, 242);\n"
+"color: rgb(0, 255, 255);\n"
+"color: rgb(85, 255, 255);")
         self.titlelabel.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.titlelabel.setObjectName("titlelabel")
         self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -50,13 +53,13 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame_1.sizePolicy().hasHeightForWidth())
         self.frame_1.setSizePolicy(sizePolicy)
-        self.frame_1.setMaximumSize(QtCore.QSize(855, 600))
+        self.frame_1.setMaximumSize(QtCore.QSize(865, 605))
         self.frame_1.setStyleSheet("background-color: rgb(25, 25, 25);")
         self.frame_1.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_1.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_1.setObjectName("frame_1")
         self.videoLabel = QtWidgets.QLabel(self.frame_1)
-        self.videoLabel.setGeometry(QtCore.QRect(38, 0, 780, 430))
+        self.videoLabel.setGeometry(QtCore.QRect(75, 0, 780, 430))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -76,7 +79,48 @@ class Ui_MainWindow(object):
         font.setFamily("宋体")
         font.setPointSize(10)
         self.infoLabel.setFont(font)
+        self.infoLabel.setStyleSheet("")
         self.infoLabel.setObjectName("infoLabel")
+        self.pushButton_1 = QtWidgets.QPushButton(self.frame_1)
+        self.pushButton_1.setGeometry(QtCore.QRect(10, 10, 55, 25))
+        self.pushButton_1.setStyleSheet("color: rgb(198, 198, 198);\n"
+"font: 10pt \"宋体\";\n"
+"background-color: rgb(66, 66, 66);\n"
+"selection-background-color: rgb(45, 45, 45);\n"
+"color: rgb(85, 255, 255);")
+        self.pushButton_1.setObjectName("pushButton_1")
+        self.pushButton_2 = QtWidgets.QPushButton(self.frame_1)
+        self.pushButton_2.setGeometry(QtCore.QRect(10, 55, 55, 25))
+        self.pushButton_2.setStyleSheet("color: rgb(198, 198, 198);\n"
+"font: 10pt \"宋体\";\n"
+"background-color: rgb(66, 66, 66);\n"
+"selection-background-color: rgb(45, 45, 45);\n"
+"color: rgb(85, 255, 255);")
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_3 = QtWidgets.QPushButton(self.frame_1)
+        self.pushButton_3.setGeometry(QtCore.QRect(10, 100, 55, 25))
+        self.pushButton_3.setStyleSheet("color: rgb(198, 198, 198);\n"
+"font: 10pt \"宋体\";\n"
+"background-color: rgb(66, 66, 66);\n"
+"selection-background-color: rgb(45, 45, 45);\n"
+"color: rgb(85, 255, 255);")
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_4 = QtWidgets.QPushButton(self.frame_1)
+        self.pushButton_4.setGeometry(QtCore.QRect(10, 145, 55, 25))
+        self.pushButton_4.setStyleSheet("color: rgb(198, 198, 198);\n"
+"font: 10pt \"宋体\";\n"
+"background-color: rgb(66, 66, 66);\n"
+"selection-background-color: rgb(45, 45, 45);\n"
+"color: rgb(85, 255, 255);")
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_5 = QtWidgets.QPushButton(self.frame_1)
+        self.pushButton_5.setGeometry(QtCore.QRect(10, 190, 55, 25))
+        self.pushButton_5.setStyleSheet("color: rgb(198, 198, 198);\n"
+"font: 10pt \"宋体\";\n"
+"background-color: rgb(66, 66, 66);\n"
+"selection-background-color: rgb(45, 45, 45);\n"
+"color: rgb(85, 255, 255);")
+        self.pushButton_5.setObjectName("pushButton_5")
         self.horizontalLayout.addWidget(self.frame_1)
         self.frame_2 = QtWidgets.QFrame(self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -84,7 +128,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
         self.frame_2.setSizePolicy(sizePolicy)
-        self.frame_2.setMaximumSize(QtCore.QSize(370, 600))
+        self.frame_2.setMaximumSize(QtCore.QSize(370, 605))
         self.frame_2.setStyleSheet("background-color: rgb(25, 25, 25);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -98,7 +142,9 @@ class Ui_MainWindow(object):
         self.logTitle.setSizePolicy(sizePolicy)
         self.logTitle.setStyleSheet("background-color: rgb(35, 35, 35);\n"
 "font: 18pt \"宋体\";\n"
-"color: rgb(200, 200, 200);")
+"color: rgb(200, 200, 200);\n"
+"color: rgb(90, 174, 242);\n"
+"color: rgb(85, 255, 255);")
         self.logTitle.setObjectName("logTitle")
         self.recordTitle = QtWidgets.QLabel(self.frame_2)
         self.recordTitle.setGeometry(QtCore.QRect(0, 300, 375, 45))
@@ -108,11 +154,14 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.recordTitle.sizePolicy().hasHeightForWidth())
         self.recordTitle.setSizePolicy(sizePolicy)
         self.recordTitle.setStyleSheet("background-color: rgb(35, 35, 35);\n"
+"color: rgb(0, 255, 0);\n"
 "font: 18pt \"宋体\";\n"
-"color: rgb(200, 200, 200);")
+"color: rgb(200, 200, 200);\n"
+"color: rgb(90, 174, 242);\n"
+"color: rgb(85, 255, 255);")
         self.recordTitle.setObjectName("recordTitle")
         self.recordLabel = QtWidgets.QLabel(self.frame_2)
-        self.recordLabel.setGeometry(QtCore.QRect(6, 351, 358, 243))
+        self.recordLabel.setGeometry(QtCore.QRect(6, 354, 358, 243))
         self.recordLabel.setStyleSheet("background-color: rgb(35, 35, 35);")
         self.recordLabel.setText("")
         self.recordLabel.setObjectName("recordLabel")
@@ -120,7 +169,8 @@ class Ui_MainWindow(object):
         self.textBrowser.setGeometry(QtCore.QRect(0, 45, 370, 255))
         font = QtGui.QFont()
         font.setFamily("宋体")
-        font.setPointSize(11)
+        font.setPointSize(10)
+        font.setKerning(True)
         self.textBrowser.setFont(font)
         self.textBrowser.setAutoFillBackground(False)
         self.textBrowser.setStyleSheet("gridline-color: rgb(25, 25, 25);\n"
@@ -140,6 +190,8 @@ class Ui_MainWindow(object):
         self.streammenu.setObjectName("streammenu")
         self.programmenu = QtWidgets.QMenu(self.menubar)
         self.programmenu.setObjectName("programmenu")
+        self.setupmenu = QtWidgets.QMenu(self.menubar)
+        self.setupmenu.setObjectName("setupmenu")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setStyleSheet("background-color: rgb(30, 30, 30);\n"
@@ -168,6 +220,7 @@ class Ui_MainWindow(object):
         self.programmenu.addAction(self.start)
         self.programmenu.addAction(self.stop)
         self.menubar.addAction(self.programmenu.menuAction())
+        self.menubar.addAction(self.setupmenu.menuAction())
         self.menubar.addAction(self.streammenu.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -176,26 +229,32 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.titlelabel.setText(_translate("MainWindow", "西奥电梯智能安全检测系统"))
+        self.titlelabel.setText(_translate("MainWindow", "西奥电梯智能安全监测系统"))
         self.infoLabel.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; font-weight:600; color:#c8c8c8;\">系统价值</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:7pt;\"> </span></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#c8c8c8;\">1.在线监控设备运行状态,统计设备运行效率；</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#c8c8c8;\">2.实时捕捉人员状态,对人、机、料进行识别保护；</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#c8c8c8;\">3.远程对现场人员管理,避免频繁的现场监管检查,节约管理成本；</span></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#c8c8c8;\">4.能够自我检查与修复,当系统失效时及时报警提醒,确保生产安全！</span></p></body></html>"))
+"</style></head><body style=\" font-family:\'宋体\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:18pt; font-weight:600; color:#55ffff;\">系统价值</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:7pt; color:#55ffff;\"> </span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#55ffff;\">1.在线监控设备运行状态,统计设备运行效率；</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#55ffff;\">2.实时捕捉人员状态,对人、机、料进行识别保护；</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#55ffff;\">3.远程对现场人员管理,避免频繁的现场监管检查,节约管理成本；</span></p>\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas,Courier New,monospace\'; font-size:16pt; color:#55ffff;\">4.能够自我检查与修复,当系统失效时及时报警提醒,确保生产安全！</span></p></body></html>"))
+        self.pushButton_1.setText(_translate("MainWindow", "SWNN-1"))
+        self.pushButton_2.setText(_translate("MainWindow", "SWNN-2"))
+        self.pushButton_3.setText(_translate("MainWindow", "专机下线"))
+        self.pushButton_4.setText(_translate("MainWindow", "喷粉上线"))
+        self.pushButton_5.setText(_translate("MainWindow", "薄板通用"))
         self.logTitle.setText(_translate("MainWindow", " 实时检测信息"))
         self.recordTitle.setText(_translate("MainWindow", " 异常记录"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'宋体\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'宋体\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"><br /></p></body></html>"))
         self.streammenu.setTitle(_translate("MainWindow", "视频流"))
         self.programmenu.setTitle(_translate("MainWindow", "程序"))
+        self.setupmenu.setTitle(_translate("MainWindow", "设置"))
         self.stream_1.setText(_translate("MainWindow", "萨瓦尼尼-1"))
         self.stream_2.setText(_translate("MainWindow", "萨瓦尼尼-2"))
         self.stream_3.setText(_translate("MainWindow", "专机下线"))
