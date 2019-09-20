@@ -7,12 +7,12 @@ from PyQt5.QtGui import QImage
 
 from models import Darknet
 from utils.visualize import Visualize
-from utils.opc_client import OpcClient
+from opc_client import OpcClient
 from config.config import *
 from utils.utils import non_max_suppression, load_classes, calc_fps
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import IntrusionHandling
-from utils.video_stream import VideoLoader
+from video_stream import VideoLoader
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
