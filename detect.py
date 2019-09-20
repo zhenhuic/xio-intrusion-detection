@@ -28,12 +28,15 @@ def get_model(config_path, img_size, weights_path, device):
 
 
 def inference(model, input_tensor, device, num_classes, conf_thres, nms_thres):
-    input_tensor = input_tensor.to(device)
-    # print(input_tensor.shape)
     try:
+        torch.cuda.empty_cache()
+        input_tensor = input_tensor.to(device)
+        # print(input_tensor.shape)
+
         output = model(input_tensor)
         preds = non_max_suppression(output, conf_thres, nms_thres)
     except RuntimeError as e:
+        torch.cuda.empty_cache()
         preds = [None for _ in range(input_tensor.shape[0])]
         print(e)
         logging.error(e)
@@ -131,7 +134,7 @@ def detect_main(qthread):
         for name in judgements_dict.keys():
             if judgements_dict[name]:
                 timestr = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
-                qthread.text_append.emit(timestr + name + ' 异常闯入')
+                qthread.text_append.emit(timestr + name + '启动连锁保护')
 
 
 if __name__ == '__main__':
