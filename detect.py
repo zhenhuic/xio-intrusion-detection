@@ -12,7 +12,7 @@ from config.config import *
 from utils.utils import non_max_suppression, load_classes, calc_fps
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import IntrusionHandling
-from test_video_stream import VideoLoader
+from utils.video_stream import VideoLoader
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
