@@ -64,7 +64,7 @@ class OpcClient:
                 logging.warning(name + ' 工位' + ' 机器静止')
                 return False
 
-        except Exception:
+        except ConnectionResetError:
             # 如果刚刚没有重连过，那么尝试重新连接，
             # 否则表示刚刚重新连接过仍然出现异常，则退出程序
             if not self.just_reconnected:
