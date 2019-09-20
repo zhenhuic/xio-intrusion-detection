@@ -29,7 +29,7 @@ def get_model(config_path, img_size, weights_path, device):
 
 def inference(model, input_tensor, device, num_classes, conf_thres, nms_thres):
     try:
-        torch.cuda.empty_cache()
+        torch.cuda.empty_cache()  # 修复 RuntimeError: cuDNN error: CUDNN_STATUS_EXECUTION_FAILED
         input_tensor = input_tensor.to(device)
         # print(input_tensor.shape)
 
@@ -134,7 +134,7 @@ def detect_main(qthread):
         for name in judgements_dict.keys():
             if judgements_dict[name]:
                 timestr = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
-                qthread.text_append.emit(timestr + name + '启动连锁保护')
+                qthread.text_append.emit(timestr + name + ' 启动连锁保护')
 
 
 if __name__ == '__main__':
