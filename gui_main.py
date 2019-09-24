@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import logging
@@ -9,7 +10,7 @@ from PyQt5.QtGui import QImage, QPixmap
 # from utils.main_window import Ui_MainWindow
 from utils.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
-import os
+from monitor import monitor
 
 os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
 
@@ -22,16 +23,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                               time.localtime()) + '启动检测...')
         self.statusbar.showMessage('系统初始化...')
 
-        th = DetectionThread(self)
-        th.video_1_change_pixmap.connect(self.set_frame_1)
-        th.video_2_change_pixmap.connect(self.set_frame_2)
-        th.video_3_change_pixmap.connect(self.set_frame_3)
-        th.video_4_change_pixmap.connect(self.set_frame_4)
-        th.video_5_change_pixmap.connect(self.set_frame_5)
-        th.record_change_pixmap.connect(self.set_record)
-        th.text_append.connect(self.append_text)
-        th.status_update.connect(self.update_status_message)
-        th.start()
+        dth = DetectionThread(self)
+        dth.video_1_change_pixmap.connect(self.set_frame_1)
+        dth.video_2_change_pixmap.connect(self.set_frame_2)
+        dth.video_3_change_pixmap.connect(self.set_frame_3)
+        dth.video_4_change_pixmap.connect(self.set_frame_4)
+        dth.video_5_change_pixmap.connect(self.set_frame_5)
+        dth.record_change_pixmap.connect(self.set_record)
+        dth.text_append.connect(self.append_text)
+        dth.status_update.connect(self.update_status_message)
+        dth.start()
+
+        mth = MonitorThread(self)
+        mth.start()
+
         # print(self.videoLabel.size())
         # print(self.recordLabel.size())
 
@@ -122,6 +127,11 @@ class DetectionThread(QThread):
     def run(self):
         logging.info('开始检测')
         detect_main(self)
+
+
+class MonitorThread(QThread):
+    def run(self):
+        monitor()
 
 
 def except_hook(cls, exception, traceback):

@@ -1,5 +1,6 @@
 import time
 import logging
+from threading import Thread
 
 import cv2
 import torch
@@ -98,10 +99,14 @@ def detect_main(qthread):
     show_fps = 'FPS: ??'
 
     logging.info('Enter detection main loop process')
+
     exception_flag = False
-    while not exception_flag:
+    global monitor_flag
+
+    while not exception_flag:  # 检测程序主循环
+        if not monitor_flag:
+            monitor_flag = True
         # prepare frame tensors before inference
-        # frames_dict = capture_one_frame(video_streams_dict)
         frames_dict = video_loader.getitem()
         input_tensor = []
         for name in frames_dict.keys():
