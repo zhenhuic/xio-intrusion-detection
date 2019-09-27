@@ -1,9 +1,11 @@
 import logging
 import threading
 import sys
+import time
 
 from opcua import Client
 from opcua import ua
+from opcua.common.node import Node
 
 
 class OpcClient:
@@ -43,26 +45,36 @@ class OpcClient:
         return node, value
 
     @staticmethod
-    def stop_it(node):
+    def stop_it(node: Node):
         node.set_attribute(ua.AttributeIds.Value,
                            ua.DataValue(variant=ua.Variant(True)))
 
-    def stop_it_if_working(self, name) -> bool:
+    @staticmethod
+    def reset(node: Node) -> None:
+        node.set_attribute(ua.AttributeIds.Value,
+                           ua.DataValue(variant=ua.Variant(False)))
+
+    def stop_it_if_working(self, name):
         try:
             node, value = self.node_value(name)
 
             if self.just_reconnected:  # 如果重新连接后成功读取节点信息，则标志置 False
                 self.just_reconnected = False
 
-            if not value:  # Value 为 False 表示机器正在运作，否则表示机器静止
+            if name == 'zhuanjixia' or name == 'penfenshang':  # 先写 0，再写 1
+                self.reset(node)
+                time.sleep(0.2)
                 self.stop_it(node)
                 logging.warning(name + ' 工位' + ' 安全系统主动停机')
                 print(name + ' 异常闯入，安全系统主动停机！！')
-                return True
             else:
-                print('异常闯入，机器静止')
-                logging.warning(name + ' 工位' + ' 机器静止')
-                return False
+                if not value:  # Value 为 False 表示机器正在运作，否则表示机器静止
+                    self.stop_it(node)
+                    logging.warning(name + ' 工位' + ' 安全系统主动停机')
+                    print(name + ' 异常闯入，安全系统主动停机！！')
+                else:
+                    print('异常闯入，机器静止')
+                    logging.warning(name + ' 工位' + ' 机器静止')
 
         except ConnectionResetError:
             # 如果刚刚没有重连过，那么尝试重新连接，
