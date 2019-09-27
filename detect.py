@@ -131,6 +131,14 @@ def detect_main(qthread):
         qimage = array_to_QImage(img, (780, 430))
         qthread.video_1_change_pixmap.emit(qimage)
 
+        if judgements_dict[vis_name]:
+            qimage = array_to_QImage(img, (358, 243))
+            qthread.record_change_pixmap.emit(qimage)
+        for name in judgements_dict.keys():
+            if judgements_dict[name]:
+                timestr = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+                qthread.text_append.emit(timestr + name + ' 启动联锁保护')
+
         prevs_img = vis_imgs_dict[prevs_vis_name]
         vis_imgs_dict[vis_name] = prevs_img
         vis_imgs_dict.pop(prevs_vis_name)
@@ -147,15 +155,6 @@ def detect_main(qthread):
                 qthread.video_5_change_pixmap.emit(qimage)
             else:
                 raise RuntimeError("No so many QLabel!")
-
-
-        if judgements_dict[vis_name]:
-            qimage = array_to_QImage(img, (358, 243))
-            qthread.record_change_pixmap.emit(qimage)
-        for name in judgements_dict.keys():
-            if judgements_dict[name]:
-                timestr = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
-                qthread.text_append.emit(timestr + name + ' 启动连锁保护')
 
 
 if __name__ == '__main__':
