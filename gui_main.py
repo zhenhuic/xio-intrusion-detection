@@ -11,7 +11,7 @@ from utils.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
 import os
 
-os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
+# os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
