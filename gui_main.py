@@ -10,7 +10,6 @@ from PyQt5.QtGui import QImage, QPixmap
 # from utils.main_window import Ui_MainWindow
 from utils.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
-from monitor import monitor
 
 os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
 
@@ -33,9 +32,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dth.text_append.connect(self.append_text)
         dth.status_update.connect(self.update_status_message)
         dth.start()
-
-        mth = MonitorThread(self)
-        mth.start()
 
         # print(self.videoLabel.size())
         # print(self.recordLabel.size())
@@ -127,11 +123,6 @@ class DetectionThread(QThread):
     def run(self):
         logging.info('开始检测')
         detect_main(self)
-
-
-class MonitorThread(QThread):
-    def run(self):
-        monitor()
 
 
 def except_hook(cls, exception, traceback):
