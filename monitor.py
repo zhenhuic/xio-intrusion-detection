@@ -1,6 +1,8 @@
-import time
-import pymysql
 import threading
+import time
+
+import pymysql
+import serial
 
 
 class MySql:
@@ -56,6 +58,17 @@ class MySql:
 class WarningLight:
     def __init__(self, port):
         self.port = port
+        self.serial = None
+
+    def __connect(self):
+        ser = serial.Serial(self.port)
+        return ser
+
+    def alarm(self):
+        self.serial.write([])  # TODO
+
+    def shut_up(self):
+        self.serial.write([])  # TODO
 
 
 class Monitor:
