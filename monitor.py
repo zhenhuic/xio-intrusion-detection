@@ -1,7 +1,11 @@
 import time
 
 from config.config import monitor_flag
+<<<<<<< Updated upstream
 # import pymysql
+=======
+import pymysql
+>>>>>>> Stashed changes
 
 
 class MySql:
