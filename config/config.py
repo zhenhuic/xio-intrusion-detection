@@ -67,9 +67,6 @@ excluded_objects_dict = {
     'baobantongyong': [],
 }
 
-# 监听主循环程序是否在正常执行的标志
-monitor_flag = False
-
 # 是否连接OPC服务器，执行紧急停机
 open_opc = False
 
