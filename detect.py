@@ -14,6 +14,7 @@ from utils.utils import non_max_suppression, load_classes, calc_fps
 from utils.transform import transform, stack_tensors, preds_postprocess
 from intrusion_handling import IntrusionHandling
 from video_stream import VideoLoader
+from monitor import MySql
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -57,13 +58,14 @@ def array_to_QImage(img, size):
 def change_vis_stream(index):
     global vis_name
     global prevs_vis_name
-
     prevs_vis_name = vis_name
     vis_name = list(video_stream_paths_dict.keys())[index]
 
 
 @torch.no_grad()
 def detect_main(qthread):
+    mysql = MySql()  # 用于写入程序运行时间戳
+
     device = torch.device(device_name)
     model = get_model(config_path, img_size, weights_path, device)
     logging.info('Model initialized')
@@ -80,9 +82,6 @@ def detect_main(qthread):
         logging.warning('OPC Client does not create')
 
     qthread.status_update.emit('读取视频流')
-    # video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
-    #                                               list(video_stream_paths_dict.keys()),
-    #                                               switch_mask=switch_mask)
     video_loader = VideoLoader(video_stream_paths_dict)
 
     logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
@@ -100,12 +99,17 @@ def detect_main(qthread):
 
     logging.info('Enter detection main loop process')
 
-    exception_flag = False
-    global monitor_flag
+    writer_interval = 300  # 写入数据可是帧数间隔
+    count = 0
 
+    exception_flag = False
     while not exception_flag:  # 检测程序主循环
-        if not monitor_flag:
-            monitor_flag = True
+        if count < writer_interval:
+            count += 1
+        else:
+            mysql.asynchronous_insert_timestamp()  # 异步写入时间戳
+            count = 0
+
         # prepare frame tensors before inference
         frames_dict = video_loader.getitem()
         input_tensor = []

@@ -1,62 +1,93 @@
 import time
-
-from config.config import monitor_flag
-<<<<<<< Updated upstream
-# import pymysql
-=======
 import pymysql
->>>>>>> Stashed changes
+import threading
 
 
 class MySql:
     def __init__(self):
-        self.server = '10.19.3.35'
-        self.port = 3306
-        self.user = "root"
-        self.password = "123456"
-        self.db = "shijue"
-        self.conn = self._connect()  # 在创建对象时就创建连接
+        self.config = {
+            'host': '10.19.3.35',
+            'user': 'root',
+            'password': '123456',
+            'database': 'intrusion_detection'
+        }
+        self.conn = None
 
-    def _connect(self):
-        # 如果连接断开，则重新连接
-        conn = pymysql.Connect(host=self.server, port=self.port, user=self.user, password=self.password,
-                               database=self.db)
-        print("MySQL已连接")
-        return conn
-
-    def read_flag(self):
-        self.conn.ping(reconnect=True)
+    def connect(self):
         try:
-            sql = ''
-            cursor = self.conn.cursor()
-            cursor.execute(sql)
-            flag = cursor.fetchall()
-            cursor.close()
-            return flag
+            self.conn = pymysql.Connect(**self.config)
+            print("MySQL已连接")
         except Exception as e:
-            raise RuntimeError('数据库读取失败')
+            print('无法连接数据库！')
+
+    def insert_timestamp(self):
+        self.connect()
+        try:
+            with self.conn.cursor() as cursor:
+                stamp = int(time.time())
+                sql = "INSERT INTO monitor(timestamp) VALUES(%s)"
+                cursor.execute(sql, stamp)
+            self.conn.commit()
+        except Exception:
+            print('数据库写入失败！')
+        finally:
+            if self.conn is not None:
+                self.conn.close()
+
+    def asynchronous_insert_timestamp(self):
+        th = threading.Thread(target=self.insert_timestamp)
+        th.start()
+
+    def read_latest_record(self) -> tuple:
+        self.connect()
+        try:
+            with self.conn.cursor() as cursor:
+                sql = "SELECT timestamp FROM monitor ORDER BY id DESC LIMIT 1;"
+                cursor.execute(sql)
+                data = cursor.ferchone()
+            return data
+        except Exception:
+            print('数据库写入失败！')
+        finally:
+            if self.conn is not None:
+                self.conn.close()
 
 
-def monitor():
-    started = False
-    global monitor_flag
-    while True:
-        if not started:
-            if monitor_flag:
-                started = True
-                print('The detection process start')
-            else:
-                time.sleep(5)
+class WarningLight:
+    def __init__(self, port):
+        self.port = port
+
+
+class Monitor:
+    def __init__(self, database: MySql, warning_light: WarningLight):
+        self.db = database
+        self.light = warning_light
+
+        self.previous_record = None
+
+    def updated(self) -> bool:
+        timestamp = self.db.read_latest_record()[0]
+        if self.previous_record is None:
+            self.previous_record = timestamp
+            return True
         else:
-            if monitor_flag:
-                monitor_flag = False
-                # mysql TODO
-                print("Is alive")
+            if timestamp <= self.previous_record:
+                return False
             else:
-                print('The process is dead')
+                return True
 
-            time.sleep(10)
+    def run(self):
+        while True:
+            if self.updated():
+                print('It is alive.')
+            else:
+                print('The process is dead!')
+            time.sleep(60)
 
 
 if __name__ == '__main__':
-    monitor()
+    mysql = MySql()
+    light = WarningLight('COM4')
+    monitor = Monitor(mysql, light)
+
+    monitor.run()
