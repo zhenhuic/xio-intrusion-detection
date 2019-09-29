@@ -17,6 +17,7 @@ from video_stream import VideoLoader
 from monitor import MySql
 # Ignore warnings
 import warnings
+
 warnings.filterwarnings("ignore")
 
 
@@ -99,7 +100,7 @@ def detect_main(qthread):
 
     logging.info('Enter detection main loop process')
 
-    writer_interval = 300  # 写入数据可是帧数间隔
+    writer_interval = 300  # 写入数据库的帧数间隔
     count = 0
 
     exception_flag = False
@@ -157,7 +158,6 @@ def detect_main(qthread):
             else:
                 raise RuntimeError("No so many QLabel!")
 
-
         if judgements_dict[vis_name]:
             qimage = array_to_QImage(img, (358, 243))
             qthread.record_change_pixmap.emit(qimage)
@@ -165,7 +165,3 @@ def detect_main(qthread):
             if judgements_dict[name]:
                 timestr = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
                 qthread.text_append.emit(timestr + name + ' 启动连锁保护')
-
-
-if __name__ == '__main__':
-    detect_main(None)
