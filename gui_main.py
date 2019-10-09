@@ -15,8 +15,9 @@ os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self):
+    def __init__(self, detection_flag):
         super().__init__()
+        self.detection_flag = detection_flag
         self.setupUi(self)
         self.textBrowser.append(time.strftime('%Y-%m-%d %H:%M:%S ',
                                               time.localtime()) + '启动检测...')
@@ -120,6 +121,10 @@ class DetectionThread(QThread):
     text_append = pyqtSignal(str)
     status_update = pyqtSignal(str)
 
+    def __init__(self, main_window):
+        super().__init__(main_window)
+        self.detection_flag = main_window.detection_flag
+
     def run(self):
         logging.info('开始检测')
         detect_main(self)
@@ -129,8 +134,8 @@ def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
 
 
-def main():
-    sys.excepthook = except_hook  # print the traceback to stdout/stderr
+def gui_main(detection_flag):
+    # sys.excepthook = except_hook  # print the traceback to stdout/stderr
 
     strftime = time.strftime('%Y-%m-%d_%H_%M_%S', time.localtime())
     logging.basicConfig(filename='logs/' + strftime + '.log', level=logging.INFO,
@@ -138,10 +143,12 @@ def main():
     logging.info('启动检测程序')
 
     app = QApplication(sys.argv)
-    win = MainWindow()
+    win = MainWindow(detection_flag)
     win.show()
     sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
-    main()
+    import multiprocessing
+    flag = multiprocessing.Value('i', 0)
+    gui_main(flag)

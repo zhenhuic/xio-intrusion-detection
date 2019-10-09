@@ -65,7 +65,7 @@ def change_vis_stream(index):
 
 @torch.no_grad()
 def detect_main(qthread):
-    mysql = MySql()  # 用于写入程序运行时间戳
+    # mysql = MySql()  # 用于写入程序运行时间戳
 
     device = torch.device(device_name)
     model = get_model(config_path, img_size, weights_path, device)
@@ -100,7 +100,7 @@ def detect_main(qthread):
 
     logging.info('Enter detection main loop process')
 
-    writer_interval = 300  # 写入数据库的帧数间隔
+    writer_interval = 10  # 写入数据库的帧数间隔
     count = 0
 
     exception_flag = False
@@ -108,9 +108,10 @@ def detect_main(qthread):
         if count < writer_interval:
             count += 1
         else:
-            mysql.asynchronous_insert_timestamp()  # 异步写入时间戳
+            qthread.detection_flag.value = 1
+            # mysql.asynchronous_insert_timestamp()  # 异步写入时间戳
             count = 0
-
+            # time.sleep(10)
         # prepare frame tensors before inference
         frames_dict = video_loader.getitem()
         input_tensor = []
