@@ -1,5 +1,6 @@
 import threading
 import time
+from multiprocessing import Value
 
 import pymysql
 import serial
@@ -71,7 +72,7 @@ class WarningLight:
         self.serial.write([])  # TODO
 
 
-class Monitor:
+class MonitorWithMysql:
     def __init__(self, database: MySql, warning_light: WarningLight):
         self.db = database
         self.light = warning_light
@@ -98,9 +99,18 @@ class Monitor:
             time.sleep(60)
 
 
+def is_alive(flag: Value):
+    value = flag.value
+    if value == 1:
+        flag.value = 0
+        return True
+    else:
+        return False
+
+
 if __name__ == '__main__':
     mysql = MySql()
     light = WarningLight('COM4')
-    monitor = Monitor(mysql, light)
+    monitor = MonitorWithMysql(mysql, light)
 
     monitor.run()
