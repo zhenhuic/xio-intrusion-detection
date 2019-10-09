@@ -1,1 +1,1 @@
-D:\Anaconda3\envs\torch\python.exe E:/Lab417/xio-intrusion-detection/safe_launch.py
+D:\Anaconda3\envs\torch\python.exe E:/Lab417/xio-intrusion-detection/run_forever.py

@@ -25,4 +25,3 @@ if __name__ == '__main__':
             time.sleep(3)
             detection_flag = Value('i', 0)
             p = start_detect(detection_flag)
-
