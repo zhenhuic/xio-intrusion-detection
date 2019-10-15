@@ -79,9 +79,7 @@ def detect_main(qthread):
         logging.warning('OPC Client does not create')
 
     qthread.status_update.emit('读取视频流')
-    # video_streams_dict = initialize_video_streams(list(video_stream_paths_dict.values()),
-    #                                               list(video_stream_paths_dict.keys()),
-    #                                               switch_mask=switch_mask)
+
     video_loader = VideoLoader(video_stream_paths_dict)
 
     logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
@@ -97,11 +95,20 @@ def detect_main(qthread):
     accum_time, curr_fps = 0, 0
     show_fps = 'FPS: ??'
 
+    update_interval = 100  # 更新 detection_flag 的帧数间隔
+    count = 0
+
     logging.info('Enter detection main loop process')
     exception_flag = False
     while not exception_flag:
+        if count < update_interval:
+            count += 1
+        else:
+            qthread.detection_flag.value = 1
+            count = 0
+            # time.sleep(10)  # 模拟检测程序卡住 10s
+
         # prepare frame tensors before inference
-        # frames_dict = capture_one_frame(video_streams_dict)
         frames_dict = video_loader.getitem()
         input_tensor = []
         for name in frames_dict.keys():
