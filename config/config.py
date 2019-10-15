@@ -24,6 +24,7 @@ switch_mask = (1, 1, 1, 1, 1)
 
 # 需要显示的视频流名称
 vis_name = 'sawanini_1'
+prevs_vis_name = vis_name
 
 
 # 禁区掩码图像路径
@@ -36,7 +37,7 @@ masks_paths_dict = {
 }
 
 # 判断人的边界框进入禁区的阈值
-inter_threshold = 0.2
+inter_threshold = 0.15
 
 # 设定待检测目标物体最大边界框面积，
 # 排除模型误检中较大的物体
@@ -74,11 +75,11 @@ opc_url = 'opc.tcp://10.19.3.35:49320'
 
 # 机器工位节点
 nodes_dict = {
-    'sawanini_1': 'ns=2;s=sawaninigaopin.OP30-S71214C.轿壁小车2光幕被报警',
+    'sawanini_1': 'ns=2;s=sawaninigaopin.OP30-S71214C.安全检测触发',
     'sawanini_2': 'ns=2;s=xinsawaninihoudaoxianti.QCPU.光栅触发暂停标志',
     'zhuanjixia': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.下折弯安全检测触发',
-    'penfenshang': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.上喷粉站报警',  # TODO 同时给两个点位置 1
-    'baobantongyong': 'ns=2;s=weibentongyongxian.S7300.机器人停止',
+    'penfenshang': 'ns=2;s=laozhuanjixian.shangpenfenxiazhewanCJ2M.上喷粉安全检测触发',
+    'baobantongyong': 'ns=2;s=weibentongyongxian.S7300.安全检测触发',
 }
 
 # -------------- detection model configuration -----------------
