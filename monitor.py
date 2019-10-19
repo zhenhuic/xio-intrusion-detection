@@ -99,7 +99,7 @@ class MonitorWithMysql:
             time.sleep(60)
 
 
-def is_alive(flag: Value):
+def is_alive(flag: Value) -> bool:
     value = flag.value
     if value == 1:
         flag.value = 0
