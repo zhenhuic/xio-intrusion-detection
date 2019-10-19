@@ -11,7 +11,7 @@ def subprocess_run(detection_flag: Value) -> Process:
 
 
 if __name__ == '__main__':
-    detection_flag = Value('i', 0)  # variable with shared memory between multi processes
+    detection_flag = Value('i', 0)  # variable(integer) with shared memory between multi processes
     p = subprocess_run(detection_flag)
 
     while True:
