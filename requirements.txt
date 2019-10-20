@@ -1,3 +1,4 @@
+wxpy
 tqdm
 opcua
 opencv-python
