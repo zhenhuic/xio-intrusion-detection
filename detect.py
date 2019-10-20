@@ -134,6 +134,7 @@ def detect_main(qthread):
         # handle judgement results
         handling.handle_judgement(judgements_dict, vis_imgs_dict)
 
+        # emit the information to the front end
         img = vis_imgs_dict[vis_name]
         qimage = array_to_QImage(img, (780, 430))
         qthread.video_1_change_pixmap.emit(qimage)
