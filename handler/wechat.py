@@ -52,7 +52,7 @@ class WeChat:
         if self.group is not None:
             try:
                 self.group.send_image(img_path)
-                # self._wait_minute(node)
+                # self._wait_minute(node)  # TODO
             except ResponseError as e:
                 print(e)
                 print(e.err_code, e.err_msg, "微信机器人发送图片失败")
