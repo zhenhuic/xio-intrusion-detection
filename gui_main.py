@@ -7,9 +7,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtGui import QImage, QPixmap
 
 # from utils.main_window import Ui_MainWindow
-from utils.main_window import Ui_MainWindow
+from gui.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
-import os
+
 
 # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
 

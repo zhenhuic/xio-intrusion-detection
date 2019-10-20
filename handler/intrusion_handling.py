@@ -7,7 +7,7 @@ import logging
 import cv2
 import numpy as np
 
-from config.config import excluded_objects_dict, inter_threshold, \
+from configs.config import excluded_objects_dict, inter_threshold, \
     max_object_bbox_area_dict, min_object_bbox_area_dict
 
 

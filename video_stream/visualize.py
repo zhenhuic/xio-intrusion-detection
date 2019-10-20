@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 from utils.utils import plot_one_box
-from config.config import max_object_bbox_area_dict,\
+from configs.config import max_object_bbox_area_dict,\
     min_object_bbox_area_dict
 
 

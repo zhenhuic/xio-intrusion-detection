@@ -1,7 +1,7 @@
 import time
 from multiprocessing import Process, Value
 from gui_main import gui_main
-from monitor import is_alive
+from handler.monitor import is_alive
 
 
 def subprocess_run(detection_flag: Value) -> Process:

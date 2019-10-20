@@ -5,14 +5,14 @@ import cv2
 import torch
 from PyQt5.QtGui import QImage
 
-from models import Darknet
-from utils.visualize import Visualize
-from opc_client import OpcClient
-from config.config import *
+from model.models import Darknet
+from video_stream.visualize import Visualize
+from handler.opc_client import OpcClient
+from configs.config import *
 from utils.utils import non_max_suppression, load_classes, calc_fps
-from utils.transform import transform, stack_tensors, preds_postprocess
-from intrusion_handling import IntrusionHandling
-from video_stream import VideoLoader
+from model.transform import transform, stack_tensors, preds_postprocess
+from handler.intrusion_handling import IntrusionHandling
+from video_stream.video_stream import VideoLoader
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")

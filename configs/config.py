@@ -1,20 +1,20 @@
 # 视频流 URL
-video_stream_paths_dict = {
-    'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
-    'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-    'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
-    'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
-    'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
-}
+# video_stream_paths_dict = {
+#     'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
+#     'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
+#     'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
+#     'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+#     'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
+# }
 
 # for local test
-# video_stream_paths_dict = {
-#     'sawanini_1': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-#     'sawanini_2': 'E:/Datasets/XIO/intrusion_detection/outputhou.avi',
-#     'zhuanjixia': 'E:/Datasets/XIO/intrusion_detection/still_1.avi',
-#     'penfenshang': 'E:/Datasets/XIO/intrusion_detection/still_2.avi',
-#     'baobantongyong': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-# }
+video_stream_paths_dict = {
+    'sawanini_1': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+    'sawanini_2': 'E:/Datasets/XIO/intrusion_detection/outputhou.avi',
+    'zhuanjixia': 'E:/Datasets/XIO/intrusion_detection/still_1.avi',
+    'penfenshang': 'E:/Datasets/XIO/intrusion_detection/still_2.avi',
+    'baobantongyong': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+}
 
 # 视频帧的形状
 frame_shape = (480, 640)
@@ -68,7 +68,7 @@ excluded_objects_dict = {
 }
 
 # 是否连接OPC服务器，执行紧急停机
-open_opc = True
+open_opc = False
 
 # OPC 服务器 URL
 opc_url = 'opc.tcp://10.19.3.35:49320'
@@ -84,9 +84,9 @@ nodes_dict = {
 
 # -------------- detection model configuration -----------------
 img_size = 416  # size of each image dimension
-config_path = 'config/yolov3.cfg'  # path to model config file
+config_path = 'configs/yolov3.cfg'  # path to model configs file
 weights_path = 'weights/yolov3.weights'  # path to weights file
-class_path = 'config/coco.names'  # path to class label file
+class_path = 'configs/coco.names'  # path to class label file
 conf_thres = 0.8  # object confidence threshold
 nms_thres = 0.4  # iou threshold for non-maximum suppression
 device_name = 'cuda:0'  # use cuda if available

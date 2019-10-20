@@ -2,6 +2,7 @@ import logging
 import threading
 import sys
 import time
+from socket import timeout
 
 from opcua import Client
 from opcua import ua
@@ -21,9 +22,12 @@ class OpcClient:
         try:
             self.client.connect()
             logging.info("OPC 服务器已连接")
-        except Exception:
-            print("OPC 服务器连接失败，系统自动退出！")
+        except timeout:
             logging.info("OPC 服务器连接失败，系统自动退出！")
+            raise TimeoutError("OPC服务器连接超时！")
+        except Exception as e:
+            print(e)
+            print("OPC 服务器连接失败，系统自动退出！")
             print("")
             sys.exit(1)
 
@@ -32,7 +36,7 @@ class OpcClient:
         self.connect()
         self.just_reconnected = True
 
-    def node_value(self, name):
+    def node_value(self, name):  # TODO
         node_id = self.nodes_dict[name]
         node = self.client.get_node(node_id)
         try:
