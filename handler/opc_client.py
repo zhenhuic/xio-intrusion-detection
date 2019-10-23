@@ -23,7 +23,6 @@ class OpcClient:
             self.client.connect()
             logging.info("OPC 服务器已连接")
         except timeout:
-            logging.info("OPC 服务器连接失败，系统自动退出！")
             raise TimeoutError("OPC服务器连接超时！")
         except Exception as e:
             print(e)
@@ -36,7 +35,7 @@ class OpcClient:
         self.connect()
         self.just_reconnected = True
 
-    def node_value(self, name):  # TODO
+    def node_value(self, name):  # TODO 重写
         node_id = self.nodes_dict[name]
         node = self.client.get_node(node_id)
         try:
