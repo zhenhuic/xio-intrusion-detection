@@ -10,7 +10,7 @@ def subprocess_run(detection_flag: Value) -> Process:
     return p
 
 
-if __name__ == '__main__':
+def main():
     detection_flag = Value('i', 0)  # variable(integer) with shared memory between multi processes
     p = subprocess_run(detection_flag)
 
@@ -25,3 +25,7 @@ if __name__ == '__main__':
             print('reboot')
             detection_flag = Value('i', 0)
             p = subprocess_run(detection_flag)
+
+
+if __name__ == '__main__':
+    main()
