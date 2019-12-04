@@ -59,6 +59,7 @@ min_object_bbox_area_dict = {
 }
 
 # 排除掉可能被错识别为人的目标物体区域
+# (x1, y1, x2, y2)
 excluded_objects_dict = {
     'sawanini_1': [],
     'sawanini_2': [],
