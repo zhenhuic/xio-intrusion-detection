@@ -78,14 +78,13 @@ def detect_main(qthread):
         qthread.text_append.emit(strftime + ' OPC 服务器未连接')
         logging.warning('OPC Client does not create')
 
-    qthread.status_update.emit('读取视频流')
+    visualize = Visualize(masks_paths_dict)
+    handling = IntrusionHandling(masks_paths_dict, opc_client)
 
+    qthread.status_update.emit('读取视频流')
     video_loader = VideoLoader(video_stream_paths_dict)
 
     logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
-
-    visualize = Visualize(masks_paths_dict)
-    handling = IntrusionHandling(masks_paths_dict, opc_client)
 
     classes = load_classes(class_path)  # Extracts class labels from file
 
