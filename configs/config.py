@@ -23,11 +23,11 @@ frame_shape = (480, 640)
 switch_mask = (1, 1, 1, 1, 1)
 
 # 是否开启微信机器人
-open_wechat_bot = True
-# 发送对象
-wechat_group = "测试微信机器人"
+open_wechat_bot = False
+# 发送的群组 群组必须被添加到通讯录
+wechat_group = "机器人安全监测"
 # 发送异常信息的时间间隔(秒)
-send_interval = 60
+send_interval = 30
 
 # 需要显示的视频流名称
 vis_name = 'sawanini_1'
