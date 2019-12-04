@@ -129,7 +129,6 @@ class IntrusionHandling:
         logging.info(name + ' 工位' + ' 异常图片已保存')
 
         if open_wechat_bot:
-            self.wechat.send_msg(name, name)
             self.wechat.send_image(img_path, name)
 
 

@@ -34,7 +34,7 @@ class WeChat:
     def _sendable(self, node: str) -> bool:
         curr = int(time.time())
         prev = self.prev_send_timestamp[node]
-        interval = prev - curr
+        interval = curr - prev
 
         if interval > send_interval:
             self.prev_send_timestamp[node] = curr
@@ -43,8 +43,9 @@ class WeChat:
             return False
 
     def send_msg(self, msg: str, node: str):
-        if not self._sendable(node):
-            return
+        # if not self._sendable(node):
+        #     print("no")
+        #     return
         if self.group is not None:
             try:
                 self.group.send_msg(msg)
@@ -58,6 +59,7 @@ class WeChat:
             return
         if self.group is not None:
             try:
+                self.group.send_msg(node)
                 self.group.send_image(img_path)
                 # self._wait_minute(node)  # TODO
             except ResponseError as e:
@@ -76,7 +78,9 @@ class WeChat:
 
 
 if __name__ == '__main__':
-    wechat = WeChat("陈振辉", video_stream_paths_dict)
+    wechat = WeChat("测试微信机器人", video_stream_paths_dict)
+    wechat.send_msg('31s252.png', 'sawanini_1')
+    print("....")
     wechat.async_send_msg('..\\images\\records\\vlcsnap-2019-08-02-16h02m31s252.png', 'sawanini_1')
     wechat.async_send_image('..\\images\\records\\vlcsnap-2019-08-02-16h02m31s252.png', 'sawanini_1')
     # wechat._send_image('..\\images\\records\\vlcsnap-2019-08-02-16h02m31s252.png', 'sawanini_1')
