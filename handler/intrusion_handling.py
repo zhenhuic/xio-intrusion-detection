@@ -7,8 +7,10 @@ import logging
 import cv2
 import numpy as np
 
-from configs.config import excluded_objects_dict, inter_threshold, \
-    max_object_bbox_area_dict, min_object_bbox_area_dict
+from handler.wechat import WeChat
+from configs.config import excluded_objects_dict, inter_threshold,\
+    video_stream_paths_dict, max_object_bbox_area_dict, \
+    min_object_bbox_area_dict, open_wechat_bot, wechat_group
 
 
 def bbox_inter_area(box1, box2):
@@ -54,6 +56,8 @@ class IntrusionHandling:
         self.opc_client = opc_client
         self.records_root = records_root
         self.lock = threading.Lock()
+        if open_wechat_bot:
+            self.wechat = WeChat(wechat_group, video_stream_paths_dict)
 
     @staticmethod
     def __get_mask(masks_path_dict):
@@ -111,9 +115,21 @@ class IntrusionHandling:
     def __save_record(self, name, img_array, event='intrusion'):
         strftime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
         img_name = event + '_' + strftime + '.jpg'
-        img_dir = self.records_root + name + '/'
+
+        # img_dir = self.records_root + name + '/'
         # if os.path.exists(img_dir + img_name):
         #     img_name = event + '_' + strftime + '_' + str(random.randint(0, 100)) + '.jpg'
 
-        cv2.imwrite(img_dir + img_name, img_array)
+        img_dir = os.path.join(self.records_root, name)
+        if not os.path.exists(img_dir):
+            os.makedirs(img_dir)
+        img_path = os.path.join(img_dir, img_name)
+
+        cv2.imwrite(img_path, img_array)
         logging.info(name + ' 工位' + ' 异常图片已保存')
+
+        if open_wechat_bot:
+            self.wechat.send_msg(name, name)
+            self.wechat.send_image(img_path, name)
+
+

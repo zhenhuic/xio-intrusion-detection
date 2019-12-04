@@ -22,6 +22,13 @@ frame_shape = (480, 640)
 # 各视频流是否检测的开关，1 表示检测， 0 表示不检测
 switch_mask = (1, 1, 1, 1, 1)
 
+# 是否开启微信机器人
+open_wechat_bot = True
+# 发送对象
+wechat_group = "测试微信机器人"
+# 发送异常信息的时间间隔(秒)
+send_interval = 60
+
 # 需要显示的视频流名称
 vis_name = 'sawanini_1'
 prevs_vis_name = vis_name
