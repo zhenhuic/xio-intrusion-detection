@@ -44,4 +44,4 @@ def build_deployment(proj_root: str, deploy: str, ignores: list):
 if __name__ == '__main__':
     proj_root = '../'
     deploy = '../../xio-intrusion-detection-deploy'
-    build_deployment(proj_root, deploy, ['.git', '.idea'])
+    build_deployment(proj_root, deploy, ['.git', '.idea', 'images/records'])
