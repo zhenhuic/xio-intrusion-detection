@@ -90,6 +90,12 @@ nodes_dict = {
     'baobantongyong': 'ns=2;s=weibentongyongxian.S7300.安全检测触发',
 }
 
+# 轮巡OPC节点状态的间隔时间(s)
+patrol_opc_nodes_interval = 30
+
+# 邮箱报警间隔时间(s)
+email_warning_interval = 3600
+
 # -------------- detection model configuration -----------------
 img_size = 416  # size of each image dimension
 config_path = 'configs/yolov3.cfg'  # path to model configs file

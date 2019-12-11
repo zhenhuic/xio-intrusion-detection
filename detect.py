@@ -1,5 +1,6 @@
 import time
 import logging
+from threading import Thread
 
 import cv2
 import torch
@@ -12,7 +13,9 @@ from configs.config import *
 from utils.utils import non_max_suppression, load_classes, calc_fps
 from model.transform import transform, stack_tensors, preds_postprocess
 from handler.intrusion_handling import IntrusionHandling
+from handler.send_email import Email
 from video_stream.video_stream import VideoLoader
+from configs.config import patrol_opc_nodes_interval, email_warning_interval
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -72,11 +75,14 @@ def detect_main(qthread):
         strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
         qthread.text_append.emit(strftime + ' OPC 服务器已连接')
         logging.info('OPC Client created')
+
     else:
         opc_client = None
         strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
         qthread.text_append.emit(strftime + ' OPC 服务器未连接')
         logging.warning('OPC Client does not create')
+
+    warning_email = Email()
 
     visualize = Visualize(masks_paths_dict)
     handling = IntrusionHandling(masks_paths_dict, opc_client)
@@ -90,7 +96,7 @@ def detect_main(qthread):
 
     qthread.status_update.emit('准备就绪')
     # for calculating inference fps
-    since = time.time()
+    since = clock_start = time.time()
     accum_time, curr_fps = 0, 0
     show_fps = 'FPS: ??'
 
@@ -106,6 +112,29 @@ def detect_main(qthread):
             qthread.detection_flag.value = 1
             count = 0
             # time.sleep(10)  # 模拟检测程序卡住 10s
+
+        curr_time = time.time()
+        if curr_time - clock_start > patrol_opc_nodes_interval:
+            clock_start = curr_time
+            try:
+                opc_client.patrol_nodes()
+            except RuntimeError as er:
+                strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+                msg = strftime + ' OPC服务失效,无法获取节点数据！！'
+                qthread.text_append.emit(msg)
+                print(msg)
+                logging.error('OPC服务失效,无法获取节点数据！！')
+
+                warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
+
+            except Exception as ex:
+                strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+                msg = strftime + ' OPC服务失效,无法获取节点数据！！未知错误'
+                qthread.text_append.emit(msg)
+                print(msg)
+                logging.error('OPC服务无法获取节点数据！！未知错误')
+
+                warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
         # prepare frame tensors before inference
         frames_dict = video_loader.getitem()
@@ -131,7 +160,10 @@ def detect_main(qthread):
         vis_imgs_dict = visualize.draw(frames_dict, preds_dict, judgements_dict, show_fps)
 
         # handle judgement results
-        handling.handle_judgement(judgements_dict, vis_imgs_dict)
+        try:
+            handling.handle_judgement(judgements_dict, vis_imgs_dict)
+        except RuntimeError as e:
+            print(e)
 
         # emit the information to the front end
         img = vis_imgs_dict[vis_name]
