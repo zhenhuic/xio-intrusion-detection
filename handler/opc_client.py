@@ -7,10 +7,13 @@ from socket import timeout
 from opcua import Client
 from opcua import ua
 from opcua.common.node import Node
+from opcua.ua.uaerrors import BadNodeIdUnknown
+
+from configs.config import patrol_opc_nodes_interval
 
 
 class OpcClient:
-    def __init__(self, opc_url, nodes_dict):
+    def __init__(self, opc_url: str, nodes_dict: dict):
         self.opc_url = opc_url
         self.nodes_dict = nodes_dict
         self.client = None
@@ -40,24 +43,45 @@ class OpcClient:
         node = self.client.get_node(node_id)
         try:
             value = node.get_value()
-        except Exception:
-            msg = '获取{}状态信息失败'.format(name)
+
+        except BadNodeIdUnknown as b:
+            msg = '获取{}状态信息失败: 节点不存在！'.format(name)
             print(msg)
             logging.warning(msg)
-            value = False
+            raise RuntimeError("获取 {} 状态信息失败: 节点不存在！".format(name))
+
+        except Exception as e:
+            msg = '读取{}点位状态信息未知错误！错误信息:{}'.format(name, e)
+            print(msg)
+            logging.warning(msg)
+            raise RuntimeError("获取 {} 状态信息失败: 未知错误！{}".format(node, e))
+
         return node, value
 
     @staticmethod
-    def stop_it(node: Node):
-        node.set_attribute(ua.AttributeIds.Value,
-                           ua.DataValue(variant=ua.Variant(True)))
+    def set_value(node_name: str, node: Node, value: bool) -> None:
+        """
+        节点赋值
+        :param node_name:
+        :param node:
+        :param value: True -> 停机，False -> 复位
+        :return: None
+        """
+        try:
+            node.set_attribute(ua.AttributeIds.Value,
+                               ua.DataValue(variant=ua.Variant(value)))
+        except BadNodeIdUnknown as b:
+            msg = '写入{}状态信息失败, 错误信息:节点不存在！'.format(node_name)
+            print(msg)
+            logging.warning(msg)
+            raise RuntimeError("写入 {} 状态信息失败: 节点不存在！".format(node_name))
+        except Exception as e:
+            msg = '写入{}状态信息失败!未知错误:{}'.format(node_name, e)
+            print(msg)
+            logging.warning(msg)
+            raise RuntimeError("写入 {} 状态信息失败!未知错误:{}".format(node_name, e))
 
-    @staticmethod
-    def reset(node: Node) -> None:
-        node.set_attribute(ua.AttributeIds.Value,
-                           ua.DataValue(variant=ua.Variant(False)))
-
-    def stop_it_if_working(self, name):
+    def stop_it(self, name):
         try:
             node, value = self.node_value(name)
 
@@ -65,14 +89,14 @@ class OpcClient:
                 self.just_reconnected = False
 
             if name == 'zhuanjixia' or name == 'penfenshang':  # 先写 0，再写 1
-                self.reset(node)
+                self.set_value(name, node, False)  # 复位
                 time.sleep(0.2)
-                self.stop_it(node)
+                self.set_value(name, node, True)  # 停机
                 logging.warning(name + ' 工位' + ' 安全系统主动停机')
                 print(name + ' 异常闯入，安全系统主动停机！！')
             else:
                 if not value:  # Value 为 False 表示机器正在运作，否则表示机器静止
-                    self.stop_it(node)
+                    self.set_value(name, node, True)  # 停机
                     logging.warning(name + ' 工位' + ' 安全系统主动停机')
                     print(name + ' 异常闯入，安全系统主动停机！！')
                 else:
@@ -84,10 +108,43 @@ class OpcClient:
             # 否则表示刚刚重新连接过仍然出现异常，则退出程序
             if not self.just_reconnected:
                 self.reconnect()
-                self.stop_it_if_working(name)
+                self.stop_it(name)
             else:
                 msg = '无法连接工位{}节点'.format(name)
                 print(msg)
                 logging.error(msg)
-                sys.exit(1)
+                raise RuntimeError("OPC连接失败！")
+        except RuntimeError as e:
+            raise e
+
+    # def patrol_nodes(self):
+    #     # opc_exception_flag = False
+    #     global opc_exception_flag
+    #     while True:
+    #         for name in self.nodes_dict.keys():
+    #             try:
+    #                 node, value = self.node_value(name)
+    #             except RuntimeError as er:
+    #                 opc_exception_flag = True
+    #                 print(er)
+    #             except Exception as ex:
+    #                 opc_exception_flag = True
+    #                 print(ex)
+    #         if opc_exception_flag:
+    #             raise RuntimeError("无法读取OPC数据!!")
+    #         time.sleep(patrol_nodes_interval)
+
+    def patrol_nodes(self):
+        for name in self.nodes_dict.keys():
+            try:
+                node, value = self.node_value(name)
+            except RuntimeError as er:
+                raise RuntimeError("无法读取OPC数据!! 节点不存在")
+            except Exception as ex:
+                raise RuntimeError("无法读取OPC数据!! 未知错误")
+
+
+
+
+
 
