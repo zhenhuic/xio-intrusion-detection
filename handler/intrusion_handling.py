@@ -7,9 +7,10 @@ import logging
 import cv2
 import numpy as np
 
+from handler.opc_client import OpcClient
 from handler.wechat import WeChat
 from configs.config import excluded_objects_dict, inter_threshold,\
-    video_stream_paths_dict, max_object_bbox_area_dict, \
+    video_stream_paths_dict, max_object_bbox_area_dict, open_opc, \
     min_object_bbox_area_dict, open_wechat_bot, wechat_group
 
 
@@ -51,7 +52,7 @@ def is_them(excluded_objects, box, thres=0.8):
 
 class IntrusionHandling:
 
-    def __init__(self, masks_path_dict, opc_client, records_root='images/records/'):
+    def __init__(self, masks_path_dict, opc_client: OpcClient, records_root='images/records/'):
         self.masks_dict = self.__get_mask(masks_path_dict)
         self.opc_client = opc_client
         self.records_root = records_root
@@ -101,7 +102,7 @@ class IntrusionHandling:
         for name in judgements_dict.keys():
             if judgements_dict[name]:
                 logging.warning(name + ' 工位' + ' 异常闯入')
-                if self.opc_client is not None:
+                if open_opc:
                     th1 = threading.Thread(target=self.__thread_safe_stop_working, args=(name,))
                     th1.start()
                 th2 = threading.Thread(target=self.__save_record, args=(name, vis_imgs_dict[name]))
@@ -109,8 +110,12 @@ class IntrusionHandling:
 
     def __thread_safe_stop_working(self, name):
         self.lock.acquire()
-        self.opc_client.stop_it_if_working(name)
-        self.lock.release()
+        try:
+            self.opc_client.stop_it(name)
+        except RuntimeError as e:
+            raise e
+        finally:
+            self.lock.release()
 
     def __save_record(self, name, img_array, event='intrusion'):
         strftime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
