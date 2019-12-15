@@ -15,7 +15,7 @@ from model.transform import transform, stack_tensors, preds_postprocess
 from handler.intrusion_handling import IntrusionHandling
 from handler.send_email import Email
 from video_stream.video_stream import VideoLoader
-from configs.config import patrol_opc_nodes_interval, email_warning_interval
+from configs.config import patrol_opc_nodes_interval, update_detection_flag_interval
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -89,33 +89,33 @@ def detect_main(qthread):
 
     qthread.status_update.emit('读取视频流')
     video_loader = VideoLoader(video_stream_paths_dict)
-
     logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
 
     classes = load_classes(class_path)  # Extracts class labels from file
-
     qthread.status_update.emit('准备就绪')
-    # for calculating inference fps
-    since = clock_start = time.time()
+
+    # 计时器开始的变量
+    since = patrol_opc_nodes_clock_start = update_detection_flag_clock_start = time.time()
+
+    # 用于后续计算检测FPS
     accum_time, curr_fps = 0, 0
     show_fps = 'FPS: ??'
-
-    update_interval = 100  # 更新 detection_flag 的帧数间隔
-    count = 0
 
     logging.info('Enter detection main loop process')
     exception_flag = False
     while not exception_flag:
-        if count < update_interval:
-            count += 1
-        else:
-            qthread.detection_flag.value = 1
-            count = 0
+        # 当前次循环的时间戳
+        curr_time = time.time()
+
+        if curr_time - update_detection_flag_clock_start > update_detection_flag_interval:
+            update_detection_flag_clock_start = curr_time
+            qthread.detection_flag.value = 1  # 更新 detection_flag
             # time.sleep(10)  # 模拟检测程序卡住 10s
 
-        curr_time = time.time()
-        if curr_time - clock_start > patrol_opc_nodes_interval:
-            clock_start = curr_time
+        # 隔一段时间轮巡读取一遍OPC状态信息，确认OPC服务正常与否
+        # if open_opc and curr_time - patrol_opc_nodes_clock_start > patrol_opc_nodes_interval:
+        if curr_time - patrol_opc_nodes_clock_start > patrol_opc_nodes_interval:
+            patrol_opc_nodes_clock_start = curr_time
             try:
                 opc_client.patrol_nodes()
             except RuntimeError as er:
@@ -124,7 +124,7 @@ def detect_main(qthread):
                 qthread.text_append.emit(msg)
                 print(msg)
                 logging.error('OPC服务失效,无法获取节点数据！！')
-
+                qthread.popup_message_box.emit("OPC服务异常，无法获取机器人节点数据, 系统失效！！\n请排查OPC软件异常后，重启系统\n\n联系电话: 13429129739")
                 warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
             except Exception as ex:
@@ -133,7 +133,7 @@ def detect_main(qthread):
                 qthread.text_append.emit(msg)
                 print(msg)
                 logging.error('OPC服务无法获取节点数据！！未知错误')
-
+                qthread.popup_message_box.emit("无法获取OPC服务节点数据, 系统失效！！\n请排查OPC软件问题，重启系统\n\n联系电话: 13429129739")
                 warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
         # prepare frame tensors before inference

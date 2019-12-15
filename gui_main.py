@@ -3,10 +3,9 @@ import time
 import logging
 
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QWidget
 from PyQt5.QtGui import QImage, QPixmap
 
-# from utils.main_window import Ui_MainWindow
 from gui.main_window import Ui_MainWindow
 from detect import detect_main, change_vis_stream
 
@@ -32,6 +31,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         th.record_change_pixmap.connect(self.set_record)
         th.text_append.connect(self.append_text)
         th.status_update.connect(self.update_status_message)
+        th.popup_message_box.connect(self.message_box)
         th.start()
         # print(self.videoLabel.size())
         # print(self.recordLabel.size())
@@ -107,6 +107,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def process_exit(self, trigger):
         sys.exit()
 
+    @pyqtSlot(str)
+    def message_box(self, text):
+        message_box = QMessageBox()
+        win_x, win_y, win_w, win_h = self.geometry().getRect()  # (x, y, w, h)
+        message_box.setGeometry((win_x + win_w / 2 - 100), (win_y + win_h / 2 - 100), 0, 0)
+        message_box.setStyleSheet('''color: rgb(255, 0, 0);
+                                     font: 15pt \"黑体\";''')
+        message_box.critical(message_box, "系统发生异常", text)
+        print(message_box.geometry())
+
 
 class DetectionThread(QThread):
     video_1_change_pixmap = pyqtSignal(QImage)
@@ -119,6 +129,8 @@ class DetectionThread(QThread):
 
     text_append = pyqtSignal(str)
     status_update = pyqtSignal(str)
+
+    popup_message_box = pyqtSignal(str)
 
     def __init__(self, main_window):
         super().__init__(main_window)
