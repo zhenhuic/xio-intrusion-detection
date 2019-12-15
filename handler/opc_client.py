@@ -38,7 +38,7 @@ class OpcClient:
         self.connect()
         self.just_reconnected = True
 
-    def node_value(self, name):  # TODO 重写
+    def node_value(self, name):
         node_id = self.nodes_dict[name]
         node = self.client.get_node(node_id)
         try:
@@ -116,23 +116,6 @@ class OpcClient:
                 raise RuntimeError("OPC连接失败！")
         except RuntimeError as e:
             raise e
-
-    # def patrol_nodes(self):
-    #     # opc_exception_flag = False
-    #     global opc_exception_flag
-    #     while True:
-    #         for name in self.nodes_dict.keys():
-    #             try:
-    #                 node, value = self.node_value(name)
-    #             except RuntimeError as er:
-    #                 opc_exception_flag = True
-    #                 print(er)
-    #             except Exception as ex:
-    #                 opc_exception_flag = True
-    #                 print(ex)
-    #         if opc_exception_flag:
-    #             raise RuntimeError("无法读取OPC数据!!")
-    #         time.sleep(patrol_nodes_interval)
 
     def patrol_nodes(self):
         for name in self.nodes_dict.keys():
