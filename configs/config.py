@@ -1,3 +1,4 @@
+# ----------------------- 需要检测的视频流相关配置 ----------------------
 # 视频流 URL
 video_stream_paths_dict = {
     'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
@@ -21,18 +22,26 @@ frame_shape = (480, 640)
 
 # 各视频流是否检测的开关，1 表示检测， 0 表示不检测
 switch_mask = (1, 1, 1, 1, 1)
+# --------------------------------------------------------------------
 
+
+# ----------------------- 微信报警机器人相关配置 ----------------------
 # 是否开启微信机器人
 open_wechat_bot = False
 # 发送的群组 群组必须被添加到通讯录
 wechat_group = "机器人安全监测"
 # 发送异常信息的时间间隔(秒)
-send_interval = 30
+wechat_send_interval = 30
+# --------------------------------------------------------------------
 
-# 需要显示的视频流名称
+# 主显示的视频流名称变量
 vis_name = 'sawanini_1'
 prevs_vis_name = vis_name
 
+
+# ------------------- 判断检测框是否闯入禁区相关配置 ---------------------
+# 判断人的边界框进入禁区的阈值
+inter_threshold = 0.15
 
 # 禁区掩码图像路径
 masks_paths_dict = {
@@ -42,9 +51,6 @@ masks_paths_dict = {
     'penfenshang': 'images/masks/penfenshang.jpg',
     'baobantongyong': 'images/masks/baobantongyong.jpg',
 }
-
-# 判断人的边界框进入禁区的阈值
-inter_threshold = 0.15
 
 # 设定待检测目标物体最大边界框面积，
 # 排除模型误检中较大的物体
@@ -74,7 +80,10 @@ excluded_objects_dict = {
     'penfenshang': [],
     'baobantongyong': [],
 }
+# ----------------------------------------------------------------------
 
+
+# ----------------------- OPC服务相关配置 -------------------------------
 # 是否连接OPC服务器，执行紧急停机
 open_opc = True
 
@@ -94,9 +103,18 @@ nodes_dict = {
 patrol_opc_nodes_interval = 30
 
 # 邮箱报警间隔时间(s)
-email_warning_interval = 3600
+email_opc_warning_interval = 3600
+# ---------------------------------------------------------------------------
 
-# -------------- detection model configuration -----------------
+# ----------------------- 系统保卫进程相关配置 -------------------------------
+# 检测的主循环更新 detection_flag 的时间间隔(s)
+update_detection_flag_interval = 20
+
+# 保卫进程读取 detection_flag 值的时间间隔(s) 应大于update_detection_flag_interval
+check_detection_process_interval = 45
+# ---------------------------------------------------------------------------
+
+# ------------------- detection model configuration -------------------------
 img_size = 416  # size of each image dimension
 config_path = 'configs/yolov3.cfg'  # path to model configs file
 weights_path = 'weights/yolov3.weights'  # path to weights file
@@ -104,3 +122,4 @@ class_path = 'configs/coco.names'  # path to class label file
 conf_thres = 0.8  # object confidence threshold
 nms_thres = 0.4  # iou threshold for non-maximum suppression
 device_name = 'cuda:0'  # use cuda if available
+# ---------------------------------------------------------------------------

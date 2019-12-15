@@ -1,7 +1,7 @@
 import time
 from threading import Thread
 from wxpy import Bot, ensure_one, ResponseError
-from configs.config import video_stream_paths_dict, send_interval
+from configs.config import video_stream_paths_dict, wechat_send_interval
 
 
 class WeChat:
@@ -36,7 +36,7 @@ class WeChat:
         prev = self.prev_send_timestamp[node]
         interval = curr - prev
 
-        if interval > send_interval:
+        if interval > wechat_send_interval:
             self.prev_send_timestamp[node] = curr
             return True
         else:

@@ -7,13 +7,13 @@ from email.mime.text import MIMEText
 from email.header import Header
 from threading import Thread
 
-from configs.config import email_warning_interval
+from configs.config import email_opc_warning_interval
 
 
 class Email:
     def __init__(self):
         self.prev_send_timestamp = None
-        self.email_warning_interval = email_warning_interval
+        self.email_warning_interval = email_opc_warning_interval
 
     @staticmethod
     def send_email(subject, content, imgpath=None, imgname=None, SMTP_host="smtp.qq.com",
