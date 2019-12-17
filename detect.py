@@ -15,7 +15,8 @@ from model.transform import transform, stack_tensors, preds_postprocess
 from handler.intrusion_handling import IntrusionHandling
 from handler.send_email import Email
 from video_stream.video_stream import VideoLoader
-from configs.config import patrol_opc_nodes_interval, update_detection_flag_interval
+from configs.config import patrol_opc_nodes_interval, update_detection_flag_interval,\
+    open_email_warning
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -81,8 +82,10 @@ def detect_main(qthread):
         strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
         qthread.text_append.emit(strftime + ' OPC 服务器未连接')
         logging.warning('OPC Client does not create')
-
-    warning_email = Email()
+    if open_email_warning:
+        warning_email = Email()
+    else:
+        warning_email = None
 
     visualize = Visualize(masks_paths_dict)
     handling = IntrusionHandling(masks_paths_dict, opc_client)
@@ -125,16 +128,18 @@ def detect_main(qthread):
                 print(msg)
                 logging.error('OPC服务失效,无法获取节点数据！！')
                 qthread.popup_message_box.emit("OPC服务异常，无法获取机器人节点数据, 系统失效！！\n请排查OPC软件异常后，重启系统\n\n联系电话: 13429129739")
-                warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
+                if open_email_warning and warning_email is not None:
+                    warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
             except Exception as ex:
                 strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
                 msg = strftime + ' OPC服务失效,无法获取节点数据！！未知错误'
                 qthread.text_append.emit(msg)
-                print(msg)
-                logging.error('OPC服务无法获取节点数据！！未知错误')
+                print(msg + str(ex))
+                logging.error('OPC服务无法获取节点数据！！未知错误' + str(ex))
                 qthread.popup_message_box.emit("无法获取OPC服务节点数据, 系统失效！！\n请排查OPC软件问题，重启系统\n\n联系电话: 13429129739")
-                warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
+                if open_email_warning and warning_email is not None:
+                    warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
         # prepare frame tensors before inference
         frames_dict = video_loader.getitem()
