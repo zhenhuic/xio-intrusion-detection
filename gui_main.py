@@ -49,6 +49,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_4.clicked.connect(self.switch_vis_stream_4)
         self.pushButton_5.clicked.connect(self.switch_vis_stream_5)
 
+        self.message_box = None
+
     @pyqtSlot(QImage)
     def set_frame_1(self, image):
         self.videoLabel_1.setPixmap(QPixmap.fromImage(image))
@@ -109,13 +111,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(str)
     def message_box(self, text):
-        message_box = QMessageBox()
-        win_x, win_y, win_w, win_h = self.geometry().getRect()  # (x, y, w, h)
-        message_box.setGeometry((win_x + win_w / 2 - 100), (win_y + win_h / 2 - 100), 0, 0)
-        message_box.setStyleSheet('''color: rgb(255, 0, 0);
-                                     font: 15pt \"黑体\";''')
-        message_box.critical(message_box, "系统发生异常", text)
-        print(message_box.geometry())
+        if self.message_box is None:
+            print("弹窗提示")
+            self.message_box = QMessageBox()
+            win_x, win_y, win_w, win_h = self.geometry().getRect()  # (x, y, w, h)
+
+            self.message_box.setGeometry((win_x + win_w / 2 - 100), (win_y + win_h / 2 - 100), 0, 0)
+            self.message_box.setStyleSheet('''color: rgb(255, 0, 0);
+                                         font: 15pt \"黑体\";''')
+            self.message_box.critical(self.message_box, "系统异常提示", text)  # 该线程始终在此等待对话框 OK按钮 被点击
+            self.message_box = None
 
 
 class DetectionThread(QThread):
