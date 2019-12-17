@@ -102,6 +102,8 @@ nodes_dict = {
 # 轮巡OPC节点状态的间隔时间(s)
 patrol_opc_nodes_interval = 30
 
+# 是否开启邮箱报警
+open_email_warning = False
 # 邮箱报警间隔时间(s)
 email_opc_warning_interval = 3600
 # ---------------------------------------------------------------------------
