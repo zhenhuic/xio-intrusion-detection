@@ -1,6 +1,5 @@
 import os
 import time
-import random
 import threading
 import logging
 
@@ -9,9 +8,11 @@ import numpy as np
 
 from handler.opc_client import OpcClient
 from handler.wechat import WeChat
+from handler.statistics import IntrusionStatistics
 from configs.config import excluded_objects_dict, inter_threshold,\
     video_stream_paths_dict, max_object_bbox_area_dict, open_opc, \
-    min_object_bbox_area_dict, open_wechat_bot, wechat_group
+    min_object_bbox_area_dict, open_wechat_bot, wechat_group, \
+    open_email_report, report_statistics_interval
 
 
 def bbox_inter_area(box1, box2):
@@ -59,6 +60,8 @@ class IntrusionHandling:
         self.lock = threading.Lock()
         if open_wechat_bot:
             self.wechat = WeChat(wechat_group, video_stream_paths_dict)
+        if open_email_report:
+            self.statistics = IntrusionStatistics(video_stream_paths_dict, report_statistics_interval)
 
     @staticmethod
     def __get_mask(masks_path_dict):
@@ -132,6 +135,9 @@ class IntrusionHandling:
 
         cv2.imwrite(img_path, img_array)
         logging.info(name + ' 工位' + ' 异常图片已保存')
+
+        if open_email_report:
+            self.statistics.add_one_record(name, img_path)
 
         if open_wechat_bot:
             self.wechat.send_image(img_path, name)
