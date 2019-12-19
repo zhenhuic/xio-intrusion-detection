@@ -1,6 +1,5 @@
 import time
 import logging
-from threading import Thread
 
 import cv2
 import torch
