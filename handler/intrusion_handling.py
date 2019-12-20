@@ -8,6 +8,7 @@ import numpy as np
 
 from handler.opc_client import OpcClient
 from handler.wechat import WeChat
+from handler.send_email import Email
 from handler.statistics import IntrusionStatistics
 from configs.config import excluded_objects_dict, inter_threshold,\
     video_stream_paths_dict, max_object_bbox_area_dict, open_opc, \
@@ -115,8 +116,10 @@ class IntrusionHandling:
         self.lock.acquire()
         try:
             self.opc_client.stop_it(name)
-        except RuntimeError as e:
-            raise e
+        except RuntimeError as re:
+            Email.send_email(name + "停机失败", str(re))
+        except Exception as e:
+            Email.send_email(name + "停机失败", str(e))
         finally:
             self.lock.release()
 

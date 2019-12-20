@@ -114,7 +114,9 @@ class OpcClient:
                 print(msg)
                 logging.error(msg)
                 raise RuntimeError("OPC连接失败！")
-        except RuntimeError as e:
+        except RuntimeError as re:
+            raise re
+        except Exception as e:
             raise e
 
     def patrol_nodes(self):
