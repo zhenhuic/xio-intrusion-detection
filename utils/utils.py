@@ -20,6 +20,7 @@ def load_classes(path):
     """
     fp = open(path, "r")
     names = fp.read().split("\n")[:-1]
+    fp.close()
     return names
 
 
