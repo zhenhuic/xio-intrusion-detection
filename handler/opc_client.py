@@ -9,8 +9,6 @@ from opcua import ua
 from opcua.common.node import Node
 from opcua.ua.uaerrors import BadNodeIdUnknown
 
-from configs.config import patrol_opc_nodes_interval
-
 
 class OpcClient:
     def __init__(self, opc_url: str, nodes_dict: dict):
