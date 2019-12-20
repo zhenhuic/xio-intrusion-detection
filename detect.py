@@ -144,14 +144,16 @@ def detect_main(qthread):
         frames_dict = video_loader.getitem()
         input_tensor = []
         for name in frames_dict.keys():
-            tensor = transform(frames_dict[name], img_size)
-            input_tensor.append(tensor)
+            if frames_dict[name] is not None:
+                tensor = transform(frames_dict[name], img_size)
+                input_tensor.append(tensor)
         input_tensor = stack_tensors(input_tensor)
 
         # model inference and postprocess
         preds = inference(model, input_tensor, device, 80, conf_thres, nms_thres)
-        preds_dict = preds_postprocess(preds, list(video_stream_paths_dict.keys()),
-                                       frame_shape, img_size, classes)
+        not_none_streams = [x for x in frames_dict.keys() if frames_dict[x] is not None]
+        # 返回值只有非None视频流的预测结果
+        preds_dict = preds_postprocess(preds, not_none_streams, frame_shape, img_size, classes)
 
         # judge whether someone breaks into
         judgements_dict = handling.judge_intrusion(preds_dict)
@@ -164,15 +166,13 @@ def detect_main(qthread):
         vis_imgs_dict = visualize.draw(frames_dict, preds_dict, judgements_dict, show_fps)
 
         # handle judgement results
-        try:
-            handling.handle_judgement(judgements_dict, vis_imgs_dict)
-        except RuntimeError as e:
-            print(e)
+        handling.handle_judgement(judgements_dict, vis_imgs_dict)
 
         # emit the information to the front end
-        img = vis_imgs_dict[vis_name]
-        qimage = array_to_QImage(img, (780, 430))
-        qthread.video_1_change_pixmap.emit(qimage)
+        if vis_name in vis_imgs_dict:
+            img = vis_imgs_dict[vis_name]
+            qimage = array_to_QImage(img, (780, 430))
+            qthread.video_1_change_pixmap.emit(qimage)
 
         for name in judgements_dict.keys():
             if judgements_dict[name]:
