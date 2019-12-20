@@ -1,6 +1,6 @@
 import cv2
 import time
-from queue import LifoQueue
+from queue import LifoQueue, Empty
 from threading import Thread
 
 
@@ -126,5 +126,8 @@ class VideoLoader:
         # return next frame in the queue
         frames_dict = {}
         for name in self.queues_dict.keys():
-            frames_dict[name] = self.queues_dict[name].get()
+            try:
+                frames_dict[name] = self.queues_dict[name].get(False)
+            except Empty:
+                frames_dict[name] = None
         return frames_dict
