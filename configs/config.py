@@ -17,6 +17,15 @@ video_stream_paths_dict = {
 #     'baobantongyong': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
 # }
 
+# 对应工位名称
+stations_name_dict = {
+    'sawanini_1': '萨瓦尼尼-1',
+    'sawanini_2': '萨瓦尼尼-2',
+    'zhuanjixia': '专机下线',
+    'penfenshang': '喷粉上线',
+    'baobantongyong': '薄板通用线',
+}
+
 # 视频帧的形状
 frame_shape = (480, 640)
 
@@ -27,7 +36,7 @@ switch_mask = (1, 1, 1, 1, 1)
 
 # ----------------------- 异常闯入报告功能相关配置 ----------------------
 # 是否开启统计闯入次数和邮箱发送报告功能
-open_email_report = True
+open_email_report = False
 # 邮箱发送统计报告的时间间隔(s)
 report_statistics_interval = 3600
 
@@ -106,11 +115,12 @@ nodes_dict = {
 
 # 轮巡OPC节点状态的间隔时间(s)
 patrol_opc_nodes_interval = 30
-
-# 是否开启邮箱报警
-open_email_warning = False
+# 是否开启邮箱OPC报警
+open_email_warning = True
 # 邮箱报警间隔时间(s)
 email_opc_warning_interval = 3600
+# 是否开启通过弹窗报警
+open_popup_message_box = False
 # ---------------------------------------------------------------------------
 
 # ----------------------- 系统保卫进程相关配置 -------------------------------
