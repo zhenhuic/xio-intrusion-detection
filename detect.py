@@ -4,6 +4,7 @@ import logging
 import cv2
 import torch
 from PyQt5.QtGui import QImage
+from PyQt5.QtCore import QSize
 
 from model.models import Darknet
 from video_stream.visualize import Visualize
@@ -15,7 +16,7 @@ from handler.intrusion_handling import IntrusionHandling
 from handler.send_email import Email
 from video_stream.video_stream import VideoLoader
 from configs.config import patrol_opc_nodes_interval, update_detection_flag_interval,\
-    open_email_warning
+    open_email_warning, stations_name_dict
 # Ignore warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -52,7 +53,10 @@ def array_to_QImage(img, size):
     h, w, ch = rgbImage.shape
     bytes_per_line = ch * w
     qimage = QImage(rgbImage.data, w, h, bytes_per_line, QImage.Format_RGB888)
-    qimage = qimage.scaled(size[0], size[1])
+    if isinstance(size, QSize):
+        qimage = qimage.scaled(size)
+    else:
+        qimage = qimage.scaled(size[0], size[1])
     return qimage
 
 
@@ -66,10 +70,12 @@ def change_vis_stream(index):
 
 @torch.no_grad()
 def detect_main(qthread):
+    qthread.status_update.emit('模型加载')
     device = torch.device(device_name)
     model = get_model(config_path, img_size, weights_path, device)
     logging.info('Model initialized')
 
+    qthread.status_update.emit('连接OPC服务')
     if open_opc:
         opc_client = OpcClient(opc_url, nodes_dict)
         strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
@@ -86,6 +92,7 @@ def detect_main(qthread):
     else:
         warning_email = None
 
+    qthread.status_update.emit('初始化异常处理程序')
     visualize = Visualize(masks_paths_dict)
     handling = IntrusionHandling(masks_paths_dict, opc_client)
 
@@ -142,9 +149,12 @@ def detect_main(qthread):
 
         # prepare frame tensors before inference
         frames_dict = video_loader.getitem()
+
+        active_streams = []
         input_tensor = []
         for name in frames_dict.keys():
             if frames_dict[name] is not None:
+                active_streams.append(stations_name_dict[name])
                 tensor = transform(frames_dict[name], img_size)
                 input_tensor.append(tensor)
         if len(input_tensor) == 0:
@@ -173,7 +183,8 @@ def detect_main(qthread):
         # emit the information to the front end
         if vis_name in vis_imgs_dict:
             img = vis_imgs_dict[vis_name]
-            qimage = array_to_QImage(img, (780, 430))
+            qsize = qthread.main_window.videoLabel_1.size()
+            qimage = array_to_QImage(img, qsize)
             qthread.video_1_change_pixmap.emit(qimage)
 
         for name in judgements_dict.keys():
@@ -182,7 +193,8 @@ def detect_main(qthread):
                 qthread.text_append.emit(timestr + name + ' 启动联锁保护')
                 # show intrusion record
                 img = vis_imgs_dict[name]
-                qimage = array_to_QImage(img, (358, 243))
+                qsize = qthread.main_window.recordLabel.size()
+                qimage = array_to_QImage(img, qsize)
                 qthread.record_change_pixmap.emit(qimage)
 
         if prevs_vis_name in vis_imgs_dict:
@@ -191,7 +203,8 @@ def detect_main(qthread):
             vis_imgs_dict.pop(prevs_vis_name)
 
         for i, img in enumerate(vis_imgs_dict.values()):
-            qimage = array_to_QImage(img, (204, 155))
+            qsize = qthread.main_window.videoLabel_2.size()
+            qimage = array_to_QImage(img, qsize)
             if i == 0:
                 qthread.video_2_change_pixmap.emit(qimage)
             elif i == 1:
@@ -203,6 +216,6 @@ def detect_main(qthread):
             else:
                 raise RuntimeError("No so many QLabel!")
 
-
-if __name__ == '__main__':
-    detect_main(None)
+        statusbar_width = qthread.main_window.statusbar.size().width()
+        qthread.main_window.statusbar.showMessage('正在检测' + ' ' * int(0.09 * statusbar_width) +
+                                                  '生产线: ' + ', '.join(active_streams))

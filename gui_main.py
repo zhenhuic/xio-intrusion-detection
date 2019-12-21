@@ -6,7 +6,8 @@ from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QWidget
 from PyQt5.QtGui import QImage, QPixmap
 
-from gui.main_window import Ui_MainWindow
+# from gui.main_window import Ui_MainWindow
+from gui.main_window_enhanced import Ui_MainWindow
 from detect import detect_main, change_vis_stream
 
 
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.detection_flag = detection_flag
         self.setupUi(self)
+        self.showFullScreen()
         self.textBrowser.append(time.strftime('%Y-%m-%d %H:%M:%S ',
                                               time.localtime()) + '启动检测...')
         self.statusbar.showMessage('系统初始化...')
@@ -42,6 +44,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stream_4.triggered.connect(self.switch_vis_stream_4)
         self.stream_5.triggered.connect(self.switch_vis_stream_5)
         self.stop.triggered.connect(self.process_exit)
+        self.fullScreen.triggered.connect(self.showFullScreen)
+        self.exitFullScreen.triggered.connect(self.showNormal)
 
         self.pushButton_1.clicked.connect(self.switch_vis_stream_1)
         self.pushButton_2.clicked.connect(self.switch_vis_stream_2)
@@ -54,8 +58,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot(QImage)
     def set_frame_1(self, image):
         self.videoLabel_1.setPixmap(QPixmap.fromImage(image))
-        self.statusbar.showMessage('正在检测' + ' ' * 110 +
-                                   '生产线：萨瓦尼尼-1，萨瓦尼尼-2，专机下线，喷粉上线，薄板通用线')
 
     @pyqtSlot(QImage)
     def set_frame_2(self, image):
@@ -140,6 +142,7 @@ class DetectionThread(QThread):
     def __init__(self, main_window):
         super().__init__(main_window)
         self.detection_flag = main_window.detection_flag
+        self.main_window = main_window
 
     def run(self):
         logging.info('开始检测')
