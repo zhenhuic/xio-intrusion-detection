@@ -133,7 +133,8 @@ def detect_main(qthread):
                 qthread.text_append.emit(msg)
                 print(msg)
                 logging.error('OPC服务失效,无法获取节点数据！！')
-                qthread.popup_message_box.emit("OPC服务异常，无法获取机器人节点数据, 系统失效！！\n请排查OPC软件异常后，重启系统\n\n联系电话: 13429129739")
+                if open_popup_message_box:
+                    qthread.popup_message_box.emit("OPC服务异常，无法获取机器人节点数据, 系统失效！！\n请排查OPC软件异常后，重启系统\n\n联系电话: 13429129739")
                 if open_email_warning and warning_email is not None:
                     warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
@@ -143,7 +144,8 @@ def detect_main(qthread):
                 qthread.text_append.emit(msg)
                 print(msg + str(ex))
                 logging.error('OPC服务无法获取节点数据！！未知错误' + str(ex))
-                qthread.popup_message_box.emit("无法获取OPC服务节点数据, 系统失效！！\n请排查OPC软件问题，重启系统\n\n联系电话: 13429129739")
+                if open_popup_message_box:
+                    qthread.popup_message_box.emit("无法获取OPC服务节点数据, 系统失效！！\n请排查OPC软件问题，重启系统\n\n联系电话: 13429129739")
                 if open_email_warning and warning_email is not None:
                     warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
