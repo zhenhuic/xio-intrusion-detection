@@ -52,7 +52,7 @@ class Visualize:
 
     def draw(self, frames_dict, preds_dict, judgements_dict, fps):
         vis_imgs_dict = {}
-        for name in frames_dict.keys():
+        for name in preds_dict.keys():
             frame = frames_dict[name]
             pred = preds_dict[name]
             judgement = judgements_dict[name]

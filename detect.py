@@ -147,6 +147,8 @@ def detect_main(qthread):
             if frames_dict[name] is not None:
                 tensor = transform(frames_dict[name], img_size)
                 input_tensor.append(tensor)
+        if len(input_tensor) == 0:
+            continue
         input_tensor = stack_tensors(input_tensor)
 
         # model inference and postprocess
@@ -183,9 +185,10 @@ def detect_main(qthread):
                 qimage = array_to_QImage(img, (358, 243))
                 qthread.record_change_pixmap.emit(qimage)
 
-        prevs_img = vis_imgs_dict[prevs_vis_name]
-        vis_imgs_dict[vis_name] = prevs_img
-        vis_imgs_dict.pop(prevs_vis_name)
+        if prevs_vis_name in vis_imgs_dict:
+            prevs_img = vis_imgs_dict[prevs_vis_name]
+            vis_imgs_dict[vis_name] = prevs_img
+            vis_imgs_dict.pop(prevs_vis_name)
 
         for i, img in enumerate(vis_imgs_dict.values()):
             qimage = array_to_QImage(img, (204, 155))
