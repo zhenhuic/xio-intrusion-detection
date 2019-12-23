@@ -100,8 +100,8 @@ def detect_main(qthread):
     video_loader = VideoLoader(video_stream_paths_dict)
     logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
 
-    classes = load_classes(class_path)  # Extracts class labels from file
     qthread.status_update.emit('准备就绪')
+    classes = load_classes(class_path)  # Extracts class labels from file
 
     # 计时器开始的变量
     since = patrol_opc_nodes_clock_start = update_detection_flag_clock_start = time.time()
@@ -110,6 +110,7 @@ def detect_main(qthread):
     accum_time, curr_fps = 0, 0
     show_fps = 'FPS: ??'
 
+    prevs_frames_dict = None
     logging.info('Enter detection main loop process')
     exception_flag = False
     while not exception_flag:
@@ -155,17 +156,30 @@ def detect_main(qthread):
         active_streams = []
         input_tensor = []
         for name in frames_dict.keys():
-            if frames_dict[name] is not None:
+            if frames_dict[name] is None:
+                if prevs_frames_dict is not None:
+                    frames_dict[name] = prevs_frames_dict[name]
+                    tensor = transform(frames_dict[name], img_size)
+                    input_tensor.append(tensor)
+            else:
                 active_streams.append(stations_name_dict[name])
                 tensor = transform(frames_dict[name], img_size)
                 input_tensor.append(tensor)
-        if len(input_tensor) == 0:
+
+        if len(input_tensor) == len(frames_dict):
+            prevs_frames_dict = frames_dict
+        elif len(input_tensor) == 0:
             continue
+
         input_tensor = stack_tensors(input_tensor)
 
         # model inference and postprocess
         preds = inference(model, input_tensor, device, 80, conf_thres, nms_thres)
-        not_none_streams = [x for x in frames_dict.keys() if frames_dict[x] is not None]
+
+        if prevs_frames_dict is None:
+            not_none_streams = [x for x in frames_dict.keys() if frames_dict[x] is not None]
+        else:
+            not_none_streams = list(frames_dict.keys())
         # 返回值只有非None视频流的预测结果
         preds_dict = preds_postprocess(preds, not_none_streams, frame_shape, img_size, classes)
 
