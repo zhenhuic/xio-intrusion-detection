@@ -36,7 +36,7 @@ switch_mask = (1, 1, 1, 1, 1)
 
 # ----------------------- 异常闯入报告功能相关配置 ----------------------
 # 是否开启统计闯入次数和邮箱发送报告功能
-open_email_report = False
+open_email_report = True
 # 邮箱发送统计报告的时间间隔(s)
 report_statistics_interval = 3600
 
@@ -49,7 +49,7 @@ wechat_send_interval = 30
 # --------------------------------------------------------------------
 
 # 主显示的视频流名称变量
-vis_name = 'sawanini_1'
+vis_name = 'sawanini_2'
 prevs_vis_name = vis_name
 
 
