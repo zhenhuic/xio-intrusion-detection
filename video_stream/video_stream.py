@@ -56,6 +56,7 @@ class VideoLoader:
         for name in video_streams_path_dict.keys():
             path = video_streams_path_dict[name]
             stream = VideoStream(path, name)
+            print(name, "视频流已创建")
             video_streams_dict[name] = stream
         return video_streams_dict
 
