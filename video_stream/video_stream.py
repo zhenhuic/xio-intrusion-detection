@@ -101,7 +101,8 @@ class VideoLoader:
         frames_dict = {}
         for name in self.queues_dict.keys():
             try:
-                frames_dict[name] = self.queues_dict[name].get(False)
+                # 设置timeout，否则一直返回None，主线程陷入死循环导致程序崩溃
+                frames_dict[name] = self.queues_dict[name].get(timeout=3)
             except Empty:
                 frames_dict[name] = None
         return frames_dict

@@ -170,6 +170,8 @@ def detect_main(qthread):
         if len(input_tensor) == len(frames_dict):
             prevs_frames_dict = frames_dict
         elif len(input_tensor) == 0:
+            print("未读到任何视频帧")
+            time.sleep(0.5)
             continue
 
         input_tensor = stack_tensors(input_tensor)
