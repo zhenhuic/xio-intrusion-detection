@@ -126,32 +126,33 @@ def detect_main(qthread):
         # if open_opc and curr_time - patrol_opc_nodes_clock_start > patrol_opc_nodes_interval:
         if curr_time - patrol_opc_nodes_clock_start > patrol_opc_nodes_interval:
             patrol_opc_nodes_clock_start = curr_time
-            try:
-                opc_client.patrol_nodes()
-            except RuntimeError as er:
-                strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
-                msg = strftime + ' OPC服务失效,无法获取节点数据！！'
-                qthread.text_append.emit(msg)
-                print(msg)
-                logging.error('OPC服务失效,无法获取节点数据！！')
-                if open_popup_message_box:
-                    qthread.popup_message_box.emit("OPC服务异常，无法获取机器人节点数据, 系统失效！！\n请排查OPC软件异常后，重启系统\n\n联系电话: 13429129739")
-                if open_email_warning and warning_email is not None:
-                    warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
+            if open_opc:
+                try:
+                    opc_client.patrol_nodes()
+                except RuntimeError as er:
+                    strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+                    msg = strftime + ' OPC服务失效,无法获取节点数据！！'
+                    qthread.text_append.emit(msg)
+                    print(msg)
+                    logging.error('OPC服务失效,无法获取节点数据！！')
+                    if open_popup_message_box:
+                        qthread.popup_message_box.emit("OPC服务异常，无法获取机器人节点数据, 系统失效！！\n请排查OPC软件异常后，重启系统\n\n联系电话: 13429129739")
+                    if open_email_warning and warning_email is not None:
+                        warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
-            except Exception as ex:
-                strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
-                msg = strftime + ' OPC服务失效,无法获取节点数据！！未知错误'
-                qthread.text_append.emit(msg)
-                print(msg + str(ex))
-                logging.error('OPC服务无法获取节点数据！！未知错误' + str(ex))
-                if open_popup_message_box:
-                    qthread.popup_message_box.emit("无法获取OPC服务节点数据, 系统失效！！\n请排查OPC软件问题，重启系统\n\n联系电话: 13429129739")
-                if open_email_warning and warning_email is not None:
-                    warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
+                except Exception as ex:
+                    strftime = time.strftime('%Y-%m-%d %H:%M:%S ', time.localtime())
+                    msg = strftime + ' OPC服务失效,无法获取节点数据！！未知错误'
+                    qthread.text_append.emit(msg)
+                    print(msg + str(ex))
+                    logging.error('OPC服务无法获取节点数据！！未知错误' + str(ex))
+                    if open_popup_message_box:
+                        qthread.popup_message_box.emit("无法获取OPC服务节点数据, 系统失效！！\n请排查OPC软件问题，重启系统\n\n联系电话: 13429129739")
+                    if open_email_warning and warning_email is not None:
+                        warning_email.subthread_email_warning("OPC服务失效,无法获取节点数据", "检查时间:" + strftime)
 
         # prepare frame tensors before inference
-        frames_dict = video_loader.getitem()
+        frames_dict = video_loader.getitem()  # 如果有读不到，则该帧的值为None
 
         active_streams = []
         input_tensor = []
@@ -184,6 +185,7 @@ def detect_main(qthread):
         preds_dict = preds_postprocess(preds, not_none_streams, frame_shape, img_size, classes)
 
         # judge whether someone breaks into
+        # 只判断和返回preds_dict中有预测结果的视频帧
         judgements_dict = handling.judge_intrusion(preds_dict)
 
         # calculate inference fps
@@ -191,6 +193,7 @@ def detect_main(qthread):
         # print(show_fps)
 
         # visualize detection results
+        # 只绘制和返回preds_dict中有预测结果的视频帧
         vis_imgs_dict = visualize.draw(frames_dict, preds_dict, judgements_dict, show_fps)
 
         # handle judgement results
