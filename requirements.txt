@@ -7,3 +7,6 @@ torchvision
 pillow
 PyQt5
 cryptography
+wxpy
+pymysql
+serial
