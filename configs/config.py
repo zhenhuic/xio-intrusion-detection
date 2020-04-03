@@ -128,7 +128,7 @@ open_popup_message_box = False
 update_detection_flag_interval = 20
 
 # 保卫进程读取 detection_flag 值的时间间隔(s) 应大于update_detection_flag_interval
-check_detection_process_interval = 45
+check_detection_process_interval = 65
 # ---------------------------------------------------------------------------
 
 # ------------------- detection model configuration -------------------------
