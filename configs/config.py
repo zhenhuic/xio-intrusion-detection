@@ -1,4 +1,14 @@
 # ----------------------- 需要检测的视频流相关配置 ----------------------
+
+# 各视频流是否检测的开关，True 表示检测， False 表示不检测
+switch_dict = {
+    'sawanini_1': True,
+    'sawanini_2': True,
+    'zhuanjixia': True,
+    'penfenshang': True,
+    'baobantongyong': True,
+}
+
 # 视频流 URL
 video_stream_paths_dict = {
     'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
@@ -29,8 +39,6 @@ stations_name_dict = {
 # 视频帧的形状
 frame_shape = (480, 640)
 
-# 各视频流是否检测的开关，1 表示检测， 0 表示不检测
-switch_mask = (1, 1, 1, 1, 1)
 # --------------------------------------------------------------------
 
 
