@@ -88,7 +88,7 @@ class OpcClient:
 
             if name == 'zhuanjixia' or name == 'penfenshang':  # 先写 0，再写 1
                 self.set_value(name, node, False)  # 复位
-                time.sleep(0.2)
+                # time.sleep(0.2)
                 self.set_value(name, node, True)  # 停机
                 logging.warning(name + ' 工位' + ' 安全系统主动停机')
                 print(name + ' 异常闯入，安全系统主动停机！！')
