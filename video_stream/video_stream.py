@@ -77,6 +77,8 @@ class VideoLoader:
             stream = VideoStream(path, name)
             if stream.capture is not None:
                 print(name, "视频流已创建")
+            else:
+                print(name, "视频流创建失败！")
             video_streams_dict[name] = stream
         return video_streams_dict
 
