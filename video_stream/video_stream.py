@@ -48,7 +48,7 @@ class VideoStream:
         if self.capture is not None:
             return self.capture.isOpened()
 
-    def get_video_capture(self, timeout=3):
+    def get_video_capture(self, timeout=5):
         if not switch_dict[self.stream_name]:
             return None
         res_queue = Queue()
