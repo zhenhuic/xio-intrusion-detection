@@ -117,13 +117,14 @@ def detect_main(qthread):
         # 当前次循环的时间戳
         curr_time = time.time()
 
+        # 隔一段时间更新一次 detection_flag，这个标志是和守护进程共享内存的，
+        # 以此让守护进程确认检测主循环在正常运行
         if curr_time - update_detection_flag_clock_start > update_detection_flag_interval:
             update_detection_flag_clock_start = curr_time
             qthread.detection_flag.value = 1  # 更新 detection_flag
             # time.sleep(10)  # 模拟检测程序卡住 10s
 
         # 隔一段时间轮巡读取一遍OPC状态信息，确认OPC服务正常与否
-        # if open_opc and curr_time - patrol_opc_nodes_clock_start > patrol_opc_nodes_interval:
         if curr_time - patrol_opc_nodes_clock_start > patrol_opc_nodes_interval:
             patrol_opc_nodes_clock_start = curr_time
             if open_opc:
