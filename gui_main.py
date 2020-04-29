@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import logging
@@ -46,6 +47,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stop.triggered.connect(self.process_exit)
         self.fullScreen.triggered.connect(self.showFullScreen)
         self.exitFullScreen.triggered.connect(self.showNormal)
+        self.setupMenu.triggered.connect(lambda: os.system("notepad configs/config.py"))
 
         self.pushButton_1.clicked.connect(self.switch_vis_stream_1)
         self.pushButton_2.clicked.connect(self.switch_vis_stream_2)
@@ -169,5 +171,6 @@ def gui_main(detection_flag):
 
 if __name__ == '__main__':
     import multiprocessing
+
     flag = multiprocessing.Value('i', 0)
     gui_main(flag)
