@@ -4,3 +4,5 @@
 *.weights
 *.log
 images/records/
+*.avi
+*.mp4

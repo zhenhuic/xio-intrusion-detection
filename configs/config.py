@@ -20,11 +20,11 @@ video_stream_paths_dict = {
 
 # for local test
 # video_stream_paths_dict = {
-#     'sawanini_1': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
-#     'sawanini_2': 'E:/Datasets/XIO/intrusion_detection/outputhou.avi',
-#     'zhuanjixia': 'E:/Datasets/XIO/intrusion_detection/still_1.avi',
-#     'penfenshang': 'E:/Datasets/XIO/intrusion_detection/still_2.avi',
-#     'baobantongyong': 'E:/Datasets/XIO/intrusion_detection/mix_video.avi',
+#     'sawanini_1': 'videos/mix_video.avi',
+#     'sawanini_2': 'videos/outputhou.avi',
+#     'zhuanjixia': 'videos/still_1.avi',
+#     'penfenshang': 'videos/still_2.avi',
+#     'baobantongyong': 'videos/mix_video.avi',
 # }
 
 # 对应工位名称
