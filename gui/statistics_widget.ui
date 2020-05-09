@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>基于人工智能的生产流程分析与可视化系统</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 0, 0);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="titleLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>60</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(39, 39, 39);
+font: 29pt &quot;宋体&quot;;
+color: rgb(90, 174, 242);
+color: rgb(255, 255, 255);
+color: rgb(85, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>生产流程的多维分析与可视化</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+      </property>
+      <property name="indent">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1280</width>
+         <height>695</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,5">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>8</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1,1,1,0,0,0">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_1">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_3">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_4">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_5">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_6">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_7">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_8">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="graphLabel">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(35, 35, 35);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(29, 29, 29);
+color: rgb(255, 255, 255);</string>
+   </property>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(35, 35, 35);
+selection-background-color: rgb(100, 100, 100);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <widget class="QMenu" name="processMenu">
+    <property name="title">
+     <string>程序</string>
+    </property>
+    <addaction name="start"/>
+    <addaction name="stop"/>
+   </widget>
+   <widget class="QMenu" name="systemMenu">
+    <property name="title">
+     <string>系统</string>
+    </property>
+    <addaction name="chen1"/>
+    <addaction name="chen2"/>
+    <addaction name="li"/>
+    <addaction name="yv1"/>
+    <addaction name="yv2"/>
+    <addaction name="wang"/>
+    <addaction name="pan"/>
+    <addaction name="yue"/>
+   </widget>
+   <widget class="QMenu" name="setupMenu">
+    <property name="title">
+     <string>设置</string>
+    </property>
+    <addaction name="openConfigFile"/>
+   </widget>
+   <widget class="QMenu" name="viewMenu">
+    <property name="title">
+     <string>显示</string>
+    </property>
+    <addaction name="fullScreen"/>
+    <addaction name="exitFullScreen"/>
+   </widget>
+   <addaction name="processMenu"/>
+   <addaction name="systemMenu"/>
+   <addaction name="viewMenu"/>
+   <addaction name="setupMenu"/>
+  </widget>
+  <action name="openConfigFile">
+   <property name="text">
+    <string>打开配置文件</string>
+   </property>
+  </action>
+  <action name="start">
+   <property name="text">
+    <string>启动</string>
+   </property>
+  </action>
+  <action name="stop">
+   <property name="text">
+    <string>终止</string>
+   </property>
+  </action>
+  <action name="chen1">
+   <property name="text">
+    <string>智能异常事件监测与保护系统</string>
+   </property>
+  </action>
+  <action name="chen2">
+   <property name="text">
+    <string>产品工件智能角度检测系统</string>
+   </property>
+  </action>
+  <action name="li">
+   <property name="text">
+    <string>传感器数据采集分析与可视化系统</string>
+   </property>
+  </action>
+  <action name="yv1">
+   <property name="text">
+    <string>生产线报警智能检测分析系统</string>
+   </property>
+  </action>
+  <action name="yv2">
+   <property name="text">
+    <string>工厂CPS产线建模与分析系统</string>
+   </property>
+  </action>
+  <action name="wang">
+   <property name="text">
+    <string>工厂侧板效率智能检测系统</string>
+   </property>
+  </action>
+  <action name="pan">
+   <property name="text">
+    <string>产品包装配件完整性监测系统</string>
+   </property>
+  </action>
+  <action name="yue">
+   <property name="text">
+    <string>厚板线OEE效率检测系统</string>
+   </property>
+  </action>
+  <action name="fullScreen">
+   <property name="text">
+    <string>全屏模式</string>
+   </property>
+  </action>
+  <action name="exitFullScreen">
+   <property name="text">
+    <string>退出全屏</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

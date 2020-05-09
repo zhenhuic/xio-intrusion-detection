@@ -15,6 +15,7 @@
 */
 
 SET NAMES utf8mb4;
+SET GLOBAL time_zone='+8:00';
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------

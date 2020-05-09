@@ -10,3 +10,4 @@ cryptography
 wxpy
 pymysql
 serial
+matplotlib
