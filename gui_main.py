@@ -9,6 +9,7 @@ from PyQt5.QtGui import QImage, QPixmap
 
 # from gui.main_window import Ui_MainWindow
 from gui.main_window_enhanced import Ui_MainWindow
+from gui.statistics_widget import Ui_StatisticsWindow
 from detect import detect_main, change_vis_stream
 
 
@@ -48,6 +49,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fullScreen.triggered.connect(self.showFullScreen)
         self.exitFullScreen.triggered.connect(self.showNormal)
         self.setupMenu.triggered.connect(lambda: os.system("notepad configs/config.py"))
+        self.openStatistics.triggered.connect(self.open_statistics_window)
 
         self.pushButton_1.clicked.connect(self.switch_vis_stream_1)
         self.pushButton_2.clicked.connect(self.switch_vis_stream_2)
@@ -56,6 +58,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_5.clicked.connect(self.switch_vis_stream_5)
 
         self.message_box = None
+
+        self.statistics_window = None
+
+    @pyqtSlot(bool)
+    def open_statistics_window(self, trigger):
+        if self.statistics_window is None:
+            self.statistics_window = StatisticsWindow()
+        self.statistics_window.show()
 
     @pyqtSlot(QImage)
     def set_frame_1(self, image):
@@ -126,6 +136,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.message_box.critical(self.message_box, "系统异常提示", text)  # 该线程始终在此等待对话框 OK按钮 被点击
             self.message_box = None
 
+
+class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+        self.stop.triggered.connect(self.process_exit)
+        self.fullScreen.triggered.connect(self.showFullScreen)
+        self.exitFullScreen.triggered.connect(self.showNormal)
+
+    @pyqtSlot(bool)
+    def process_exit(self, trigger):
+        sys.exit()
 
 class DetectionThread(QThread):
     video_1_change_pixmap = pyqtSignal(QImage)

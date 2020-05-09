@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_window_enhanced.ui'
+# Form implementation generated from reading ui file 'E:\Lab417\xio-intrusion-detection\gui\main_window_enhanced.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.14.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -203,8 +205,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.logTitle)
         self.textBrowser = QtWidgets.QTextBrowser(self.frame_2)
         self.textBrowser.setStyleSheet("gridline-color: rgb(25, 25, 25);\n"
+"font: 16pt \"宋体\";\n"
 "background-color: rgb(25, 25, 25);\n"
-"font: 14pt \"黑体\";\n"
 "border-color: rgb(25, 25, 25);\n"
 "color: rgb(200, 200, 200);")
         self.textBrowser.setObjectName("textBrowser")
@@ -252,12 +254,14 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.processMenu = QtWidgets.QMenu(self.menubar)
         self.processMenu.setObjectName("processMenu")
-        self.view_Menu = QtWidgets.QMenu(self.menubar)
-        self.view_Menu.setObjectName("view_Menu")
+        self.viewMenu = QtWidgets.QMenu(self.menubar)
+        self.viewMenu.setObjectName("viewMenu")
         self.setupMenu = QtWidgets.QMenu(self.menubar)
         self.setupMenu.setObjectName("setupMenu")
         self.streamMenu = QtWidgets.QMenu(self.menubar)
         self.streamMenu.setObjectName("streamMenu")
+        self.statisticsMenu = QtWidgets.QMenu(self.menubar)
+        self.statisticsMenu.setObjectName("statisticsMenu")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setStyleSheet("background-color: rgb(30, 30, 30);\n"
@@ -284,19 +288,23 @@ class Ui_MainWindow(object):
         self.stream_5.setObjectName("stream_5")
         self.exitFullScreen = QtWidgets.QAction(MainWindow)
         self.exitFullScreen.setObjectName("exitFullScreen")
+        self.openStatistics = QtWidgets.QAction(MainWindow)
+        self.openStatistics.setObjectName("openStatistics")
         self.processMenu.addAction(self.start)
         self.processMenu.addAction(self.stop)
-        self.view_Menu.addAction(self.fullScreen)
-        self.view_Menu.addAction(self.exitFullScreen)
+        self.viewMenu.addAction(self.fullScreen)
+        self.viewMenu.addAction(self.exitFullScreen)
         self.setupMenu.addAction(self.openConfigFile)
         self.streamMenu.addAction(self.stream_1)
         self.streamMenu.addAction(self.stream_2)
         self.streamMenu.addAction(self.stream_3)
         self.streamMenu.addAction(self.stream_4)
         self.streamMenu.addAction(self.stream_5)
+        self.statisticsMenu.addAction(self.openStatistics)
         self.menubar.addAction(self.processMenu.menuAction())
         self.menubar.addAction(self.streamMenu.menuAction())
-        self.menubar.addAction(self.view_Menu.menuAction())
+        self.menubar.addAction(self.viewMenu.menuAction())
+        self.menubar.addAction(self.statisticsMenu.menuAction())
         self.menubar.addAction(self.setupMenu.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -314,9 +322,10 @@ class Ui_MainWindow(object):
         self.logTitle.setText(_translate("MainWindow", "实时检测信息"))
         self.recordTitle.setText(_translate("MainWindow", "异常记录"))
         self.processMenu.setTitle(_translate("MainWindow", "程序"))
-        self.view_Menu.setTitle(_translate("MainWindow", "显示"))
+        self.viewMenu.setTitle(_translate("MainWindow", "显示"))
         self.setupMenu.setTitle(_translate("MainWindow", "设置"))
         self.streamMenu.setTitle(_translate("MainWindow", "视频流"))
+        self.statisticsMenu.setTitle(_translate("MainWindow", "统计"))
         self.fullScreen.setText(_translate("MainWindow", "全屏模式"))
         self.start.setText(_translate("MainWindow", "运行"))
         self.stop.setText(_translate("MainWindow", "终止"))
@@ -327,4 +336,4 @@ class Ui_MainWindow(object):
         self.stream_4.setText(_translate("MainWindow", "喷粉上线"))
         self.stream_5.setText(_translate("MainWindow", "薄板通用"))
         self.exitFullScreen.setText(_translate("MainWindow", "退出全屏"))
-
+        self.openStatistics.setText(_translate("MainWindow", "异常情况统计与可视化"))

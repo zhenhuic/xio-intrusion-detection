@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>StatisticsWindow</class>
+ <widget class="QMainWindow" name="StatisticsWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>800</height>
+    <width>1080</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>基于人工智能的生产流程分析与可视化系统</string>
+   <string>异常情况统计与可视化</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(0, 0, 0);</string>
@@ -61,7 +61,7 @@ color: rgb(255, 255, 255);
 color: rgb(85, 255, 255);</string>
       </property>
       <property name="text">
-       <string>生产流程的多维分析与可视化</string>
+       <string>异常情况统计与可视化</string>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -99,8 +99,8 @@ color: rgb(85, 255, 255);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1280</width>
-         <height>695</height>
+         <width>1080</width>
+         <height>615</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
@@ -131,12 +131,225 @@ color: rgb(85, 255, 255);</string>
            <number>8</number>
           </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1,1,1,0,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,0,1,1,0,1,1,0,1,0">
             <property name="spacing">
              <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="pushButton_1">
+             <widget class="QLabel" name="label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>开始时间：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateTimeEdit" name="startDateTime">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 12pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>截止时间：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateTimeEdit" name="endDateTime">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 12pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>分时统计：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 11pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>一小时以内</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>半天以内</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>一天以内</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>一周以内</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>半个月以内</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>一个月以内</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -146,151 +359,16 @@ color: rgb(85, 255, 255);</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>60</height>
+                <height>40</height>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
+               <string notr="true">background-color: rgb(45, 45, 45);
 font: 14pt &quot;宋体&quot;;
 color: rgb(85, 255, 255);</string>
               </property>
               <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_2">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
-font: 14pt &quot;宋体&quot;;
-color: rgb(85, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_3">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
-font: 14pt &quot;宋体&quot;;
-color: rgb(85, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_4">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
-font: 14pt &quot;宋体&quot;;
-color: rgb(85, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_5">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
-font: 14pt &quot;宋体&quot;;
-color: rgb(85, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_6">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
-font: 14pt &quot;宋体&quot;;
-color: rgb(85, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_7">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
-font: 14pt &quot;宋体&quot;;
-color: rgb(85, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_8">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(35, 35, 35);
-font: 14pt &quot;宋体&quot;;
-color: rgb(85, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
+               <string>确定</string>
               </property>
              </widget>
             </item>
@@ -335,7 +413,7 @@ color: rgb(255, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1080</width>
      <height>23</height>
     </rect>
    </property>
@@ -351,19 +429,6 @@ color: rgb(255, 255, 255);</string>
     <addaction name="start"/>
     <addaction name="stop"/>
    </widget>
-   <widget class="QMenu" name="systemMenu">
-    <property name="title">
-     <string>系统</string>
-    </property>
-    <addaction name="chen1"/>
-    <addaction name="chen2"/>
-    <addaction name="li"/>
-    <addaction name="yv1"/>
-    <addaction name="yv2"/>
-    <addaction name="wang"/>
-    <addaction name="pan"/>
-    <addaction name="yue"/>
-   </widget>
    <widget class="QMenu" name="setupMenu">
     <property name="title">
      <string>设置</string>
@@ -378,7 +443,6 @@ color: rgb(255, 255, 255);</string>
     <addaction name="exitFullScreen"/>
    </widget>
    <addaction name="processMenu"/>
-   <addaction name="systemMenu"/>
    <addaction name="viewMenu"/>
    <addaction name="setupMenu"/>
   </widget>

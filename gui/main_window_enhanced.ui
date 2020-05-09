@@ -533,7 +533,7 @@ color: rgb(255, 255, 255);</string>
     <addaction name="start"/>
     <addaction name="stop"/>
    </widget>
-   <widget class="QMenu" name="view_Menu">
+   <widget class="QMenu" name="viewMenu">
     <property name="title">
      <string>显示</string>
     </property>
@@ -556,9 +556,16 @@ color: rgb(255, 255, 255);</string>
     <addaction name="stream_4"/>
     <addaction name="stream_5"/>
    </widget>
+   <widget class="QMenu" name="statisticsMenu">
+    <property name="title">
+     <string>统计</string>
+    </property>
+    <addaction name="openStatistics"/>
+   </widget>
    <addaction name="processMenu"/>
    <addaction name="streamMenu"/>
-   <addaction name="view_Menu"/>
+   <addaction name="viewMenu"/>
+   <addaction name="statisticsMenu"/>
    <addaction name="setupMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
@@ -615,6 +622,11 @@ color: rgb(255, 255, 255);</string>
   <action name="exitFullScreen">
    <property name="text">
     <string>退出全屏</string>
+   </property>
+  </action>
+  <action name="openStatistics">
+   <property name="text">
+    <string>异常情况统计与可视化</string>
    </property>
   </action>
  </widget>
