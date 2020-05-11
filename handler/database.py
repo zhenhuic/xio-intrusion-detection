@@ -49,7 +49,7 @@ class MySql:
     def count_records_between_datetime(cursor: pymysql.cursors.Cursor,
                                        table: str, start: str, end: str) -> int:
         sql = "SELECT count(*) FROM {} WHERE datetime >= '{}' AND datetime <= '{}'".format(table, start, end)
-        print(sql)
+        # print(sql)
         cursor.execute(sql)
         cnt = cursor.fetchone()[0]
         return int(cnt)

@@ -1,8 +1,12 @@
 import os
+import io
 
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QImage
 
 from utils.utils import plot_one_box
 from configs.config import max_object_bbox_area_dict,\
@@ -76,3 +80,33 @@ class Visualize:
                                   fontScale=1.2, color=(0, 255, 0), thickness=2)
             vis_imgs_dict[name] = img
         return vis_imgs_dict
+
+
+def draw_bar_graph(names: [str], values: [int]) -> np.ndarray:
+    fig, ax = plt.subplots()
+    ax.bar(names, values)
+    ax.set_facecolor("darkgray")
+    img = fig2img(fig)
+    return img
+
+
+def fig2img(fig, dpi=180):
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=dpi)
+    buf.seek(0)
+    img_arr = np.frombuffer(buf.getvalue(), dtype=np.uint8)
+    buf.close()
+    img = cv2.imdecode(img_arr, 1)
+    return img
+
+
+def array_to_QImage(img, size):
+    rgbImage = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    h, w, ch = rgbImage.shape
+    bytes_per_line = ch * w
+    qimage = QImage(rgbImage.data, w, h, bytes_per_line, QImage.Format_RGB888)
+    if isinstance(size, QSize):
+        qimage = qimage.scaled(size)
+    else:
+        qimage = qimage.scaled(size[0], size[1])
+    return qimage

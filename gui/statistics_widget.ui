@@ -131,10 +131,96 @@ color: rgb(85, 255, 255);</string>
            <number>8</number>
           </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,0,1,1,0,1,1,0,1,0">
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1,1,0,1,1,0,1,1,0,1,0">
             <property name="spacing">
              <number>0</number>
             </property>
+            <item>
+             <widget class="QLabel" name="label_9">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 14pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>生产线：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="productionLineComboBox">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);
+font: 11pt &quot;宋体&quot;;
+color: rgb(85, 255, 255);</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>sawanini_1</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>sawanini_2</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>zhuanjixia</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>penfenshang</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>baobantongyong</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(35, 35, 35);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="QLabel" name="label">
               <property name="sizePolicy">
@@ -282,7 +368,7 @@ color: rgb(85, 255, 255);</string>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox">
+             <widget class="QComboBox" name="timeIntervalComboBox">
               <property name="minimumSize">
                <size>
                 <width>0</width>

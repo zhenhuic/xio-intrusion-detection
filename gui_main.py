@@ -1,9 +1,10 @@
 import os
 import sys
 import time
+import datetime
 import logging
 
-from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot, QDateTime
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QWidget
 from PyQt5.QtGui import QImage, QPixmap
 
@@ -11,6 +12,8 @@ from PyQt5.QtGui import QImage, QPixmap
 from gui.main_window_enhanced import Ui_MainWindow
 from gui.statistics_widget import Ui_StatisticsWindow
 from detect import detect_main, change_vis_stream
+from handler.database import MySql
+from video_stream.visualize import draw_bar_graph, array_to_QImage
 
 
 # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # close PyTorch asynchronous operation
@@ -63,8 +66,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(bool)
     def open_statistics_window(self, trigger):
-        if self.statistics_window is None:
-            self.statistics_window = StatisticsWindow()
+        self.statistics_window = StatisticsWindow()
         self.statistics_window.show()
 
     @pyqtSlot(QImage)
@@ -137,19 +139,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.message_box = None
 
 
-class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-
-        self.stop.triggered.connect(self.process_exit)
-        self.fullScreen.triggered.connect(self.showFullScreen)
-        self.exitFullScreen.triggered.connect(self.showNormal)
-
-    @pyqtSlot(bool)
-    def process_exit(self, trigger):
-        sys.exit()
-
 class DetectionThread(QThread):
     video_1_change_pixmap = pyqtSignal(QImage)
     video_2_change_pixmap = pyqtSignal(QImage)
@@ -172,6 +161,61 @@ class DetectionThread(QThread):
     def run(self):
         logging.info('开始检测')
         detect_main(self)
+
+
+class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+        self.stop.triggered.connect(self.process_exit)
+        self.fullScreen.triggered.connect(self.showFullScreen)
+        self.exitFullScreen.triggered.connect(self.showNormal)
+        self.pushButton.clicked.connect(self.select_records)
+
+        self.startDateTime.setDateTime(QDateTime.currentDateTime().addDays(-1))
+        self.endDateTime.setDateTime(QDateTime.currentDateTime())
+        self.timeIntervalComboBox.setCurrentIndex(0)
+        self.productionLineComboBox.setCurrentIndex(0)
+        self.time_interval_combobox_index_dict = {
+            0: datetime.timedelta(hours=1),
+            1: datetime.timedelta(hours=12),
+            2: datetime.timedelta(days=1),
+            3: datetime.timedelta(weeks=1),
+            4: datetime.timedelta(days=15),
+            5: datetime.timedelta(days=30)
+
+        }
+
+    @pyqtSlot(bool)
+    def process_exit(self, trigger):
+        sys.exit()
+
+    @pyqtSlot(bool)
+    def select_records(self, trigger):
+        start_datetime = self.startDateTime.dateTime().toPyDateTime()
+        end_datetime = self.endDateTime.dateTime().toPyDateTime()
+        time_interval = self.time_interval_combobox_index_dict[self.timeIntervalComboBox.currentIndex()]
+
+        datetime_periods = []
+        temp_datetime = start_datetime + time_interval
+        while temp_datetime < end_datetime:
+            datetime_periods.append([start_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                                     temp_datetime.strftime("%Y-%m-%d %H:%M:%S")])
+            start_datetime = temp_datetime
+            temp_datetime += time_interval
+        if temp_datetime != end_datetime:
+            start_datetime = temp_datetime - time_interval
+            datetime_periods.append([start_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                                     end_datetime.strftime("%Y-%m-%d %H:%M:%S")])
+
+        print(len(datetime_periods), datetime_periods)
+        production_line = self.productionLineComboBox.currentText()
+        count_records = MySql.count_records_multi_datetime_periods(production_line, datetime_periods)
+        print(len(count_records), count_records)
+        img = draw_bar_graph([x[1] for x in datetime_periods], count_records)
+        qimg = array_to_QImage(img, self.graphLabel.size())
+        self.graphLabel.setPixmap(QPixmap.fromImage(qimg))
 
 
 def except_hook(cls, exception, traceback):
