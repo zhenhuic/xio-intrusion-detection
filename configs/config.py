@@ -10,22 +10,22 @@ switch_dict = {
 }
 
 # 视频流 URL
-# video_stream_paths_dict = {
-#     'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
-#     'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-#     'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
-#     'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
-#     'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
-# }
+video_stream_paths_dict = {
+    'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
+    'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
+    'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
+    'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+    'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
+}
 
 # for local test
-video_stream_paths_dict = {
-    'sawanini_1': 'videos/mix_video.avi',
-    'sawanini_2': 'videos/outputhou.avi',
-    'zhuanjixia': 'videos/still_1.avi',
-    'penfenshang': 'videos/still_2.avi',
-    'baobantongyong': 'videos/mix_video.avi',
-}
+# video_stream_paths_dict = {
+#     'sawanini_1': 'videos/mix_video.avi',
+#     'sawanini_2': 'videos/outputhou.avi',
+#     'zhuanjixia': 'videos/still_1.avi',
+#     'penfenshang': 'videos/still_2.avi',
+#     'baobantongyong': 'videos/mix_video.avi',
+# }
 
 # 对应工位名称
 stations_name_dict = {
