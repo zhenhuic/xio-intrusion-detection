@@ -195,7 +195,8 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
     def select_records(self, trigger):
         start_datetime = self.startDateTime.dateTime().toPyDateTime()
         end_datetime = self.endDateTime.dateTime().toPyDateTime()
-        time_interval = self.time_interval_combobox_index_dict[self.timeIntervalComboBox.currentIndex()]
+        index = self.timeIntervalComboBox.currentIndex()
+        time_interval = self.time_interval_combobox_index_dict[index]
 
         datetime_periods = []
         temp_datetime = start_datetime + time_interval
@@ -213,6 +214,7 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
         production_line = self.productionLineComboBox.currentText()
         count_records = MySql.count_records_multi_datetime_periods(production_line, datetime_periods)
         print(len(count_records), count_records)
+
         img = draw_bar_graph([x[1] for x in datetime_periods], count_records)
         qimg = array_to_QImage(img, self.graphLabel.size())
         self.graphLabel.setPixmap(QPixmap.fromImage(qimg))

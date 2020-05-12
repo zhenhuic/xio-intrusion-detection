@@ -2,6 +2,7 @@ import time
 import threading
 
 from handler.send_email import Email
+from handler.database import MySql
 
 
 class IntrusionStatistics:
@@ -25,6 +26,7 @@ class IntrusionStatistics:
                 self.number_intrusion[name] += 1
                 self.intrusion_records[name].append(img_path)
                 self.prev_intrusion_timestamp[name] = curr_time
+                MySql.add_record(name)
             finally:
                 self.lock.release()
 

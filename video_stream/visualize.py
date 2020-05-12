@@ -86,6 +86,9 @@ def draw_bar_graph(names: [str], values: [int]) -> np.ndarray:
     fig, ax = plt.subplots()
     ax.bar(names, values)
     ax.set_facecolor("darkgray")
+    plt.xticks(rotation=10)
+    # ax.set_xlabel('')
+    # ax.set_ylabel('times')
     img = fig2img(fig)
     return img
 
