@@ -10,22 +10,22 @@ switch_dict = {
 }
 
 # 视频流 URL
-video_stream_paths_dict = {
-    'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
-    'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
-    'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
-    'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
-    'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
-}
+# video_stream_paths_dict = {
+#     'sawanini_1': 'rtsp://user:xiolift123@10.19.31.138/Streaming/Channels/102',
+#     'sawanini_2': 'rtsp://user:xiolift123@10.19.31.154/Streaming/Channels/102',
+#     'zhuanjixia': 'rtsp://user:xiolift123@10.19.31.136/Streaming/Channels/102',
+#     'penfenshang': 'rtsp://user:xiolift123@10.19.31.139/Streaming/Channels/102',
+#     'baobantongyong': 'rtsp://user:xiolift123@10.19.31.137/Streaming/Channels/102',
+# }
 
 # for local test
-# video_stream_paths_dict = {
-#     'sawanini_1': 'videos/mix_video.avi',
-#     'sawanini_2': 'videos/outputhou.avi',
-#     'zhuanjixia': 'videos/still_1.avi',
-#     'penfenshang': 'videos/still_2.avi',
-#     'baobantongyong': 'videos/mix_video.avi',
-# }
+video_stream_paths_dict = {
+    'sawanini_1': 'videos/mix_video.avi',
+    'sawanini_2': 'videos/outputhou.avi',
+    'zhuanjixia': 'videos/still_1.avi',
+    'penfenshang': 'videos/still_2.avi',
+    'baobantongyong': 'videos/mix_video.avi',
+}
 
 # 对应工位名称
 stations_name_dict = {
@@ -44,7 +44,7 @@ frame_shape = (480, 640)
 
 # ----------------------- 异常闯入报告功能相关配置 ----------------------
 # 是否开启统计闯入次数和邮箱发送报告功能
-open_email_report = True
+open_email_report = False
 # 邮箱发送统计报告的时间间隔(s)
 report_statistics_interval = 3600
 
@@ -54,6 +54,12 @@ open_wechat_bot = False
 wechat_group = "机器人安全监测"
 # 发送异常信息的时间间隔(秒)
 wechat_send_interval = 30
+
+# 存储异常记录的数据库表
+mysql_host = 'localhost'
+mysql_user = 'root'
+mysql_password = '123456'
+mysql_db = 'intrusion_detection'
 # --------------------------------------------------------------------
 
 # 主显示的视频流名称变量
@@ -107,7 +113,7 @@ excluded_objects_dict = {
 
 # ----------------------- OPC服务相关配置 -------------------------------
 # 是否连接OPC服务器，执行紧急停机
-open_opc = True
+open_opc = False
 
 # OPC 服务器 URL
 opc_url = 'opc.tcp://10.19.3.49:49320'  # 本机OPC服务
@@ -124,7 +130,7 @@ nodes_dict = {
 # 轮巡OPC节点状态的间隔时间(s)
 patrol_opc_nodes_interval = 30
 # 是否开启邮箱OPC报警
-open_email_warning = True
+open_email_warning = False
 # 邮箱报警间隔时间(s)
 email_opc_warning_interval = 3600
 # 是否开启通过弹窗报警
