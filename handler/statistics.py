@@ -26,7 +26,7 @@ class IntrusionStatistics:
                 self.number_intrusion[name] += 1
                 self.intrusion_records[name].append(img_path)
                 self.prev_intrusion_timestamp[name] = curr_time
-                MySql.add_record(name)
+                # MySql.add_record(name)
             finally:
                 self.lock.release()
 

@@ -54,6 +54,12 @@ open_wechat_bot = False
 wechat_group = "机器人安全监测"
 # 发送异常信息的时间间隔(秒)
 wechat_send_interval = 30
+
+# 存储异常记录的数据库表
+mysql_host = 'localhost'
+mysql_user = 'root'
+mysql_password = '123456'
+mysql_db = 'intrusion_detection'
 # --------------------------------------------------------------------
 
 # 主显示的视频流名称变量
