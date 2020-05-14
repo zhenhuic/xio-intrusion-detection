@@ -83,12 +83,16 @@ class Visualize:
 
 
 def draw_bar_graph(names: [str], values: [int]) -> np.ndarray:
+    from pylab import mpl
+    mpl.rcParams['font.sans-serif'] = ['FangSong']  # 指定默认字体
+    mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
+
     fig, ax = plt.subplots()
     ax.bar(names, values)
     ax.set_facecolor("darkgray")
-    plt.xticks(rotation=10)
+    plt.xticks(rotation=60, fontsize=8)
     # ax.set_xlabel('')
-    # ax.set_ylabel('times')
+    ax.set_ylabel('异常记录次数')
     img = fig2img(fig)
     return img
 

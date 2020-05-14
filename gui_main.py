@@ -68,6 +68,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def open_statistics_window(self, trigger):
         self.statistics_window = StatisticsWindow()
         self.statistics_window.show()
+        self.statistics_window.pushButton.click()
 
     @pyqtSlot(QImage)
     def set_frame_1(self, image):
@@ -205,17 +206,21 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
                                      temp_datetime.strftime("%Y-%m-%d %H:%M:%S")])
             start_datetime = temp_datetime
             temp_datetime += time_interval
-        if temp_datetime != end_datetime:
+        if temp_datetime != end_datetime or len(datetime_periods) == 0:
             start_datetime = temp_datetime - time_interval
             datetime_periods.append([start_datetime.strftime("%Y-%m-%d %H:%M:%S"),
                                      end_datetime.strftime("%Y-%m-%d %H:%M:%S")])
 
-        print(len(datetime_periods), datetime_periods)
+        # print(len(datetime_periods), datetime_periods)
         production_line = self.productionLineComboBox.currentText()
         count_records = MySql.count_records_multi_datetime_periods(production_line, datetime_periods)
-        print(len(count_records), count_records)
-
-        img = draw_bar_graph([x[1] for x in datetime_periods], count_records)
+        # print(len(count_records), count_records)
+        if index <= 1:
+            names = [x[1].split(' ')[1] for x in datetime_periods]
+        else:
+            names = [x[1].split(' ')[0] for x in datetime_periods]
+        # print(names)
+        img = draw_bar_graph(names, count_records)
         qimg = array_to_QImage(img, self.graphLabel.size())
         self.graphLabel.setPixmap(QPixmap.fromImage(qimg))
 

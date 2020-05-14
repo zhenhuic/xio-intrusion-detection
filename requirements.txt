@@ -11,3 +11,4 @@ wxpy
 pymysql
 serial
 matplotlib
+pylab
