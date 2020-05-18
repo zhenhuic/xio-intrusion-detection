@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QImage
 from matplotlib.ticker import MaxNLocator
+from matplotlib.pylab import mpl
 
 from utils.utils import plot_one_box
 from configs.config import max_object_bbox_area_dict,\
@@ -84,7 +85,6 @@ class Visualize:
 
 
 def draw_bar_graph(names: [str], values: [int], title: str) -> np.ndarray:
-    from pylab import mpl
     mpl.rcParams['font.sans-serif'] = ['FangSong']  # 指定默认字体
     mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
 
