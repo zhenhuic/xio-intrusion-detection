@@ -220,7 +220,7 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
         else:
             names = [x[1].split(' ')[0] for x in datetime_periods]
         # print(names)
-        img = draw_bar_graph(names, count_records)
+        img = draw_bar_graph(names, count_records, production_line + "线 24小时内异常事件情况")
         qimg = array_to_QImage(img, self.graphLabel.size())
         self.graphLabel.setPixmap(QPixmap.fromImage(qimg))
 

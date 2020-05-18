@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QImage
+from matplotlib.ticker import MaxNLocator
 
 from utils.utils import plot_one_box
 from configs.config import max_object_bbox_area_dict,\
@@ -82,17 +83,19 @@ class Visualize:
         return vis_imgs_dict
 
 
-def draw_bar_graph(names: [str], values: [int]) -> np.ndarray:
+def draw_bar_graph(names: [str], values: [int], title: str) -> np.ndarray:
     from pylab import mpl
     mpl.rcParams['font.sans-serif'] = ['FangSong']  # 指定默认字体
     mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
 
     fig, ax = plt.subplots()
     ax.bar(names, values)
-    ax.set_facecolor("darkgray")
+    # ax.set_facecolor("darkgray")
     plt.xticks(rotation=60, fontsize=8)
     # ax.set_xlabel('')
+    ax.set_title(title)
     ax.set_ylabel('异常记录次数')
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     img = fig2img(fig)
     return img
 

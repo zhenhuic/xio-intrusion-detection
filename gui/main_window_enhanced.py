@@ -313,7 +313,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.titlelabel.setText(_translate("MainWindow", "西奥电梯智能安全监测系统"))
+        self.titlelabel.setText(_translate("MainWindow", "生产场景中异常事件的探测-西奥电梯智能安全监测系统"))
         self.pushButton_1.setText(_translate("MainWindow", "SWNN-1"))
         self.pushButton_2.setText(_translate("MainWindow", "SWNN-2"))
         self.pushButton_3.setText(_translate("MainWindow", "专机下线"))
