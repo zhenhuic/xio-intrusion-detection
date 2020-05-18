@@ -1,18 +1,22 @@
 import os
+import smtplib
 import sys
 import time
 import datetime
 import logging
 
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot, QDateTime
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QWidget, QDialog
 from PyQt5.QtGui import QImage, QPixmap
 
 # from gui.main_window import Ui_MainWindow
+from configs.config import email_address
 from gui.main_window_enhanced import Ui_MainWindow
+from gui.send_email_report_dialog import Ui_sendEmailDialog
 from gui.statistics_widget import Ui_StatisticsWindow
 from detect import detect_main, change_vis_stream
 from handler.database import MySql
+from handler.send_email import Email
 from video_stream.visualize import draw_bar_graph, array_to_QImage
 
 
@@ -173,11 +177,15 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
         self.fullScreen.triggered.connect(self.showFullScreen)
         self.exitFullScreen.triggered.connect(self.showNormal)
         self.pushButton.clicked.connect(self.select_records)
+        self.sendEmailRecord.triggered.connect(self.open_send_email_dialog)
 
         self.startDateTime.setDateTime(QDateTime.currentDateTime().addDays(-1))
         self.endDateTime.setDateTime(QDateTime.currentDateTime())
         self.timeIntervalComboBox.setCurrentIndex(0)
         self.productionLineComboBox.setCurrentIndex(0)
+
+        self.send_email_records_dialog = None
+
         self.time_interval_combobox_index_dict = {
             0: datetime.timedelta(hours=1),
             1: datetime.timedelta(hours=12),
@@ -187,6 +195,8 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
             5: datetime.timedelta(days=30)
 
         }
+        self.graph_names = []
+        self.record_numbers = []
 
     @pyqtSlot(bool)
     def process_exit(self, trigger):
@@ -213,16 +223,73 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
 
         # print(len(datetime_periods), datetime_periods)
         production_line = self.productionLineComboBox.currentText()
-        count_records = MySql.count_records_multi_datetime_periods(production_line, datetime_periods)
+        record_numbers = MySql.count_records_multi_datetime_periods(production_line, datetime_periods)
         # print(len(count_records), count_records)
         if index < 1:
             names = [x[1].split(' ')[1] for x in datetime_periods]
         else:
             names = [x[1].split(' ')[0] for x in datetime_periods]
         # print(names)
-        img = draw_bar_graph(names, count_records, production_line + "线 异常事件情况")
+        self.graph_names = names
+        self.record_numbers = record_numbers
+        img = draw_bar_graph(names, record_numbers, production_line + "线 异常事件情况")
         qimg = array_to_QImage(img, self.graphLabel.size())
         self.graphLabel.setPixmap(QPixmap.fromImage(qimg))
+
+    @pyqtSlot(bool)
+    def open_send_email_dialog(self, triggered):
+        self.send_email_records_dialog = SendEmailDialog(self)
+        self.send_email_records_dialog.show()
+
+
+class SendEmailDialog(QDialog, Ui_sendEmailDialog):
+    def __init__(self, statistic_window):
+        super().__init__()
+        self.setupUi(self)
+        self.setWindowTitle("发送邮件报告")
+        self.statistic_window = statistic_window
+        self.email_subject, self.email_content = self.get_email_subject_content()
+
+        self.textEdit.append(self.email_subject)
+        self.textEdit.append(self.email_content)
+        self.lineEdit.setText(email_address)
+
+        self.buttonBox.accepted.connect(self.button_box_accepted)
+
+    @pyqtSlot()
+    def button_box_accepted(self):
+        success = self.send_email_records(self.email_subject, self.textEdit.toPlainText(), self.lineEdit.text())
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("邮件发送反馈")
+        if success:
+            msg_box.setIcon(QMessageBox.Information)
+            msg_box.setText("报告邮件发送成功^_^ ")
+        else:
+            msg_box.setIcon(QMessageBox.Warning)
+            msg_box.setText("报告邮件发送失败！!")
+        msg_box.show()
+        msg_box.exec()
+
+    def get_email_subject_content(self) -> (str, str):
+        start_datetime = self.statistic_window.startDateTime.dateTime().toPyDateTime().strftime("%Y-%m-%d %H:%M:%S")
+        end_datetime = self.statistic_window.endDateTime.dateTime().toPyDateTime().strftime("%Y-%m-%d %H:%M:%S")
+        production_line = self.statistic_window.productionLineComboBox.currentText()
+        subject = "异常行为事件报告 " + production_line + "工位 " + start_datetime + "至" + end_datetime
+        content = ""
+        for name, count in zip(self.statistic_window.graph_names, self.statistic_window.record_numbers):
+            content += str(name) + "：" + str(count) + "\n"
+        return subject, content
+
+    @staticmethod
+    def send_email_records(subject: str, content: str, to_account: str) -> bool:
+        try:
+            Email.send_email(subject, content, from_account="layhal@163.com", SMTP_host="smtp.163.com",
+                             from_password="liu670", to_account=to_account)
+            print("邮件报告发送成功")
+            return True
+        except smtplib.SMTPException or Exception as e:
+            print("邮件报告发送失败！", e)
+            return False
 
 
 def except_hook(cls, exception, traceback):

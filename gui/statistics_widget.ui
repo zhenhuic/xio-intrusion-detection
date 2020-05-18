@@ -528,8 +528,15 @@ color: rgb(255, 255, 255);</string>
     <addaction name="fullScreen"/>
     <addaction name="exitFullScreen"/>
    </widget>
+   <widget class="QMenu" name="notificationMenu">
+    <property name="title">
+     <string>通知</string>
+    </property>
+    <addaction name="sendEmailRecord"/>
+   </widget>
    <addaction name="processMenu"/>
    <addaction name="viewMenu"/>
+   <addaction name="notificationMenu"/>
    <addaction name="setupMenu"/>
   </widget>
   <action name="openConfigFile">
@@ -595,6 +602,11 @@ color: rgb(255, 255, 255);</string>
   <action name="exitFullScreen">
    <property name="text">
     <string>退出全屏</string>
+   </property>
+  </action>
+  <action name="sendEmailRecord">
+   <property name="text">
+    <string>发送邮件报告</string>
    </property>
   </action>
  </widget>

@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 from threading import Thread
 
-from configs.config import email_opc_warning_interval
+from configs.config import email_opc_warning_interval, email_address
 
 
 class Email:
@@ -18,7 +18,7 @@ class Email:
     @staticmethod
     def send_email(subject, content, imgpath=None, imgname=None, SMTP_host="smtp.qq.com",
                    from_account="1192317022@qq.com", from_password="fsaxnxeuabakfgbc",
-                   to_account="zhouxiaoyan@xiolift.com"):
+                   to_account=email_address):
         """
         发送邮件
         :param subject: 邮件主题

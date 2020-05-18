@@ -43,6 +43,8 @@ frame_shape = (480, 640)
 
 
 # ----------------------- 异常闯入报告功能相关配置 ----------------------
+# 工程管理部门邮箱地址
+email_address = "zhouxiaoyan@xiolift.com"
 # 是否开启统计闯入次数和邮箱发送报告功能
 open_email_report = False
 # 邮箱发送统计报告的时间间隔(s)
