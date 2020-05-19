@@ -89,8 +89,8 @@ def draw_bar_graph(names: [str], values: [int], title: str) -> np.ndarray:
     mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
 
     fig, ax = plt.subplots()
-    ax.bar(names, values)
-    # ax.set_facecolor("darkgray")
+    ax.bar(names, values, color=['coral', 'deepskyblue',  'lightgreen', 'orange', 'lightcoral', 'turquoise', 'violet'])
+    ax.set_facecolor("lightcyan")
     plt.xticks(rotation=60, fontsize=8)
     # ax.set_xlabel('')
     ax.set_title(title)
