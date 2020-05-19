@@ -3,6 +3,7 @@ import threading
 
 from handler.send_email import Email
 from handler.database import MySql
+from configs.config import open_mysql_save_record
 
 
 class IntrusionStatistics:
@@ -26,7 +27,8 @@ class IntrusionStatistics:
                 self.number_intrusion[name] += 1
                 self.intrusion_records[name].append(img_path)
                 self.prev_intrusion_timestamp[name] = curr_time
-                # MySql.add_record(name)  # 给数据库表中添加一条记录
+                if open_mysql_save_record:
+                    MySql.add_record(name)  # 给数据库表中添加一条记录
             finally:
                 self.lock.release()
 
