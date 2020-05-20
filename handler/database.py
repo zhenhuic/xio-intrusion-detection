@@ -75,6 +75,8 @@ class MySql:
                 cursor.close()
             if conn is not None:
                 conn.close()
+        except Exception as e:
+            print(e)
         finally:
             return result
 
