@@ -32,7 +32,7 @@ class Email:
         :return:
         """
         # 1. 实例化SMTP,创建对象
-        smtp = smtplib.SMTP()
+        smtp = smtplib.SMTP(timeout=1)
         # 2. 链接邮件服务器，若为QQ：smtp.qq.com,若为163：smtp.163.com
         smtp.connect(SMTP_host)
         # 3. 配置发送邮箱的用户名和密码(授权码)

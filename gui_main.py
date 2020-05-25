@@ -288,7 +288,7 @@ class SendEmailDialog(QDialog, Ui_sendEmailDialog):
             print("邮件报告发送成功")
             return True
         except smtplib.SMTPException or Exception as e:
-            print("邮件报告发送失败！", e)
+            print("网络出现异常，请稍后重试！", e)
             return False
 
 
