@@ -8,6 +8,14 @@ switch_dict = {
     'penfenshang': True,
     'baobantongyong': True,
 }
+# 是否连接OPC服务器，执行紧急停机
+open_opc = False
+# 开启邮箱OPC报警
+open_email_warning = True
+# 开启统计闯入次数和邮箱发送报告功能
+open_email_report = True
+# 开启数据库存储异常记录
+open_mysql_save_record = True
 
 # 视频流 URL
 video_stream_paths_dict = {
@@ -46,7 +54,7 @@ frame_shape = (480, 640)
 # 工程管理部门邮箱地址
 email_address = "zhouxiaoyan@xiolift.com"
 # 是否开启统计闯入次数和邮箱发送报告功能
-open_email_report = True
+# open_email_report = False
 # 邮箱发送统计报告的时间间隔(s)
 report_statistics_interval = 3600
 
@@ -57,7 +65,8 @@ wechat_group = "机器人安全监测"
 # 发送异常信息的时间间隔(秒)
 wechat_send_interval = 30
 
-# 存储异常记录的数据库表
+# 存储异常记录的数据库相关配置
+# open_mysql_save_record = False
 mysql_host = 'localhost'
 mysql_user = 'root'
 mysql_password = '123456'
@@ -115,7 +124,7 @@ excluded_objects_dict = {
 
 # ----------------------- OPC服务相关配置 -------------------------------
 # 是否连接OPC服务器，执行紧急停机
-open_opc = False
+# open_opc = False
 
 # OPC 服务器 URL
 opc_url = 'opc.tcp://10.19.3.49:49320'  # 本机OPC服务
@@ -132,7 +141,7 @@ nodes_dict = {
 # 轮巡OPC节点状态的间隔时间(s)
 patrol_opc_nodes_interval = 30
 # 是否开启邮箱OPC报警
-open_email_warning = False
+# open_email_warning = False
 # 邮箱报警间隔时间(s)
 email_opc_warning_interval = 3600
 # 是否开启通过弹窗报警
