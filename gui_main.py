@@ -266,7 +266,7 @@ class SendEmailDialog(QDialog, Ui_sendEmailDialog):
             msg_box.setText("报告邮件发送成功^_^ ")
         else:
             msg_box.setIcon(QMessageBox.Warning)
-            msg_box.setText("报告邮件发送失败！!")
+            msg_box.setText("网络出现异常，请稍后重试！")
         msg_box.show()
         msg_box.exec()
 
