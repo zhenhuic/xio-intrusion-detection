@@ -58,7 +58,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.exitFullScreen.triggered.connect(self.showNormal)
         self.setupMenu.triggered.connect(lambda: os.system("notepad configs/config.py"))
         self.openStatistics.triggered.connect(self.open_statistics_window)
-        print("5")
 
         self.pushButton_1.clicked.connect(self.switch_vis_stream_1)
         self.pushButton_2.clicked.connect(self.switch_vis_stream_2)
@@ -72,13 +71,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(bool)
     def open_statistics_window(self, trigger):
-        print("1")
         self.statistics_window = StatisticsWindow()
-        print("2")
         self.statistics_window.show()
-        print("3")
         self.statistics_window.pushButton.click()
-        print("4")
 
     @pyqtSlot(QImage)
     def set_frame_1(self, image):
@@ -227,12 +222,10 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
             datetime_periods.append([start_datetime.strftime("%Y-%m-%d %H:%M:%S"),
                                      end_datetime.strftime("%Y-%m-%d %H:%M:%S")])
 
-        print("6")
         # print(len(datetime_periods), datetime_periods)
         production_line = self.productionLineComboBox.currentText()
         record_numbers = MySql.count_records_multi_datetime_periods(production_line, datetime_periods)
         # print(len(count_records), count_records)
-        print("7")
         if index < 1:
             names = [x[1].split(' ')[1] for x in datetime_periods]
         else:
@@ -240,12 +233,9 @@ class StatisticsWindow(QMainWindow, Ui_StatisticsWindow):
         # print(names)
         self.graph_names = names
         self.record_numbers = record_numbers
-        print("就是你")
         img = draw_bar_graph(names, record_numbers, production_line + "线 异常事件情况")
-        print("8")
         qimg = array_to_QImage(img, self.graphLabel.size())
         self.graphLabel.setPixmap(QPixmap.fromImage(qimg))
-        print("9")
 
 
     @pyqtSlot(bool)

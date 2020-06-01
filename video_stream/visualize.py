@@ -87,14 +87,11 @@ class Visualize:
 def draw_bar_graph(names: [str], values: [int], title: str) -> np.ndarray:
     mpl.rcParams['font.sans-serif'] = ['FangSong']  # 指定默认字体
     mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
-    print("10")
     fig = plt.figure()
-    print("11")
     ax = fig.add_subplot(111)
     # fig, ax = plt.subplots()
     ax.bar(names, values, color=['coral', 'deepskyblue',  'lightgreen', 'orange', 'lightcoral', 'turquoise', 'violet'])
     ax.set_facecolor("lightcyan")
-    print("12")
     plt.xticks(rotation=60, fontsize=8)
     # ax.set_xlabel('')
     ax.set_title(title)
