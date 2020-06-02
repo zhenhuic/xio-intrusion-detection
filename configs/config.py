@@ -5,8 +5,8 @@ switch_dict = {
     'sawanini_1': True,
     'sawanini_2': True,
     'zhuanjixia': True,
-    'penfenshang': False,
-    'baobantongyong': False,
+    'penfenshang': True,
+    'baobantongyong': True,
 }
 # 是否连接OPC服务器，执行紧急停机
 open_opc = True
@@ -114,7 +114,7 @@ excluded_objects_dict = {
     'sawanini_1': [],
     'sawanini_2': [],
     'zhuanjixia': [(175, 130, 200, 155), ],
-    'penfenshang': [],
+    'penfenshang': [(207, 220, 315, 230), ],
     'baobantongyong': [],
 }
 # ----------------------------------------------------------------------
