@@ -5,8 +5,8 @@ switch_dict = {
     'sawanini_1': True,
     'sawanini_2': True,
     'zhuanjixia': True,
-    'penfenshang': True,
-    'baobantongyong': True,
+    'penfenshang': False,
+    'baobantongyong': False,
 }
 # 是否连接OPC服务器，执行紧急停机
 open_opc = True
@@ -15,7 +15,7 @@ open_email_warning = True
 # 开启统计闯入次数和邮箱发送报告功能
 open_email_report = True
 # 开启数据库存储异常记录
-open_mysql_save_record = False
+open_mysql_save_record = True
 
 # 视频流 URL
 video_stream_paths_dict = {
