@@ -95,7 +95,7 @@ max_object_bbox_area_dict = {
     'sawanini_1': 15000,
     'sawanini_2': 12000,
     'zhuanjixia': 12000,
-    'penfenshang': 20000,
+    'penfenshang': 13000,
     'baobantongyong': 20000,  # TODO
 }
 # 设定待检测目标物体最小边界框面积，
@@ -114,7 +114,7 @@ excluded_objects_dict = {
     'sawanini_1': [],
     'sawanini_2': [],
     'zhuanjixia': [(175, 130, 200, 155), ],
-    'penfenshang': [(207, 220, 315, 230), ],
+    'penfenshang': [(270, 180, 350, 270), ],  # (310, 230)
     'baobantongyong': [],
 }
 # ----------------------------------------------------------------------
