@@ -72,6 +72,7 @@ def change_vis_stream(index):
 def detect_main(qthread):
     qthread.status_update.emit('模型加载')
     device = torch.device(device_name)
+    # 获取检测模型
     model = get_model(config_path, img_size, weights_path, device)
     logging.info('Model initialized')
 
@@ -93,10 +94,13 @@ def detect_main(qthread):
         warning_email = None
 
     qthread.status_update.emit('初始化异常处理程序')
+    # 创建可视化类对象，画掩模、文本信息、检测框、FPS
     visualize = Visualize(masks_paths_dict)
+    # 创建异常处理类对象，判断是否进入掩模区域，给OPC发信号停机，保存记录
     handling = IntrusionHandling(masks_paths_dict, opc_client)
 
     qthread.status_update.emit('读取视频流')
+    # 创建加载视频的类，多线程读帧，生产者-消费者
     video_loader = VideoLoader(video_stream_paths_dict)
     logging.info('Video streams create: ' + ', '.join(n for n in video_stream_paths_dict.keys()))
 
@@ -112,6 +116,7 @@ def detect_main(qthread):
 
     prevs_frames_dict = None
     logging.info('Enter detection main loop process')
+    # 进入检测的主循环
     exception_flag = False
     while not exception_flag:
         # 当前次循环的时间戳
@@ -161,6 +166,7 @@ def detect_main(qthread):
             if frames_dict[name] is None:
                 if prevs_frames_dict is not None:
                     frames_dict[name] = prevs_frames_dict[name]
+                    # 将图片转换成 PyTorch Tensor
                     tensor = transform(frames_dict[name], img_size)
                     input_tensor.append(tensor)
             else:
@@ -174,7 +180,7 @@ def detect_main(qthread):
             print("未读到任何视频帧")
             time.sleep(0.5)
             continue
-
+        # 将多张图片的Tensor堆叠一起，相当于batch size
         input_tensor = stack_tensors(input_tensor)
 
         # model inference and postprocess
