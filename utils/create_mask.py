@@ -89,12 +89,12 @@ def main():
     # bottom = line_params((140, 479), (413, 479))
     # mask = add_mask(mask_img, [left, top, right, bottom])
     # penfenshang left
-    mask_img = '../images/assets/penfenshang4.jpg'
-    left = line_params((112, 376), (177, 211))
-    top = line_params((177, 205), (229, 207))
-    right = line_params((142, 479), (262, 143))
-    bottom = line_params((103, 376), (157, 389))
-    mask = add_mask(mask_img, [left, top, right, bottom])
+    # mask_img = '../images/assets/penfenshang4.jpg'
+    # left = line_params((112, 376), (177, 211))
+    # top = line_params((177, 205), (229, 207))
+    # right = line_params((142, 479), (262, 143))
+    # bottom = line_params((103, 376), (157, 389))
+    # mask = add_mask(mask_img, [left, top, right, bottom])
 
 
     # baobantongyong
@@ -125,9 +125,17 @@ def main():
     # bottom = line_params((100, 175), (170, 183))
     # mask = add_mask(orig_mask, [left, top, right, bottom])
 
+    # zhuanjixia
+    orig_img = '../images/assets/zhuanjixia1.png'
+    left = line_params((184, 234), (1, 430))
+    top = line_params((180, 228), (473, 343))
+    right = line_params((495, 344), (490, 476))
+    bottom = line_params((10, 480), (450, 480))
+    mask = create_mask(orig_img, [left, top, right, bottom])
+
     cv2.imshow('mask', mask)
 
-    cv2.imwrite('../images/assets/penfenshang.jpg', mask)
+    cv2.imwrite('../images/masks/zhuanjixia.jpg', mask)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
